@@ -1,0 +1,1 @@
+import{r as d,j as s}from"./index-DPU0qvVz.js";function o({label:a,error:e,as:l="input",children:r,...t}){const i=d.useId();return s.jsxs("div",{className:"field",children:[s.jsx("label",{htmlFor:i,children:a}),s.jsx(l,{id:i,"aria-invalid":!!e,...t,children:r}),e&&s.jsx("p",{className:"field__error",role:"alert",children:e})]})}export{o as F};

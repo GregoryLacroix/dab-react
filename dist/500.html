@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr" data-en-title="Server error | Les galets d’Ambre">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Erreur du serveur | Les galets d’Ambre</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.png" type="image/png">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:2rem 1.25rem;background:#faf6ef;color:#000;font-family:Figtree,Arial,sans-serif;line-height:1.6;text-align:center}
+  main{max-width:34rem}
+  .code{margin:0;font:400 clamp(5.5rem,22vw,10rem)/.9 "Instrument Serif",Georgia,serif;color:transparent;-webkit-text-stroke:2px #000;background:linear-gradient(90deg,#c1c8e4,#b2decf,#dbe9c5,#f8d4bc,#f6b2af,#f4979f);-webkit-background-clip:text;background-clip:text}
+  img{width:170px;height:auto;margin:1rem auto}
+  h1{margin:.2rem 0 .6rem;font:400 clamp(1.9rem,6vw,2.6rem)/1.15 "Instrument Serif",Georgia,serif}
+  p{margin:0 0 1rem}
+  .btns{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;margin-top:1.4rem}
+  a,button{display:inline-block;padding:.75rem 1.5rem;border:2px solid #000;border-radius:10px;font:600 1rem Figtree,Arial,sans-serif;text-decoration:none;cursor:pointer}
+  .primary{background:#000;color:#fff}.ghost{background:transparent;color:#000}
+  .primary:hover{background:#333;border-color:#333}.ghost:hover{background:#e6d9c3}
+  a:focus-visible,button:focus-visible{outline:3px solid #000;outline-offset:3px}
+</style>
+</head>
+<body>
+<main>
+  <p class="code" aria-hidden="true">500</p>
+  <img src="/logo.png" alt="Les galets d’Ambre – Peinture sur galets, fresque murale" data-en="Les galets d’Ambre – Pebble painting, wall murals" width="170" height="170">
+  <h1 data-en="Oops, something went wrong on our side">Oups, un problème de notre côté</h1>
+  <p data-en="It’s not your fault: the site ran into an unexpected error. Try again in a few moments; if the problem persists, please contact us.">Ce n’est pas de votre faute : le site a rencontré une erreur inattendue. Réessayez dans quelques instants ; si le problème persiste, contactez-nous.</p>
+  <div class="btns"><button class="primary" type="button" onclick="location.reload()" data-en="Try again">Réessayer</button><a class="ghost" href="/" data-en-href="/en" data-en="Back to the home page">Retour à l’accueil</a></div>
+</main>
+<script>
+// Page statique servie par le serveur web : française par défaut, anglaise si l'adresse commence par /en
+(function () {
+  if (!/^\/en(\/|$)/.test(location.pathname)) return;
+  document.documentElement.lang = 'en';
+  document.querySelectorAll('[data-en]').forEach(function (el) {
+    if (el.tagName === 'IMG') el.alt = el.getAttribute('data-en'); else el.textContent = el.getAttribute('data-en');
+  });
+  document.querySelectorAll('[data-en-href]').forEach(function (el) { el.href = el.getAttribute('data-en-href'); });
+  if (document.documentElement.hasAttribute('data-en-title')) document.title = document.documentElement.getAttribute('data-en-title');
+})();
+</script>
+</body>
+</html>
