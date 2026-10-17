@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /panier
+Disallow: /commande
+Disallow: /connexion
+Disallow: /connexion/retour
+Disallow: /inscription
+Disallow: /mon-compte
+Disallow: /erreur-serveur
+Disallow: /en/cart
+Disallow: /en/order
+Disallow: /en/login
+Disallow: /en/login/callback
+Disallow: /en/register
+Disallow: /en/account
+Disallow: /en/server-error
+
+Sitemap: https://dab.gregory-lacroix-pf.com/sitemap.xml

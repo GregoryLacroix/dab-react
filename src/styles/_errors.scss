@@ -1,0 +1,32 @@
+@use 'variables' as *;
+
+// ---- Pages d'erreur (404, 500)
+.errpage { display: grid; justify-items: center; gap: 1.1rem; max-width: 720px; margin: 0 auto; padding: clamp(2.5rem, 7vw, 5.5rem) 1.25rem; text-align: center;
+  > * { margin: 0; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); }
+  p { max-width: 54ch; }
+  &__code { font: 400 clamp(5.5rem, 20vw, 11rem)/.9 $font-display; color: transparent; -webkit-text-stroke: 2px $ink; background: linear-gradient(90deg, $pal-1, $pal-2, $pal-3, $pal-4, $pal-5, $pal-6, $pal-1);
+    background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; animation: errslide 9s linear infinite; }
+  &__art { width: min(100%, 340px); }
+  &__svg { display: block; width: 100%; height: auto; overflow: visible; }
+  &__stone { transform-box: fill-box; transform-origin: 50% 100%; animation: wobble 4.5s ease-in-out infinite; }
+  &__half { transform-box: fill-box; transform-origin: 50% 100%;
+    &--l { animation: shakeL 3.2s ease-in-out infinite; }
+    &--r { animation: shakeR 3.2s ease-in-out infinite; } }
+  &__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; margin-top: .4rem; }
+  &__links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .5rem 1rem; }
+  &__details { max-width: 54ch; text-align: left; font-size: .9rem;
+    summary { cursor: pointer; }
+    p { margin: .5rem 0 0; word-break: break-word; } }
+  &--compact { padding-block: 2rem; .errpage__art { width: min(100%, 220px); } h1 { font-size: 1.9rem; } } }
+
+@keyframes errslide { to { background-position: -200% 0; } }
+@keyframes wobble { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
+@keyframes shakeL { 0%, 100% { transform: translate(-8px, 2px) rotate(-3deg); } 50% { transform: translate(-11px, 3px) rotate(-5deg); } }
+@keyframes shakeR { 0%, 100% { transform: translate(10px, 3px) rotate(4deg); } 50% { transform: translate(13px, 4px) rotate(6deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .errpage__code, .errpage__stone, .errpage__half { animation: none; }
+  .errpage__half--l { transform: translate(-9px, 2px) rotate(-3deg); }
+  .errpage__half--r { transform: translate(11px, 3px) rotate(4deg); }
+}

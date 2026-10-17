@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/produits</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/produits"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/shop"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/produits"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/shop</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/produits"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/shop"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/produits"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/contact"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/contact</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/contact"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/mentions-legales</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/mentions-legales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/legal-notice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/mentions-legales"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/legal-notice</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/mentions-legales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/legal-notice"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/mentions-legales"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/politique-de-confidentialite</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/politique-de-confidentialite"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/politique-de-confidentialite"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/politique-de-confidentialite"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/politique-de-confidentialite"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/conditions-generales-de-vente</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/conditions-generales-de-vente"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/terms-and-conditions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/conditions-generales-de-vente"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/terms-and-conditions</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/conditions-generales-de-vente"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/terms-and-conditions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/conditions-generales-de-vente"/>
+  </url>
+</urlset>

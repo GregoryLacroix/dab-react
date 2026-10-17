@@ -1,0 +1,95 @@
+@use 'variables' as *;
+
+// ---- Header / Footer
+.header {
+  background: $sand-50; border-bottom: 1px solid $sand-200;
+  position: sticky; top: 0; z-index: 10;
+  &__inner { display: flex; align-items: center; justify-content: space-between; padding-block: .6rem;
+    padding-inline: clamp(1.25rem, 4vw, 3rem); }
+  &__brand img { height: 64px; width: 64px; object-fit: contain; }
+  &__nav { display: flex; gap: 1.6rem; align-items: center;
+    a { color: $ink; text-decoration: none; font-weight: 500; padding-block: .3rem; border-bottom: 2px solid transparent;
+      &:hover { color: $ink; border-color: $ink; }
+      &.active { color: $ink; font-weight: 600; border-color: $ink; } }
+    @include md { gap: 1rem; font-size: .95rem; } }
+}
+.badge { display: inline-block; margin-left: .4rem; min-width: 1.4rem; padding: 0 .4rem; text-align: center;
+  background: $ink; color: #fff; border-radius: 99px; font-size: .8rem; }
+
+.footer { background: $sand-100; border-top: 1px solid $sand-200; padding: 2rem 0; font-size: .95rem;
+  &__inner { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; width: 100%; max-width: none;
+    padding-inline: clamp(1.25rem, 4vw, 3rem); }
+  p { margin: 0; }
+  nav { display: flex; flex-direction: column; align-items: flex-start; gap: .6rem; }
+  nav a { text-decoration: none; &:hover { text-decoration: underline; } } }
+
+// ---- Boutons
+.btn { display: inline-block; cursor: pointer; font: 600 1rem $font-body; text-decoration: none;
+  padding: .75rem 1.5rem; border-radius: $radius; border: 2px solid $ink; transition: background .2s, color .2s;
+  &--primary { background: $ink; color: #fff; &:hover { background: $ink-soft; border-color: $ink-soft; color: #fff; } }
+  &--ghost { background: transparent; color: $ink; &:hover { background: $sand-200; color: $ink; } } }
+.link-btn { background: none; border: 0; color: $ink; cursor: pointer; font: inherit; text-decoration: underline; }
+
+// ---- Formulaires
+.auth { width: min(100% - 2.5rem, 440px); margin: 0 auto; background: rgba(255,255,255,.6); border: 1px solid $sand-200;
+  border-radius: $radius; padding: 2rem; display: grid; gap: 1.1rem;
+  h1 { font-size: 2.4rem; margin: 0; } &__alt { margin: 0; font-size: .95rem; } }
+.field { display: grid; gap: .35rem;
+  label { font-weight: 500; font-size: .95rem; }
+  input, textarea, select { font: inherit; padding: .7rem .9rem; background: $sand-50; color: $ink;
+    border: 1px solid $sand-400; border-radius: $radius;
+    &:focus { border-color: $ink; outline: 3px solid rgba(0, 0, 0, .15); }
+    &[aria-invalid='true'] { border-color: $danger; } }
+  &__error { color: $danger; font-size: .9rem; margin: 0; } }
+
+// ---- Produits
+.product-grid { display: grid; gap: 1.8rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin-top: 1.5rem; }
+.pcard { background: rgba(255,255,255,.6); border: 1px solid $sand-200; border-radius: $radius; overflow: hidden;
+  &__media { display: block; }
+  &__body { padding: 1.1rem 1.2rem 1.4rem; h3 { margin-bottom: .2em; a { color: inherit; text-decoration: none; &:hover { text-decoration: underline; } } } } }
+.price { font-weight: 600; color: $ink; margin-bottom: .8rem; &--lg { font-size: 1.6rem; } }
+
+.pimg { aspect-ratio: 1 / 1; width: 100%; object-fit: cover; display: block;
+  &--sea   { background: linear-gradient(180deg, $pal-4 0 38%, $pal-3 38% 55%, $pal-2 55% 80%, $pal-1 80%); }
+  &--sky   { background: linear-gradient(180deg, #fff 0, $pal-4 45%, $pal-5 45% 70%, $pal-6 70%); }
+  &--cliff { background: linear-gradient(160deg, $pal-3 0 30%, $pal-2 30% 55%, $pal-1 55% 75%, $pal-5 75%); }
+  &--wall  { background: repeating-linear-gradient(0deg, $sand-100 0 38px, $sand-200 38px 40px),
+                         linear-gradient(120deg, transparent 40%, rgba(244, 151, 159, .6) 100%); background-blend-mode: multiply; } }
+
+.filters { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0 .5rem; }
+.chip { font: 500 .95rem $font-body; padding: .45rem 1.1rem; border-radius: 99px; cursor: pointer;
+  background: transparent; color: $ink; border: 1px solid $ink;
+  &.is-active { background: $ink; color: #fff; border-color: $ink; } }
+
+.pview { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
+  .pimg { border-radius: $radius; } @include md { grid-template-columns: 1fr; gap: 1.5rem; } }
+.back { display: inline-block; margin-bottom: 1rem; font-size: .95rem; }
+
+// ---- Panier
+.cart { list-style: none; padding: 0; margin: 1.5rem 0;
+  &__row { display: grid; grid-template-columns: 1fr 80px 90px auto; gap: 1rem; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid $sand-200;
+    input { font: inherit; padding: .4rem; width: 100%; background: $sand-50; border: 1px solid $sand-400; border-radius: 6px; }
+    .price { margin: 0; text-align: right; }
+    @include md { grid-template-columns: 1fr 70px; .price { text-align: left; } } }
+  &__summary { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;
+    p { margin: 0; font-size: 1.3rem; } strong { color: $ink; margin-left: .5rem; } } }
+
+// ---- Commande (panier)
+.cart__checkout { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 560px; margin-bottom: 1.5rem; }
+.note { font-size: .9rem; opacity: .8; }
+
+// ---- Scroll infini
+.infinite { display: grid; justify-items: center; gap: .8rem; padding: 2.5rem 0 .5rem; text-align: center; .note { margin: 0; } }
+
+// ---- Connexion avec Google / Facebook (sous le formulaire de connexion et d'inscription)
+.social { display: grid; gap: .7rem;
+  &__or { display: flex; align-items: center; gap: .8rem; margin: .2rem 0 0; color: $sand-400; font-size: .9rem;
+    &::before, &::after { content: ''; flex: 1; border-top: 1px solid $sand-200; } }
+  &__btn { display: flex; align-items: center; justify-content: center; gap: .75rem; padding: .7rem 1rem;
+    background: #fff; color: $ink; border: 1px solid $sand-400; border-radius: $radius;
+    font: 600 1rem $font-body; text-decoration: none; transition: background .15s, border-color .15s;
+    svg { width: 1.25rem; height: 1.25rem; flex: none; }
+    &:hover { background: $sand-50; border-color: $ink; }
+    &:focus-visible { outline: 3px solid $ink; outline-offset: 2px; } }
+  &__note { margin: 0; text-align: center; } }

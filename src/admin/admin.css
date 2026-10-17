@@ -1,0 +1,15 @@
+@tailwind base;
+
+/* Mini "preflight" limité au back-office */
+.admin-root, .admin-root * , .admin-root ::before, .admin-root ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e6d9c3; }
+.admin-root { line-height: 1.5; font-size: 16px; font-family: Roboto, system-ui, Arial, sans-serif; color: #000; }
+.admin-root h1, .admin-root h2, .admin-root h3, .admin-root p { margin: 0; max-width: none; font-family: inherit; font-weight: inherit; font-size: inherit; line-height: inherit; color: inherit; }
+.admin-root a { color: inherit; text-decoration: none; }
+.admin-root button, .admin-root input, .admin-root select, .admin-root textarea { font: inherit; color: inherit; margin: 0; }
+.admin-root button { cursor: pointer; background: none; padding: 0; }
+.admin-root ul, .admin-root ol { list-style: none; margin: 0; padding: 0; }
+.admin-root img, .admin-root svg { display: block; max-width: 100%; }
+.admin-root table { border-collapse: collapse; }
+
+@tailwind components;
+@tailwind utilities;

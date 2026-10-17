@@ -1,0 +1,19 @@
+@use 'variables' as *;
+
+// ---- Logo horizontal du menu (galet + nom + sous-titre)
+.logo { display: inline-flex; align-items: center; gap: .75rem; color: $ink;
+  &__mark { flex: none; width: 56px; height: 56px; transition: width .3s ease, height .3s ease; }
+  &__text { display: grid; gap: .3rem; line-height: 1; }
+  &__text strong { font: 400 1.75rem/1 $font-display; letter-spacing: .005em; transition: font-size .3s ease; }
+  &__text small { font: 600 .6rem/1 $font-body; letter-spacing: .17em; text-transform: uppercase; } }
+.header__brand { color: $ink; text-decoration: none; }
+
+// Menu réduit au défilement : galet plus petit, sous-titre masqué
+.header.is-scrolled .logo__mark { width: 40px; height: 40px; }
+.header.is-scrolled .logo__text strong { font-size: 1.4rem; }
+.header.is-scrolled .logo__text small { display: none; }
+@include md {
+  .logo__mark, .header.is-scrolled .logo__mark { width: 44px; height: 44px; }
+  .logo__text strong, .header.is-scrolled .logo__text strong { font-size: 1.35rem; }
+  .logo__text small { display: none; }
+}

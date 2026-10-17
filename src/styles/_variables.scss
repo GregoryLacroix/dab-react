@@ -1,0 +1,35 @@
+// Beiges (sable, lin, pierre) pour laisser le bleu du logo respirer
+$sand-50:  #faf6ef;   // fond de page
+$sand-100: #f2eadc;   // bandeaux, champs
+$sand-200: #e6d9c3;   // bordures
+$sand-400: #b9a68a;   // bordures de champs
+$stone-700:#4a4034;   // texte principal
+
+// Bleus issus du logo
+$blue-900: #0f2a6b;   // encre du « D.A.B »
+$blue-600: #1f4fb5;
+$blue-300: #7fa3e0;
+$blue-100: #dbe6f7;
+
+$danger: #a63a2b;
+
+// Palette des animations (même valeurs que src/config/palette.js)
+$pal-1: #c1c8e4;
+$pal-2: #b2decf;
+$pal-3: #dbe9c5;
+$pal-4: #f8d4bc;
+$pal-5: #f6b2af;
+$pal-6: #f4979f;
+
+// Texte, boutons et liens : noir
+$ink: #000;
+$ink-soft: #333;
+
+$font-display: 'Instrument Serif', Georgia, serif;
+$font-body: 'Figtree', system-ui, sans-serif;
+
+$radius: 10px;
+$container: 1100px;
+$bp-md: 760px;
+
+@mixin md { @media (max-width: $bp-md) { @content; } }

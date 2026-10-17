@@ -1,0 +1,32 @@
+{
+  "name": "dab-boutique",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "seo": "node scripts/generate-seo-files.mjs",
+    "prebuild": "node scripts/generate-seo-files.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0",
+    "@fontsource/figtree": "^5.1.0",
+    "@fontsource/instrument-serif": "^5.1.0",
+    "@fontsource/roboto": "^5.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "sass": "^1.77.0",
+    "vite": "^7.3.6",
+    "tailwindcss": "3.4.17",
+    "postcss": "^8.4.47",
+    "autoprefixer": "^10.4.20"
+  },
+  "overrides": {
+    "tailwindcss": "3.4.17"
+  }
+}

@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+.carousel { min-width: 0; display: grid; gap: .8rem;
+  &:focus-visible { outline: 3px solid $ink; outline-offset: 4px; border-radius: $radius; }
+  &__viewport { position: relative; overflow: hidden; border-radius: $radius; border: 1px solid $sand-200; }
+  &__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; } }
+  &__slide { flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; }
+  &__nav { position: absolute; top: 50%; translate: 0 -50%; width: 44px; height: 44px; border-radius: 50%; border: 0;
+    display: grid; place-items: center; cursor: pointer; background: rgba(250, 246, 239, .92); color: $ink;
+    box-shadow: 0 6px 16px -8px rgba(0, 0, 0, .4); transition: background .2s, color .2s;
+    &:hover { background: $ink; color: #fff; }
+    svg { width: 20px; height: 20px; }
+    &--prev { left: .8rem; }
+    &--next { right: .8rem; } }
+  &__count { position: absolute; right: .8rem; bottom: .8rem; padding: .15rem .7rem; border-radius: 99px;
+    background: rgba(250, 246, 239, .92); color: $ink; font-size: .85rem; font-weight: 600; }
+  &__thumbs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 88px); gap: .6rem; }
+  &__thumb { padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; cursor: pointer;
+    background: none; opacity: .6; transition: opacity .2s, border-color .2s;
+    &:hover { opacity: 1; }
+    &.is-active { border-color: $ink; opacity: 1; } } }
