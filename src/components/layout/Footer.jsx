@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { useConsent } from '../../context/ConsentContext.jsx';
 import { useContent } from '../../store/store.js';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
@@ -7,6 +8,7 @@ export default function Footer() {
   const { t, l } = useI18n();
   const { footer } = useContent();
   const { services, openSettings } = useConsent();
+  const { user } = useAuth();
   return (
     <footer className="footer">
       <div className="footer__inner">
@@ -16,7 +18,8 @@ export default function Footer() {
           <Link to={l('/contact')}>{t('nav.contact')}</Link>
           <Link to={l('/inscription')}>{t('footer.register')}</Link>
           <Link to={l('/panier')}>{t('nav.cart')}</Link>
-          <Link to="/admin">{t('nav.admin')}</Link>
+          {/* Lien réservé aux administrateurs connectés (la sécurité réelle est côté API : ce test ne fait que masquer le lien) */}
+          {user?.isAdmin && <Link to="/admin">{t('nav.admin')}</Link>}
         </nav>
         <nav aria-label={t('footer.legalNav')}>
           <Link to={l('/mentions-legales')}>{t('footer.legal')}</Link>
