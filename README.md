@@ -15,6 +15,10 @@ Sous les formulaires Connexion et Inscription, des boutons « Continuer avec Goo
 - Un compte créé ainsi n'a pas de mot de passe : la suppression du compte (page *Mon compte*) se confirme avec l'adresse e-mail.
 - Politique de confidentialité mise à jour (données reçues du fournisseur, cookie technique `dab_oauth` posé par l'API, destinataires).
 
+## Zoom des photos et commandes
+- **Fiche produit** : à la souris, une loupe suit le curseur sur la photo principale (`components/ui/ZoomImage.jsx`, grossissement 2,5 réglable par `--zoom` dans `styles/_zoom.scss`) ; un clic, une touche Entrée ou un appui au doigt ouvre l'agrandissement plein écran (`Lightbox.jsx`) : clic ou bouton +/− pour zoomer, déplacement de la souris (ou du doigt) pour parcourir l'image, ← → pour changer de photo, Échap pour fermer. Les images sans photo (dégradés provisoires) ne sont pas agrandies. La qualité du zoom dépend de la résolution des photos téléversées.
+- **Mon compte → Mes commandes** : liste des commandes (date, statut, total), détail au clic (articles, paiement, adresse de livraison) et bouton **Télécharger la facture (PDF)** pour les commandes payées. Le back-office propose le même bouton sur la page *Commandes*. Détails (numérotation, informations légales à remplir) : README de `dab-api`, section « Factures ».
+
 ## Paiement en ligne (Stripe)
 Le bouton « Commander avec obligation de paiement » enregistre la commande dans l'API, qui renvoie l'adresse de la page de paiement **Stripe Checkout** ; le navigateur y est redirigé (aucune donnée bancaire sur ce site, pas de bibliothèque Stripe côté React, **aucune clé dans ce projet**). Au retour, la page `/commande` (anglais : `/en/order`) vérifie le paiement auprès de l'API et vide le panier ; si le client abandonne, il revient sur `/panier?cancelled=1` avec son panier intact.
 - Mise en route, clés, webhook, frais de port, remboursements : voir le README de `dab-api` (section « Paiement en ligne »).

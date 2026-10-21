@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import { api } from '../../services/api.js';
 import { ORDER_STATUSES } from '../../store/store.js';
 import usePaged, { useDebounced } from '../usePaged.js';
+import { saveBlob } from '../../services/download.js';
 import { Btn, Card, ConfirmDialog, ErrorBox, Loading, PageHeader, Pagination, euro, formatDate, inputCls, statusStyle } from '../ui.jsx';
 
 const td = 'px-4 py-3';
@@ -22,6 +23,13 @@ export default function Orders() {
       await api.orders.setStatus(order.id, value); // PATCH /api/orders/{CMD-1001}/status
       setActionError(null);
       paged.reload();
+    } catch (err) { setActionError(err); }
+  };
+
+  const downloadInvoice = async (order) => {
+    try {
+      saveBlob(await api.orders.invoice(order.id), `${order.invoice.number ?? order.id}.pdf`); // GET /api/orders/{CMD-1001}/invoice
+      paged.reload(); // le numéro de facture est attribué à la première demande pour les anciennes commandes
     } catch (err) { setActionError(err); }
   };
 
@@ -104,9 +112,11 @@ export default function Orders() {
                             {o.payment?.online && !o.payment.paidAt && <p>{o.status === 'annulée' ? 'Paiement non abouti (page de paiement abandonnée ou expirée).' : 'En attente du paiement chez Stripe.'}</p>}
                             {o.payment?.paidAt && <p>Payée en ligne le {formatDate(o.payment.paidAt)}.</p>}
                             {o.payment?.refundedAt && <p>Remboursée le {formatDate(o.payment.refundedAt)}.</p>}
-                            {o.payment?.paidAt && !o.payment.refundedAt && (
-                              <div className="mt-2"><Btn variant="danger" onClick={() => setRefunding(o)}>Rembourser</Btn></div>
-                            )}
+                            {o.invoice?.number && <p>Facture {o.invoice.number}</p>}
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {o.invoice?.available && <Btn variant="ghost" onClick={() => downloadInvoice(o)}>Facture PDF</Btn>}
+                              {o.payment?.paidAt && !o.payment.refundedAt && <Btn variant="danger" onClick={() => setRefunding(o)}>Rembourser</Btn>}
+                            </div>
                           </div>
                           <div>
                             <p className="font-semibold">Adresse de livraison</p>

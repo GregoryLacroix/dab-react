@@ -34,3 +34,30 @@
 .skip-link { position: absolute; left: .75rem; top: -4rem; z-index: 100; padding: .6rem 1rem; background: $ink; color: #fff; border-radius: $radius; text-decoration: none;
   &:focus { top: .75rem; } }
 main:focus { outline: none; }
+
+// ---- « Mon compte » : historique des commandes
+.account { max-width: 860px; }
+.account__card--orders { justify-items: stretch; }
+.orders { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.order { border: 1px solid $sand-200; border-radius: $radius; background: #fff; overflow: hidden;
+  > summary { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: .4rem 1rem; padding: .85rem 1rem; cursor: pointer; list-style: none;
+    &::-webkit-details-marker { display: none; }
+    &::after { content: '+'; grid-column: 5; font-size: 1.3rem; line-height: 1; }
+    &:hover { background: $sand-50; }
+    &:focus-visible { outline: 3px solid $ink; outline-offset: -3px; } }
+  &[open] > summary::after { content: '−'; }
+  &__ref { font-weight: 700; }
+  &__date { color: $ink-soft; font-size: .92rem; }
+  &__total { font-weight: 600; text-align: right; }
+  &__status { padding: .15rem .7rem; border-radius: 99px; font-size: .82rem; font-weight: 600; background: $sand-100; border: 1px solid $sand-200;
+    &--paid, &--shipped, &--delivered { background: #e4f3e6; border-color: #b8dcbc; }
+    &--cancelled { background: #f5e1df; border-color: #e3b9b4; } }
+  &__body { display: grid; gap: 1rem; padding: 1rem; border-top: 1px solid $sand-200; background: $sand-50; }
+  &__items { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem;
+    li { display: flex; justify-content: space-between; gap: 1rem; }
+    .order__sum { border-top: 1px solid $sand-200; padding-top: .5rem; font-weight: 700; } }
+  &__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+    h3 { margin: 0 0 .3rem; font-size: 1rem; } p, address { margin: 0; font-style: normal; }
+    address span { display: block; } }
+  &__invoice { display: grid; gap: .6rem; justify-items: start; p { margin: 0; } }
+  @media (max-width: 560px) { > summary { grid-template-columns: 1fr auto; .order__date { grid-column: 1; } .order__status { grid-column: 1; justify-self: start; } .order__total { grid-row: 1; grid-column: 2; } &::after { display: none; } } } }

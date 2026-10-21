@@ -1,0 +1,35 @@
+@use 'variables' as *;
+
+// ---- Loupe sur l'image principale (souris) — --x / --y / --w / --h sont posées par ZoomImage.jsx
+.zoom { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; overflow: hidden; font: inherit; color: inherit;
+  --lens: 168px; --zoom: 2.5;
+  &:focus-visible { outline: 3px solid $ink; outline-offset: -3px; }
+  &__lens { position: absolute; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .15s;
+    width: var(--lens); height: var(--lens); border-radius: 50%; overflow: hidden; background: $sand-100;
+    box-shadow: 0 0 0 3px #fff, 0 10px 26px -6px rgba(0, 0, 0, .55);
+    left: calc(var(--x, 0px) - var(--lens) / 2); top: calc(var(--y, 0px) - var(--lens) / 2);
+    img { position: absolute; max-width: none; object-fit: cover;
+      width: calc(var(--w, 0px) * var(--zoom)); height: calc(var(--h, 0px) * var(--zoom));
+      left: calc(var(--lens) / 2 - var(--x, 0px) * var(--zoom)); top: calc(var(--lens) / 2 - var(--y, 0px) * var(--zoom)); } }
+  &.is-zooming &__lens { opacity: 1; }
+  &__hint { position: absolute; left: .8rem; bottom: .8rem; z-index: 1; width: 2.2rem; height: 2.2rem; display: grid; place-items: center;
+    border-radius: 50%; background: rgba(250, 246, 239, .92); color: $ink; pointer-events: none; transition: opacity .15s;
+    svg { width: 1.2rem; height: 1.2rem; } }
+  &.is-zooming &__hint { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .zoom__lens, .zoom__hint { transition: none; } }
+
+// ---- Agrandissement plein écran
+.lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(12, 9, 5, .94); display: grid; grid-template-rows: auto 1fr;
+  &__bar { display: flex; justify-content: flex-end; align-items: center; gap: .6rem; padding: .8rem 1rem; }
+  &__count { margin-right: auto; color: #fff; font-weight: 600; font-size: .95rem; }
+  &__btn, &__nav { width: 46px; height: 46px; border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer;
+    background: rgba(250, 246, 239, .94); color: $ink; transition: background .2s, color .2s;
+    &:hover { background: $ink; color: #fff; outline: 1px solid #fff; }
+    &:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+    svg { width: 22px; height: 22px; } }
+  &__nav { position: absolute; top: 50%; translate: 0 -50%; &--prev { left: 1rem; } &--next { right: 1rem; } }
+  &__stage { min-height: 0; display: grid; place-items: center; padding: 0 4.2rem 1.2rem; overflow: hidden;
+    img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in; border-radius: 6px; user-select: none; }
+    &.is-zoomed { overflow: auto; padding: 0; place-items: start; overscroll-behavior: contain;
+      img { max-width: none; max-height: none; width: 220%; height: auto; cursor: zoom-out; border-radius: 0; } } }
+  @media (max-width: 640px) { &__stage { padding: 0 .5rem 1rem; } &__nav { top: auto; bottom: 1rem; translate: none; } } }

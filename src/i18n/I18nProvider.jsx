@@ -76,6 +76,8 @@ export function I18nProvider({ children }) {
       /** Texte qui peut être donné par langue : 'Texte' ou { fr: 'Texte', en: 'Text' } */
       pick: (v) => (v && typeof v === 'object' && !isValidElement(v) ? v[lang] ?? v.fr ?? Object.values(v)[0] : v),
       money: (n) => currency(lang, Number.isInteger(Number(n))).format(Number(n)),
+      /** « 8 octobre 2026 » / « 8 October 2026 » à partir d'une date ISO */
+      date: (iso) => new Intl.DateTimeFormat(LOCALES[lang], { dateStyle: 'long' }).format(new Date(iso)),
     };
   }, [lang, pathname, search, hash]);
 

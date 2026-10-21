@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ProductImage from './ProductImage.jsx';
+import ZoomImage from './ZoomImage.jsx';
+import Lightbox from './Lightbox.jsx';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
 
 const Chevron = ({ dir }) => (
@@ -13,6 +15,7 @@ export default function Carousel({ images, label }) {
   const { t } = useI18n();
   const track = useRef(null);
   const [index, setIndex] = useState(0);
+  const [zoom, setZoom] = useState(null); // photo ouverte en plein écran (index), sinon null
   const count = images.length;
 
   const goTo = useCallback((i) => {
@@ -47,7 +50,7 @@ export default function Carousel({ images, label }) {
         <div className="carousel__track" ref={track}>
           {images.map((img, i) => (
             <div className="carousel__slide" key={i} role="group" aria-roledescription={t('slide.role')} aria-label={t('slide.of', { n: i + 1, count })}>
-              <ProductImage tone={img.tone} src={img.src} label={img.alt || label} priority={i === 0} />
+              <ZoomImage image={img} label={img.alt || label} priority={i === 0} onOpen={() => setZoom(i)} />
             </div>
           ))}
         </div>
@@ -69,6 +72,7 @@ export default function Carousel({ images, label }) {
           ))}
         </div>
       )}
+      {zoom !== null && <Lightbox images={images} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} label={label} />}
     </div>
   );
 }

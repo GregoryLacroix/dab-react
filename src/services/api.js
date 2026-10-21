@@ -55,6 +55,21 @@ async function send(path, { method = 'GET', body, query, form } = {}) {
   return data;
 }
 
+// Téléchargement d'un fichier (facture PDF) : même authentification que le reste de l'API, mais la réponse est un Blob
+async function download(path) {
+  const headers = { 'Accept-Language': lang };
+  const token = getToken();
+  if (token) headers.Authorization = `Bearer ${token}`;
+  let res;
+  try {
+    res = await fetch(BASE + path, { headers });
+  } catch {
+    throw new ApiError(0, { error: 'network', message: MESSAGES[lang].network });
+  }
+  if (!res.ok) throw new ApiError(res.status, await res.json().catch(() => null));
+  return res.blob();
+}
+
 // Nombre de requêtes en cours : la barre de chargement (NetworkBar) écoute l'évènement "dab:network"
 let pending = 0;
 async function request(path, options) {
@@ -94,6 +109,7 @@ export const api = {
 
   // --- Droits RGPD de la personne connectée
   account: {
+    orders: () => request('/api/auth/me/orders'),                                            // mes commandes : { items: [commande…] }
     export: () => request('/api/auth/me/export'),                                          // copie de mes données
     remove: (credentials) => request('/api/auth/me', { method: 'DELETE', body: credentials }), // supprimer mon compte : { password } (ou { email } pour un compte Google/Facebook)
   },
@@ -119,6 +135,7 @@ export const api = {
     setStatus: (ref, status) => request(`/api/orders/${ref}/status`, { method: 'PATCH', body: { status } }),
     // Paiement Stripe : create() renvoie { …commande, checkoutUrl } ; au retour de Stripe, checkoutStatus() dit où en est le paiement
     checkoutStatus: (sessionId) => request(`/api/payments/checkout/${encodeURIComponent(sessionId)}`), // { id, status, paid, refunded, total, customer: { email } }
+    invoice: (ref) => download(`/api/orders/${ref}/invoice`),                                // facture PDF (Blob) de ma commande (ou de n'importe laquelle pour un admin)
     refund: (ref) => request(`/api/orders/${ref}/refund`, { method: 'POST' }),                      // admin : remboursement total
   },
 
