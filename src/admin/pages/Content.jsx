@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { api, fieldErrors } from '../../services/api.js';
 import useQuery from '../../services/useQuery.js';
 import { setContentCache } from '../../store/store.js';
+import { zoomSettings } from '../../services/defaultContent.js';
 import { Btn, Card, ConfirmDialog, ErrorBox, Field, LinkBtn, Loading, PageHeader, inputCls } from '../ui.jsx';
 
 const getIn = (o, path) => path.reduce((x, k) => x[k], o);
@@ -20,7 +21,7 @@ export default function Content() {
 }
 
 function ContentEditor({ initial }) {
-  const [draft, setDraft] = useState(() => structuredClone(initial));
+  const [draft, setDraft] = useState(() => ({ ...structuredClone(initial), zoom: zoomSettings(initial.zoom) }));
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ ok: true, text: '' });
   const [saving, setSaving] = useState(false);
@@ -42,6 +43,13 @@ function ContentEditor({ initial }) {
       {children}
     </Card>
   );
+  // Curseur de réglage du grossissement (×1,5 à ×5)
+  const level = (label, key, hint) => (
+    <Field key={key} label={`${label} : ×${String(draft.zoom[key]).replace('.', ',')}`} hint={hint} error={errors[`zoom.${key}`]}>
+      <input type="range" min="1.5" max="5" step="0.5" value={draft.zoom[key]} className="w-full accent-black"
+        onChange={(e) => update(['zoom', key], Number(e.target.value))} />
+    </Field>
+  );
   const linkHint = 'Lien interne, par exemple /produits ou /produits?categorie=fresques';
 
   const save = async () => {
@@ -52,7 +60,7 @@ function ContentEditor({ initial }) {
       const { slider, ...rest } = draft; // eslint-disable-line no-unused-vars
       const saved = await api.content.save(rest); // PUT /api/content
       setContentCache(saved);                     // le site public affiche tout de suite les nouveaux textes
-      setDraft(structuredClone(saved));
+      setDraft({ ...structuredClone(saved), zoom: zoomSettings(saved.zoom) });
       setStatus({ ok: true, text: 'Modifications enregistrées. Elles sont visibles sur le site.' });
     } catch (err) {
       setErrors(fieldErrors(err));
@@ -67,7 +75,7 @@ function ContentEditor({ initial }) {
     try {
       const content = await api.content.reset(); // POST /api/content/reset
       setContentCache(content);
-      setDraft(structuredClone(content));
+      setDraft({ ...structuredClone(content), zoom: zoomSettings(content.zoom) });
       setErrors({});
       setStatus({ ok: true, text: 'Textes d’origine rétablis.' });
     } catch (err) {
@@ -140,6 +148,15 @@ function ContentEditor({ initial }) {
           <div className="md:col-span-2">{t('Mention sur les prix / la TVA', ['legal', 'vatNote'], { rows: 2, hint: 'Ex. « Prix en euros TTC » ou « TVA non applicable, art. 293 B du CGI ».' })}</div>
           {t('Délai de livraison', ['legal', 'deliveryDelay'])}
           <div className="md:col-span-2">{t('Frais et modalités de livraison', ['legal', 'shippingTerms'], { rows: 2 })}</div>
+        </>)}
+
+        {section('Page produit : zoom des photos', <>
+          <label className="flex items-center gap-2 text-sm font-medium md:col-span-2">
+            <input type="checkbox" checked={draft.zoom.lens} onChange={(e) => update(['zoom', 'lens'], e.target.checked)} />
+            Activer la loupe à la souris (une pastille ronde qui suit le curseur sur la photo principale)
+          </label>
+          {level('Grossissement de la loupe', 'lensLevel', 'Ordinateur seulement. ×2,5 par défaut ; plus c’est élevé, plus la photo doit être de bonne qualité.')}
+          {level('Grossissement en plein écran', 'fullLevel', 'Au clic sur la photo (ordinateur et mobile). ×2,5 = l’image devient 2,5 fois plus large que l’écran.')}
         </>)}
 
         {section('Pied de page', <div className="md:col-span-2">{t('Texte (l’année est ajoutée automatiquement)', ['footer', 'text'])}</div>)}

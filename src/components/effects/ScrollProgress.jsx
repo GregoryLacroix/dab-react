@@ -7,6 +7,7 @@ export default function ScrollProgress() {
     const update = () => {
       const h = document.documentElement;
       const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+      if (!bar.current) return; // l'élément peut être détaché pendant un changement de page (chargement de /admin)
       bar.current.style.transform = `scaleX(${p})`;
     };
     update();

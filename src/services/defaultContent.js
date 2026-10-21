@@ -15,6 +15,8 @@ export const DEFAULT_CONTENT = {
   ],
   slider: { enabled: true, mode: 'auto', count: 5, delay: 5, productIds: [] },
   latest: { title: 'Les dernières créations', count: 3 },
+  // Zoom des photos (fiche produit) : réglé dans le back-office, « Contenu du site »
+  zoom: { lens: true, lensLevel: 2.5, fullLevel: 2.5 },
   blocks: [
     { title: 'Peinture sur galet', text: 'Des galets ramassés, peints à l’acrylique, vernis pour durer. Chacun est unique.', cta: 'Voir les galets', to: '/produits?categorie=galets' },
     { title: 'Fresque murale', text: 'Intérieur ou extérieur : on échange sur votre projet, puis je peins sur place.', cta: 'Demander un devis', to: '/contact' },
@@ -35,6 +37,9 @@ export const DEFAULT_CONTENT = {
   },
   footer: { text: 'Les galets d’Ambre – Peinture sur galets & fresque murale' },
 };
+
+/** Réglages du zoom, complétés par les valeurs par défaut (une API plus ancienne n'envoie pas encore `zoom`) */
+export const zoomSettings = (zoom) => ({ ...DEFAULT_CONTENT.zoom, ...zoom });
 
 // Version anglaise des textes par défaut. Les liens (`to`), l'e-mail, Instagram, le slider et les champs légaux ne sont pas des textes à traduire.
 export const DEFAULT_CONTENT_EN = {

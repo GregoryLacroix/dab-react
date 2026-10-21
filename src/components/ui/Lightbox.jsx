@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
+import { useContent } from '../../store/store.js';
+import { zoomSettings } from '../../services/defaultContent.js';
 
 const Icon = ({ d }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
@@ -10,6 +12,7 @@ const Icon = ({ d }) => (
 // au doigt, on la fait glisser. Échap ferme, ← → changent de photo, le focus reste dans la fenêtre.
 export default function Lightbox({ images, index, onIndex, onClose, label }) {
   const { t } = useI18n();
+  const { fullLevel } = zoomSettings(useContent().zoom); // grossissement choisi dans le back-office
   const [zoomed, setZoomed] = useState(false);
   const dialog = useRef(null);
   const scroller = useRef(null);
@@ -73,7 +76,7 @@ export default function Lightbox({ images, index, onIndex, onClose, label }) {
         </button>
         <button type="button" className="lightbox__btn" ref={closeBtn} onClick={onClose} aria-label={t('zoom.close')}><Icon d="M6 6l12 12M18 6L6 18" /></button>
       </div>
-      <div className={`lightbox__stage ${zoomed ? 'is-zoomed' : ''}`} ref={scroller} onPointerMove={pan}
+      <div className={`lightbox__stage ${zoomed ? 'is-zoomed' : ''}`} ref={scroller} onPointerMove={pan} style={{ '--full': `${fullLevel * 100}%` }}
         onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
         <img src={image.src} alt={image.alt || label} onClick={() => setZoomed((z) => !z)} draggable="false" />
       </div>
