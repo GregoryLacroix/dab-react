@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductImage from './ProductImage.jsx';
 import Button from './Button.jsx';
+import { soldOut } from '../../services/stock.js';
 import { useCart } from '../../context/CartContext.jsx';
 import { cover, useCategories } from '../../store/store.js';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
@@ -70,7 +71,9 @@ export default function ProductSlider({ products, delay = 5 }) { // delay en sec
                 <p className="price price--lg">{money(p.price)}</p>
                 <div className="hero__actions">
                   <Button to={l(`/produits/${p.id}`)} tabIndex={tab}>{t('product.view')}</Button>
-                  <Button variant="ghost" tabIndex={tab} onClick={() => add(raw)}>{t('product.add')}</Button>
+                  {soldOut(p)
+                    ? <Button variant="ghost" tabIndex={tab} disabled>{t('product.soldOut')}</Button>
+                    : <Button variant="ghost" tabIndex={tab} onClick={() => add(raw)}>{t('product.add')}</Button>}
                 </div>
               </div>
               <Link to={l(`/produits/${p.id}`)} className="slide__media" tabIndex={-1} aria-hidden="true">

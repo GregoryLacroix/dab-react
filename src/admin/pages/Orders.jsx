@@ -1,11 +1,12 @@
 import { Fragment, useState } from 'react';
-import { api } from '../../services/api.js';
+import { api, fieldErrors } from '../../services/api.js';
 import { ORDER_STATUSES } from '../../store/store.js';
 import usePaged, { useDebounced } from '../usePaged.js';
 import { saveBlob } from '../../services/download.js';
-import { Btn, Card, ConfirmDialog, ErrorBox, Loading, PageHeader, Pagination, euro, formatDate, inputCls, statusStyle } from '../ui.jsx';
+import { Btn, Card, ConfirmDialog, Field, ErrorBox, Loading, PageHeader, Pagination, euro, formatDate, inputCls, statusStyle } from '../ui.jsx';
 
 const td = 'px-4 py-3';
+const CARRIERS = ['Colissimo', 'Lettre suivie', 'Chronopost', 'Mondial Relay', 'DHL', 'UPS', 'Autre'];
 
 export default function Orders() {
   const [status, setStatus] = useState('toutes');
@@ -14,11 +15,40 @@ export default function Orders() {
   const [actionError, setActionError] = useState(null);
   const [refunding, setRefunding] = useState(null); // commande dont on demande le remboursement
   const [refundBusy, setRefundBusy] = useState(false);
+  const [ship, setShip] = useState(null); // fenêtre « expédition » : { order, carrier, other, number, url, notify, busy, errors }
   const search = useDebounced(q);
   // GET /api/orders?status=…&q=…&page=…&perPage=…
   const paged = usePaged((params) => api.orders.list(params), { status: status === 'toutes' ? undefined : status, q: search || undefined });
 
+  // Ouvre la fenêtre de saisie du suivi (numéro, transporteur) ; vide = expédition sans numéro de suivi
+  const openShip = (order) => {
+    const known = CARRIERS.includes(order.tracking?.carrier);
+    setShip({
+      order, carrier: known ? order.tracking.carrier : (order.tracking?.carrier ? 'Autre' : 'Colissimo'),
+      other: known ? '' : (order.tracking?.carrier ?? ''), number: order.tracking?.number ?? '', url: order.tracking?.url ?? '',
+      notify: true, busy: false, errors: {}, message: '',
+    });
+  };
+  const submitShip = async (e) => {
+    e.preventDefault();
+    const number = ship.number.trim();
+    setShip((s) => ({ ...s, busy: true, errors: {}, message: '' }));
+    try {
+      // PATCH /api/orders/{CMD-1001}/status : statut « expédiée », suivi enregistré, e-mail au client si la case est cochée
+      await api.orders.setStatus(ship.order.id, 'expédiée', {
+        tracking: number ? { carrier: ship.carrier === 'Autre' ? ship.other.trim() : ship.carrier, number, url: ship.url.trim() } : undefined,
+        notify: ship.notify,
+      });
+      setActionError(null);
+      setShip(null);
+      paged.reload();
+    } catch (err) {
+      setShip((s) => ({ ...s, busy: false, errors: fieldErrors(err), message: err.message }));
+    }
+  };
+
   const changeStatus = async (order, value) => {
+    if (value === 'expédiée' && order.status !== 'expédiée') return openShip(order); // on demande d'abord le suivi du colis
     try {
       await api.orders.setStatus(order.id, value); // PATCH /api/orders/{CMD-1001}/status
       setActionError(null);
@@ -46,6 +76,39 @@ export default function Orders() {
 
   return (
     <>
+      {ship && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4" onClick={() => !ship.busy && setShip(null)}>
+          <form role="dialog" aria-modal="true" aria-labelledby="ship-title" onSubmit={submitShip} noValidate
+            className="grid w-full max-w-md gap-4 rounded-xl bg-sand-50 p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h2 id="ship-title" className="text-lg font-semibold text-black">Expédition de {ship.order.id}</h2>
+            <Field label="Transporteur">
+              <select className={inputCls} value={ship.carrier} onChange={(e) => setShip((s) => ({ ...s, carrier: e.target.value }))}>
+                {CARRIERS.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </Field>
+            {ship.carrier === 'Autre' && (
+              <Field label="Nom du transporteur" error={ship.errors['tracking.carrier']}>
+                <input className={inputCls} value={ship.other} maxLength={40} onChange={(e) => setShip((s) => ({ ...s, other: e.target.value }))} />
+              </Field>
+            )}
+            <Field label="Numéro de suivi" hint="Facultatif : sans numéro, le client est prévenu de l'expédition sans lien de suivi." error={ship.errors['tracking.number']}>
+              <input className={inputCls} value={ship.number} maxLength={60} onChange={(e) => setShip((s) => ({ ...s, number: e.target.value }))} />
+            </Field>
+            <Field label="Lien de suivi (facultatif)" hint="Laissez vide pour utiliser le lien habituel du transporteur ; vérifiez-le avec un vrai numéro la première fois." error={ship.errors['tracking.url']}>
+              <input className={inputCls} type="url" placeholder="https://…" value={ship.url} onChange={(e) => setShip((s) => ({ ...s, url: e.target.value }))} />
+            </Field>
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={ship.notify} onChange={(e) => setShip((s) => ({ ...s, notify: e.target.checked }))} />
+              Prévenir le client par e-mail
+            </label>
+            {ship.message && !Object.keys(ship.errors).length && <p className="text-sm text-red-700" role="alert">{ship.message}</p>}
+            <div className="flex justify-end gap-2">
+              <Btn variant="ghost" onClick={() => setShip(null)} disabled={ship.busy}>Annuler</Btn>
+              <Btn type="submit" loading={ship.busy}>Confirmer l'expédition</Btn>
+            </div>
+          </form>
+        </div>
+      )}
       {refunding && (
         <ConfirmDialog title={`Rembourser ${refunding.id} ?`} confirmLabel={refundBusy ? 'Remboursement…' : 'Rembourser'}
           message={`Le client sera remboursé de ${euro(refunding.total)} par Stripe (remboursement total) et la commande passera à « annulée ». Cette action est définitive.`}
@@ -125,7 +188,15 @@ export default function Orders() {
                                 {[o.shipping.name, o.shipping.line1, o.shipping.line2, `${o.shipping.postalCode ?? ''} ${o.shipping.city ?? ''}`.trim(), o.shipping.state, o.shipping.country]
                                   .filter(Boolean).map((line, k) => <span key={k} className="block">{line}</span>)}
                               </address>
-                            ) : <p>Non renseignée.</p>}
+                            )
+ : <p>Non renseignée.</p>}
+                            {o.tracking && (
+                              <p className="mt-3">
+                                <span className="font-semibold">Suivi :</span> {[o.tracking.carrier, o.tracking.number].filter(Boolean).join(' ') || 'expédiée'}
+                                {o.tracking.url && <> — <a className="underline" href={o.tracking.url} target="_blank" rel="noreferrer noopener">lien</a></>}
+                              </p>
+                            )}
+                            {o.status === 'expédiée' && <div className="mt-2"><Btn variant="ghost" onClick={() => openShip(o)}>Suivi / renvoyer l'e-mail</Btn></div>}
                           </div>
                         </div>
                       </td>

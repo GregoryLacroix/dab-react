@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ProductImage from './ProductImage.jsx';
 import Button from './Button.jsx';
+import { soldOut } from '../../services/stock.js';
 import { useCart } from '../../context/CartContext.jsx';
 import { cover } from '../../store/store.js';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
@@ -31,11 +32,14 @@ export default function ProductCard({ product: raw }) {
     <article className="pcard" ref={ref} onPointerMove={move} onPointerLeave={leave}>
       <Link to={l(`/produits/${product.id}`)} className="pcard__media">
         <ProductImage tone={img.tone} src={img.src} label={product.name} />
+        {soldOut(product) && <span className="sold-badge">{t('product.soldOut')}</span>}
       </Link>
       <div className="pcard__body">
         <h3><Link to={l(`/produits/${product.id}`)}>{product.name}</Link></h3>
         <p className="price">{money(product.price)}</p>
-        <Button variant="ghost" onClick={() => add(raw)}>{t('product.add')}</Button>
+        {soldOut(product)
+          ? <Button variant="ghost" disabled>{t('product.soldOut')}</Button>
+          : <Button variant="ghost" onClick={() => add(raw)}>{t('product.add')}</Button>}
       </div>
     </article>
   );

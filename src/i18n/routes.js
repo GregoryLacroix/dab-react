@@ -11,6 +11,8 @@ export const ROUTES = [
   { key: 'order',   fr: '/commande',                      en: '/en/order' }, // retour de Stripe après le paiement
   { key: 'contact', fr: '/contact',                       en: '/en/contact' },
   { key: 'login',   fr: '/connexion',                     en: '/en/login' },
+  { key: 'forgot',  fr: '/mot-de-passe-oublie',          en: '/en/forgot-password' },
+  { key: 'reset',   fr: '/nouveau-mot-de-passe',          en: '/en/reset-password' }, // lien reçu par e-mail
   { key: 'oauth',   fr: '/connexion/retour',              en: '/en/login/callback' }, // retour de Google / Facebook
   { key: 'register',fr: '/inscription',                   en: '/en/register' },
   { key: 'account', fr: '/mon-compte',                    en: '/en/account' },

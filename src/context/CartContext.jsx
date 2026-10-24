@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useMemo } from 'react';
 
+import { maxQty, soldOut } from '../services/stock.js';
+
 const CartContext = createContext(null);
 
 // Le panier survit à l'aller-retour chez Stripe (et à un rechargement de page) grâce au stockage de SESSION du navigateur :
@@ -17,13 +19,15 @@ const load = () => {
 function reducer(items, action) {
   switch (action.type) {
     case 'add': {
+      if (soldOut(action.product)) return items; // pièce vendue : jamais dans le panier
       const found = items.find((i) => i.id === action.product.id);
+      // Pièces uniques : la quantité ne dépasse pas le stock (le serveur vérifie de toute façon)
       return found
-        ? items.map((i) => (i.id === found.id ? { ...i, qty: i.qty + 1 } : i))
+        ? items.map((i) => (i.id === found.id ? { ...i, qty: Math.min(i.qty + 1, maxQty(action.product)) } : i))
         : [...items, { ...action.product, qty: 1 }];
     }
     case 'setQty':
-      return items.map((i) => (i.id === action.id ? { ...i, qty: Math.max(1, action.qty) } : i));
+      return items.map((i) => (i.id === action.id ? { ...i, qty: Math.min(maxQty(i), Math.max(1, action.qty)) } : i));
     case 'remove':
       return items.filter((i) => i.id !== action.id);
     case 'clear':

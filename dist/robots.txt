@@ -5,6 +5,8 @@ Disallow: /panier
 Disallow: /commande
 Disallow: /connexion
 Disallow: /connexion/retour
+Disallow: /mot-de-passe-oublie
+Disallow: /nouveau-mot-de-passe
 Disallow: /inscription
 Disallow: /mon-compte
 Disallow: /erreur-serveur
@@ -12,6 +14,8 @@ Disallow: /en/cart
 Disallow: /en/order
 Disallow: /en/login
 Disallow: /en/login/callback
+Disallow: /en/forgot-password
+Disallow: /en/reset-password
 Disallow: /en/register
 Disallow: /en/account
 Disallow: /en/server-error

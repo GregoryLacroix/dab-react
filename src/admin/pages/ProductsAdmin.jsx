@@ -48,6 +48,7 @@ export default function ProductsAdmin() {
                 <th className="px-4 py-3 font-medium">Produit</th>
                 <th className="px-4 py-3 font-medium">Catégorie</th>
                 <th className="px-4 py-3 font-medium">Prix</th>
+                <th className="px-4 py-3 font-medium">Stock</th>
                 <th className="px-4 py-3 font-medium">État</th>
                 <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
@@ -65,6 +66,7 @@ export default function ProductsAdmin() {
                     </td>
                     <td className="px-4 py-3">{catName(p.categoryId)}</td>
                     <td className="px-4 py-3">{euro(p.price)}</td>
+                    <td className="px-4 py-3">{p.stock <= 0 ? <span className="rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-800">Vendu</span> : p.stock}</td>
                     <td className="px-4 py-3">
                       <button type="button" onClick={() => togglePublished(p)}
                         aria-label={p.published ? 'Passer en brouillon' : 'Publier'}
@@ -82,7 +84,7 @@ export default function ProductsAdmin() {
                 );
               })}
               {!paged.loading && paged.items.length === 0 && (
-                <tr><td colSpan={5} className="px-4 py-8 text-center">Aucun produit trouvé.</td></tr>
+                <tr><td colSpan={6} className="px-4 py-8 text-center">Aucun produit trouvé.</td></tr>
               )}
             </tbody>
           </table>

@@ -50,7 +50,7 @@ ${paths.flatMap((p) => [entry(p, 'fr'), entry(p, 'en')]).join('\n')}
 writeFileSync('public/sitemap.xml', xml);
 
 // Pages sans intérêt pour Google, dans les deux langues
-const hidden = ['/panier', '/commande', '/connexion', '/connexion/retour', '/inscription', '/mon-compte', '/erreur-serveur'];
+const hidden = ['/panier', '/commande', '/connexion', '/connexion/retour', '/mot-de-passe-oublie', '/nouveau-mot-de-passe', '/inscription', '/mon-compte', '/erreur-serveur'];
 writeFileSync('public/robots.txt', `User-agent: *
 Allow: /
 Disallow: /admin

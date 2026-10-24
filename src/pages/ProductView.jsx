@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import Carousel from '../components/ui/Carousel.jsx';
 import Button from '../components/ui/Button.jsx';
+import { soldOut } from '../services/stock.js';
 import { ProductViewSkeleton } from '../components/ui/Loaders.jsx';
 import { NotFoundView, ServerErrorView } from '../components/ui/ErrorPages.jsx';
 import { api } from '../services/api.js';
@@ -56,7 +57,12 @@ export default function ProductView() {
           <h1>{product.name}</h1>
           <p className="price price--lg">{money(product.price)}</p>
           <p>{product.description}</p>
-          <Button onClick={() => add(raw)}>{t('product.add')}</Button>
+          {soldOut(product)
+            ? <>
+                <p className="notice" role="status"><strong>{t('product.soldOut')}</strong> — {t('product.soldOutText')}</p>
+                <Button to={l('/produits')} variant="ghost">{t('cart.seeShop')}</Button>
+              </>
+            : <Button onClick={() => add(raw)}>{t('product.add')}</Button>}
         </div>
       </div>
     </section>

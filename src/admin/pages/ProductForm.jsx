@@ -70,8 +70,8 @@ function ProductEditor({ initial }) {
 
   const [form, setForm] = useState(() =>
     initial
-      ? { ...initial, price: String(initial.price), images: initial.images ?? [] }
-      : { name: '', categoryId: '', price: '', description: '', published: true, images: [] }
+      ? { ...initial, price: String(initial.price), stock: String(initial.stock ?? 1), images: initial.images ?? [] }
+      : { name: '', categoryId: '', price: '', stock: '1', description: '', published: true, images: [] }
   );
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
@@ -119,11 +119,13 @@ function ProductEditor({ initial }) {
     if (!form.name.trim()) err.name = 'Saisissez le nom du produit.';
     if (!form.categoryId) err.categoryId = 'Choisissez une catégorie (créez-en une si besoin).';
     if (form.price === '' || !(price >= 0)) err.price = 'Saisissez un prix valide.';
+    const stock = Number(form.stock);
+    if (form.stock === '' || !Number.isInteger(stock) || stock < 0 || stock > 9999) err.stock = 'Quantité entière de 0 à 9999.';
     setErrors(err);
     if (Object.keys(err).length) return;
 
     const payload = {
-      name: form.name.trim(), categoryId: form.categoryId, price,
+      name: form.name.trim(), categoryId: form.categoryId, price, stock,
       description: form.description.trim(), published: form.published,
       images: form.images.filter(Boolean),
     };
@@ -136,7 +138,7 @@ function ProductEditor({ initial }) {
     } catch (error) {
       const fields = fieldErrors(error);
       setErrors(fields);
-      const others = Object.entries(fields).filter(([k]) => !['name', 'categoryId', 'price', 'description'].includes(k)).map(([, v]) => v);
+      const others = Object.entries(fields).filter(([k]) => !['name', 'categoryId', 'price', 'stock', 'description'].includes(k)).map(([, v]) => v);
       setMessage(error.status === 422 ? (others.join(' ') || 'Corrigez les champs indiqués.') : error.message);
     } finally {
       setSaving(false);
@@ -208,6 +210,9 @@ function ProductEditor({ initial }) {
             </Field>
             <Field label="Prix (€)" error={errors.price}>
               <input className={inputCls} type="number" min="0" step="0.01" value={form.price} onChange={set('price')} />
+            </Field>
+            <Field label="Quantité en stock" hint="Un galet est une pièce unique : 1. Mettez 0 pour l'afficher « Vendu »." error={errors.stock}>
+              <input className={inputCls} type="number" min="0" max="9999" step="1" value={form.stock} onChange={set('stock')} />
             </Field>
           </Card>
 

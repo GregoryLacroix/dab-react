@@ -86,6 +86,8 @@ async function request(path, options) {
 export const api = {
   // --- Authentification
   register: (d) => request('/api/auth/register', { method: 'POST', body: d }),     // { name, email, password, confirm }
+  forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: { email } }),          // lien de réinitialisation par e-mail
+  resetPassword: (data) => request('/api/auth/reset-password', { method: 'POST', body: data }),               // { token, password, confirm }
   resendVerification: (email) => request('/api/auth/resend-verification', { method: 'POST', body: { email } }),
   async login(email, password) {
     const res = await request('/api/auth/login', { method: 'POST', body: { email, password } });
@@ -132,7 +134,8 @@ export const api = {
     create: ({ customer, items, acceptTerms }) => request('/api/orders', { method: 'POST', body: { customer, acceptTerms, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }),
     list: (q = {}) => request('/api/orders', { query: q }),         // admin : { status, q, page, perPage }
     get: (ref) => request(`/api/orders/${ref}`),
-    setStatus: (ref, status) => request(`/api/orders/${ref}/status`, { method: 'PATCH', body: { status } }),
+    // extra (« expédiée ») : { tracking: { carrier, number, url }, notify } -> suivi enregistré et e-mail au client
+    setStatus: (ref, status, extra = {}) => request(`/api/orders/${ref}/status`, { method: 'PATCH', body: { status, ...extra } }),
     // Paiement Stripe : create() renvoie { …commande, checkoutUrl } ; au retour de Stripe, checkoutStatus() dit où en est le paiement
     checkoutStatus: (sessionId) => request(`/api/payments/checkout/${encodeURIComponent(sessionId)}`), // { id, status, paid, refunded, total, customer: { email } }
     invoice: (ref) => download(`/api/orders/${ref}/invoice`),                                // facture PDF (Blob) de ma commande (ou de n'importe laquelle pour un admin)

@@ -15,6 +15,11 @@ Sous les formulaires Connexion et Inscription, des boutons « Continuer avec Goo
 - Un compte créé ainsi n'a pas de mot de passe : la suppression du compte (page *Mon compte*) se confirme avec l'adresse e-mail.
 - Politique de confidentialité mise à jour (données reçues du fournisseur, cookie technique `dab_oauth` posé par l'API, destinataires).
 
+## Stock, mot de passe oublié, suivi
+- **Pièces vendues** : un produit à 0 en stock affiche un badge « Vendu » (liste, fiche, slider), son bouton d'ajout est désactivé et le panier est plafonné au stock. Le stock se règle dans le back-office (fiche produit : « Quantité en stock »).
+- **Mot de passe oublié** : pages `/mot-de-passe-oublie` et `/nouveau-mot-de-passe` (anglais : `/en/forgot-password`, `/en/reset-password`), lien sous le formulaire de connexion.
+- **Suivi du colis** : le back-office demande transporteur et numéro au passage à « expédiée » ; le client reçoit un e-mail et voit le suivi dans *Mon compte → Mes commandes*.
+
 ## Zoom des photos et commandes
 - **Fiche produit** : à la souris, une loupe suit le curseur sur la photo principale (`components/ui/ZoomImage.jsx`) ; un clic, une touche Entrée ou un appui au doigt ouvre l'agrandissement plein écran (`Lightbox.jsx`) : clic ou bouton +/− pour zoomer, déplacement de la souris (ou du doigt) pour parcourir l'image, ← → pour changer de photo, Échap pour fermer. Les images sans photo (dégradés provisoires) ne sont pas agrandies. **Réglages dans le back-office** (*Contenu du site → Page produit : zoom des photos*) : loupe activée ou non, grossissement de la loupe (×1,5 à ×5, ×2,5 par défaut) et grossissement en plein écran (idem). Ils s'appliquent immédiatement, sans nouveau build. La qualité du zoom dépend de la résolution des photos téléversées.
 - **Mon compte → Mes commandes** : liste des commandes (date, statut, total), détail au clic (articles, paiement, adresse de livraison) et bouton **Télécharger la facture (PDF)** pour les commandes payées. Le back-office propose le même bouton sur la page *Commandes*. Détails (numérotation, informations légales à remplir) : README de `dab-api`, section « Factures ».

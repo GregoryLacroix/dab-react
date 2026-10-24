@@ -25,7 +25,7 @@ export default function Login() {
   // Retour du lien reçu par e-mail : /connexion?verified=1 (ou verified=0&reason=expired|invalid)
   const verified = params.get('verified');
   const social = oauthBanner(params.get('oauth'), t); // retour d'un échec / d'une annulation chez Google ou Facebook
-  const banner = social ?? (verified === '1'
+  const banner = social ?? (params.get('reset') === '1' ? { ok: true, text: t('login.resetDone') } : verified === '1'
     ? { ok: true, text: t('login.verified') }
     : verified === '0'
       ? { ok: false, text: params.get('reason') === 'expired'
@@ -77,6 +77,7 @@ export default function Login() {
           value={form.email} onChange={change} error={errors.email} />
         <FormField label={t('field.password')} name="password" type="password" autoComplete="current-password"
           value={form.password} onChange={change} error={errors.password} />
+        <p className="auth__alt"><Link to={l('/mot-de-passe-oublie')}>{t('login.forgot')}</Link></p>
         {errors.form && <p className="notice notice--error" role="alert">{errors.form}</p>}
         {info && <p className="notice" role="status">{info}</p>}
         {unverified && <Button variant="ghost" onClick={resend} loading={resending}>{t('login.resend')}</Button>}

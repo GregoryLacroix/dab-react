@@ -127,6 +127,14 @@ export default function Account() {
                               : o.payment?.paidAt ? <p>{t('account.paidOn', { date: date(o.payment.paidAt) })}</p>
                                 : <p>{t(`order.status.${STATUS[o.status] ?? 'pending'}`)}</p>}
                           </div>
+                          {o.tracking && (
+                            <div>
+                              <h3>{t('account.orderTracking')}</h3>
+                              <p>{[o.tracking.carrier, o.tracking.number && t('account.trackNumber', { number: o.tracking.number })].filter(Boolean).join(' · ')}</p>
+                              {o.tracking.shippedAt && <p>{t('account.shippedOn', { date: date(o.tracking.shippedAt) })}</p>}
+                              {/^https?:\/\//i.test(o.tracking.url ?? '') && <p><a href={o.tracking.url} target="_blank" rel="noreferrer noopener">{t('account.trackLink')}</a></p>}
+                            </div>
+                          )}
                           {o.shipping && (
                             <div>
                               <h3>{t('account.orderShipping')}</h3>

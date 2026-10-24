@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { useContent } from '../store/store.js';
 import { api, fieldErrors } from '../services/api.js';
+import { maxQty } from '../services/stock.js';
 import useSeo from '../services/seo.js';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 
@@ -91,7 +92,7 @@ export default function Cart() {
             return (
               <li key={i.id} className="cart__row">
                 <span className="cart__name">{i.name}</span>
-                <input type="number" min="1" max="99" value={i.qty} aria-label={t('cart.qtyOf', { name: i.name })}
+                <input type="number" min="1" max={maxQty(i)} value={i.qty} aria-label={t('cart.qtyOf', { name: i.name })}
                   onChange={(e) => setQty(i.id, Number(e.target.value))} />
                 <span className="price">{money(i.qty * i.price)}</span>
                 <button className="link-btn" onClick={() => remove(i.id)}>{t('cart.remove')}</button>
