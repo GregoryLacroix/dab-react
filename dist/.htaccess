@@ -11,6 +11,14 @@
   RewriteEngine On
   RewriteBase /
 
+  # Aperçus de partage (WhatsApp, Facebook, Messenger, iMessage, X, LinkedIn, Telegram, Discord, Slack…) : ces robots ne lancent pas
+  # le JavaScript du site. Pour une FICHE PRODUIT, on les envoie vers une page de l'API qui contient les balises d'aperçu (nom, photo,
+  # prix). Les visiteurs et Google ne sont pas concernés. Si l'adresse de l'API change, modifiez-la ci-dessous (2 lignes).
+  RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|facebot|meta-externalagent|whatsapp|twitterbot|linkedinbot|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|skypeuripreview|vkshare|redditbot) [NC]
+  RewriteRule ^produits/([0-9]+)/?$ https://dab.api.gregory-lacroix-pf.com/api/share/products/$1?lang=fr [R=302,L]
+  RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|facebot|meta-externalagent|whatsapp|twitterbot|linkedinbot|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|skypeuripreview|vkshare|redditbot) [NC]
+  RewriteRule ^en/shop/([0-9]+)/?$ https://dab.api.gregory-lacroix-pf.com/api/share/products/$1?lang=en [R=302,L]
+
   # Les vrais fichiers et dossiers (images, sitemap.xml, 404.html…) sont servis normalement
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

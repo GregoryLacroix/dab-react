@@ -6,11 +6,11 @@ import { zoomSettings } from '../../services/defaultContent.js';
 
 // Image principale d'une fiche produit : une loupe suit la souris (ordinateur), un clic / une touche ouvre l'agrandissement plein écran.
 // Les images provisoires (dégradés, sans photo) n'ont rien à agrandir : elles s'affichent normalement.
-export default function ZoomImage({ image, label, priority, onOpen }) {
+export default function ZoomImage({ image, label, priority, sizes, onOpen }) {
   const { t } = useI18n();
   const zoom = zoomSettings(useContent().zoom); // réglages du back-office : loupe active ? grossissement ?
   const box = useRef(null);
-  if (!image.src) return <ProductImage tone={image.tone} label={label} priority={priority} />;
+  if (!image.src) return <ProductImage tone={image.tone} label={label} priority={priority} sizes={sizes} />;
 
   // La loupe n'apparaît qu'à la souris : au doigt, un appui ouvre directement l'agrandissement
   const follow = (e) => {
@@ -28,7 +28,7 @@ export default function ZoomImage({ image, label, priority, onOpen }) {
   return (
     <button type="button" ref={box} className="zoom" onPointerEnter={follow} onPointerMove={follow} onPointerLeave={stop}
       onClick={onOpen} aria-label={`${t('zoom.open')} : ${label}`} style={{ '--zoom': zoom.lensLevel }}>
-      <ProductImage tone={image.tone} src={image.src} label="" priority={priority} />
+      <ProductImage tone={image.tone} src={image.src} label="" priority={priority} sizes={sizes} />
       {zoom.lens && <span className="zoom__lens" aria-hidden="true"><img src={image.src} alt="" /></span>}
       <span className="zoom__hint" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">

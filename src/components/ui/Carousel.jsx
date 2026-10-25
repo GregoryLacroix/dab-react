@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import ProductImage from './ProductImage.jsx';
 import ZoomImage from './ZoomImage.jsx';
-import Lightbox from './Lightbox.jsx';
+
+// L'agrandissement plein écran n'est téléchargé qu'au premier clic (moins de code à charger avec la page)
+const Lightbox = lazy(() => import('./Lightbox.jsx'));
 import { useI18n } from '../../i18n/I18nProvider.jsx';
 
 const Chevron = ({ dir }) => (
@@ -50,7 +52,7 @@ export default function Carousel({ images, label }) {
         <div className="carousel__track" ref={track}>
           {images.map((img, i) => (
             <div className="carousel__slide" key={i} role="group" aria-roledescription={t('slide.role')} aria-label={t('slide.of', { n: i + 1, count })}>
-              <ZoomImage image={img} label={img.alt || label} priority={i === 0} onOpen={() => setZoom(i)} />
+              <ZoomImage image={img} label={img.alt || label} priority={i === 0} sizes="(min-width: 900px) 50vw, 100vw" onOpen={() => setZoom(i)} />
             </div>
           ))}
         </div>
@@ -67,12 +69,16 @@ export default function Carousel({ images, label }) {
           {images.map((img, i) => (
             <button type="button" key={i} className={`carousel__thumb ${i === index ? 'is-active' : ''}`}
               onClick={() => goTo(i)} aria-label={t('carousel.thumb', { n: i + 1 })} aria-current={i === index}>
-              <ProductImage tone={img.tone} src={img.src} label="" />
+              <ProductImage tone={img.tone} src={img.src} label="" sizes="120px" />
             </button>
           ))}
         </div>
       )}
-      {zoom !== null && <Lightbox images={images} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} label={label} />}
+      {zoom !== null && (
+        <Suspense fallback={null}>
+          <Lightbox images={images} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} label={label} />
+        </Suspense>
+      )}
     </div>
   );
 }

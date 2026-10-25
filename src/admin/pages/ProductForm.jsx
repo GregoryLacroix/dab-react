@@ -8,7 +8,10 @@ import { Btn, Card, ConfirmDialog, ErrorBox, Field, LinkBtn, Loading, PageHeader
 
 const MIN_SLOTS = 4; // emplacements photo toujours affichés
 const MAX_SLOTS = 8;
-const MAX_BYTES = 5 * 1024 * 1024;
+import { shrinkImage } from '../../services/imageResize.js';
+
+const MAX_BYTES = 5 * 1024 * 1024;       // limite du serveur, après réduction
+const MAX_INPUT_BYTES = 30 * 1024 * 1024; // photo d'origine acceptée (réduite dans le navigateur avant l'envoi)
 const normalize = (list) => Array.from({ length: Math.max(MIN_SLOTS, list.length) }, (_, i) => list[i] ?? null);
 const trim = (list) => { const out = [...list]; while (out.length > MIN_SLOTS && out[out.length - 1] === null) out.pop(); return out; };
 
@@ -91,12 +94,16 @@ function ProductEditor({ initial }) {
   // Envoi des photos sur le serveur : POST /api/uploads -> { src }
   const load = async (files, start = null) => {
     if (!files.length) return;
-    if (files.some((f) => f.size > MAX_BYTES)) return setMessage('Une image dépasse 5 Mo.');
+    if (files.some((f) => f.size > MAX_INPUT_BYTES)) return setMessage('Une image dépasse 30 Mo.');
     setBusy(true);
     setMessage('');
     try {
       const imgs = [];
-      for (const file of files) imgs.push({ src: (await api.upload(file)).src, alt: '' });
+      for (const original of files) {
+        const file = await shrinkImage(original); // photo de téléphone : réduite à 2400 px avant l'envoi
+        if (file.size > MAX_BYTES) throw new Error('Une image dépasse encore 5 Mo après réduction : choisissez-en une plus légère.');
+        imgs.push({ src: (await api.upload(file)).src, alt: '' });
+      }
       patchImages((l) => fill(l, imgs, start));
     } catch (err) {
       setMessage(err.violations?.file ?? err.message);

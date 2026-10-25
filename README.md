@@ -15,6 +15,11 @@ Sous les formulaires Connexion et Inscription, des boutons « Continuer avec Goo
 - Un compte créé ainsi n'a pas de mot de passe : la suppression du compte (page *Mon compte*) se confirme avec l'adresse e-mail.
 - Politique de confidentialité mise à jour (données reçues du fournisseur, cookie technique `dab_oauth` posé par l'API, destinataires).
 
+## Vitesse et partage
+- **Photos** : les photos envoyées via le back-office sont optimisées par l'API (WebP, plusieurs tailles) ; le site charge la version adaptée à l'écran (`srcset` dans `ProductImage.jsx`). Les grosses photos de téléphone sont réduites dans le navigateur avant l'envoi. Photos déjà en ligne : `php bin/console app:optimize-images` côté API.
+- **Chargement** : l'agrandissement plein écran n'est téléchargé qu'au premier clic, et React / le routeur sont dans un fichier à part, gardé en cache entre deux mises en ligne (`vite.config.js`). Les images sont chargées à la demande (`loading="lazy"`), sauf la première de la page.
+- **Aperçus de partage** : pour les robots de WhatsApp, Facebook, X, etc., `public/.htaccess` redirige les fiches produit vers une page de l'API qui contient nom, photo et prix (README de `dab-api`). Si l'adresse de l'API change, modifiez les deux lignes `RewriteRule` correspondantes.
+
 ## Stock, mot de passe oublié, suivi
 - **Pièces vendues** : un produit à 0 en stock affiche un badge « Vendu » (liste, fiche, slider), son bouton d'ajout est désactivé et le panier est plafonné au stock. Le stock se règle dans le back-office (fiche produit : « Quantité en stock »).
 - **Mot de passe oublié** : pages `/mot-de-passe-oublie` et `/nouveau-mot-de-passe` (anglais : `/en/forgot-password`, `/en/reset-password`), lien sous le formulaire de connexion.
