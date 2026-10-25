@@ -1,6 +1,7 @@
-// Photos téléversées via l'API : /uploads/<32 caractères>.webp, accompagnées de -480, -800 et -1200 (voir ImageOptimizer côté API).
-// Le navigateur choisit la plus légère adaptée à l'écran. Les autres adresses (photos d'exemple, liens externes) restent telles quelles.
-const OPTIMIZED = /^(.*\/uploads\/[a-f0-9]{32})\.(webp|jpg)$/;
+// Photos optimisées par l'API : /uploads/<32 caractères>-opt.webp, accompagnées de -480, -800 et -1200 (voir ImageOptimizer côté API).
+// Le navigateur choisit la plus légère adaptée à l'écran. Les autres adresses (anciennes photos, photos d'exemple, liens externes)
+// n'ont pas ces versions : elles restent telles quelles.
+const OPTIMIZED = /^(.*\/uploads\/[a-f0-9]{32}-opt)\.(webp|jpg)$/;
 const WIDTHS = [480, 800, 1200];
 export const srcSetFor = (src) => {
   const m = typeof src === 'string' ? src.match(OPTIMIZED) : null;
@@ -13,6 +14,12 @@ export const srcSetFor = (src) => {
 export default function ProductImage({ tone, src, label, priority = false, sizes = '(min-width: 900px) 33vw, 92vw' }) {
   const set = srcSetFor(src);
   return src
-    ? <img className="pimg" src={src} {...(set ? { srcSet: set, sizes } : {})} alt={label} loading={priority ? 'eager' : 'lazy'} decoding="async" {...(priority ? { fetchpriority: 'high' } : {})} />
+    ? <img className="pimg" src={src} {...(set ? { srcSet: set, sizes } : {})} alt={label} loading={priority ? 'eager' : 'lazy'} decoding="async" {...(priority ? { fetchpriority: 'high' } : {})}
+        onError={set ? (e) => { // une version allégée manque : on retombe sur l'image principale plutôt que d'afficher un vide
+          const img = e.currentTarget;
+          img.removeAttribute('srcset');
+          img.removeAttribute('sizes');
+          img.src = src;
+        } : undefined} />
     : <div className={`pimg pimg--${tone}`} role="img" aria-label={label} />;
 }
