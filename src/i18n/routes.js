@@ -7,6 +7,8 @@ export const ROUTES = [
   { key: 'home',    fr: '/',                              en: '/en' },
   { key: 'shop',    fr: '/produits',                      en: '/en/shop' },
   { key: 'product', fr: '/produits/:id',                  en: '/en/shop/:id' },
+  { key: 'quote',   fr: '/devis',                         en: '/en/quote' },          // demande de devis (fresques)
+  { key: 'quotePay',fr: '/devis/:token',                  en: '/en/quote/:token' },   // page du devis reçue par e-mail
   { key: 'cart',    fr: '/panier',                        en: '/en/cart' },
   { key: 'order',   fr: '/commande',                      en: '/en/order' }, // retour de Stripe après le paiement
   { key: 'contact', fr: '/contact',                       en: '/en/contact' },

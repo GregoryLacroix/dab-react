@@ -17,7 +17,7 @@ const SITE = get('VITE_SITE_URL', 'http://localhost:5173').replace(/\/$/, '');
 const API = get('VITE_API_URL', 'http://localhost:8000').replace(/\/$/, '');
 
 // Adresses françaises de référence ; la version anglaise (/en/…) est déduite de src/i18n/routes.js
-const paths = ['/', '/produits', '/contact', '/mentions-legales', '/politique-de-confidentialite', '/conditions-generales-de-vente'];
+const paths = ['/', '/produits', '/devis', '/contact', '/mentions-legales', '/politique-de-confidentialite', '/conditions-generales-de-vente'];
 try {
   for (let page = 1; ; page++) {
     const res = await fetch(`${API}/api/products?page=${page}&perPage=100`);
@@ -56,6 +56,9 @@ Allow: /
 Disallow: /admin
 ${hidden.map((p) => `Disallow: ${p}`).join('\n')}
 ${hidden.map((p) => `Disallow: ${convertPath(p, 'en')}`).join('\n')}
+# Pages de devis reçues par e-mail (clé personnelle dans l'adresse) : jamais indexées. La page /devis (formulaire) l'est.
+Disallow: /devis/
+Disallow: /en/quote/
 
 Sitemap: ${SITE}/sitemap.xml
 `);

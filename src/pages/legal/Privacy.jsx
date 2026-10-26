@@ -9,7 +9,7 @@ export default function Privacy() {
   const { l, val } = useLegal();
   const { contact } = useContent();
   const mail = val(l.email || contact.email, 'email');
-  const rows = [1, 2, 3, 4];
+  const rows = [1, 2, 3, 4, 5];
   return (
     <LegalPage title={t('pp.title')} path="/politique-de-confidentialite" description={t('pp.desc')}>
       <h2>{t('pp.h.controller')}</h2>

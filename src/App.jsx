@@ -5,6 +5,8 @@ import { NetworkBar, PageLoader } from './components/ui/Loaders.jsx';
 import Home from './pages/Home.jsx';
 import OrderResult from './pages/OrderResult.jsx';
 import OAuthReturn from './pages/OAuthReturn.jsx';
+import QuoteRequest from './pages/QuoteRequest.jsx';
+import QuotePay from './pages/QuotePay.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ResetPassword from './pages/ResetPassword.jsx';
 import { LANGS, ROUTES } from './i18n/routes.js';
@@ -28,7 +30,7 @@ const AdminRoutes = lazy(() => import('./admin/AdminRoutes.jsx'));
 // Chaque page existe en français (/produits) et en anglais (/en/shop) : les adresses viennent de i18n/routes.js
 const PAGES = {
   home: <Home />, shop: <Products />, product: <ProductView />, cart: <Cart />, order: <OrderResult />, contact: <Contact />,
-  login: <Login />, oauth: <OAuthReturn />, forgot: <ForgotPassword />, reset: <ResetPassword />, register: <Register />, account: <Account />,
+  login: <Login />, oauth: <OAuthReturn />, quote: <QuoteRequest />, quotePay: <QuotePay />, forgot: <ForgotPassword />, reset: <ResetPassword />, register: <Register />, account: <Account />,
   legal: <LegalNotice />, privacy: <Privacy />, terms: <Terms />, error: <ServerError />,
 };
 

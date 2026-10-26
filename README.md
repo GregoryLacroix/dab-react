@@ -15,6 +15,9 @@ Sous les formulaires Connexion et Inscription, des boutons « Continuer avec Goo
 - Un compte créé ainsi n'a pas de mot de passe : la suppression du compte (page *Mon compte*) se confirme avec l'adresse e-mail.
 - Politique de confidentialité mise à jour (données reçues du fournisseur, cookie technique `dab_oauth` posé par l'API, destinataires).
 
+## Devis de fresque
+Page publique **`/devis`** (anglais `/en/quote`, aussi liée dans le pied de page et par les boutons « Demander une fresque / un devis » de l'accueil) : projet, dimensions, lieu, budget, jusqu'à 4 photos du mur (réduites dans le navigateur avant l'envoi). Côté back-office, menu **Devis** : liste filtrable, détail de la demande avec photos, note interne, montant / acompte / message, bouton **Envoyer le devis au client**. Le client reçoit un lien vers `/devis/<clé>` où il règle l'acompte par Stripe. Détails et prérequis : README de `dab-api`, section « Devis de fresque ». Si les liens de l'accueil enregistrés dans le back-office pointent encore vers `/contact`, remplacez-les par `/devis` dans *Contenu du site*.
+
 ## Vitesse et partage
 - **Photos** : les photos envoyées via le back-office sont optimisées par l'API (WebP, plusieurs tailles) ; le site charge la version adaptée à l'écran (`srcset` dans `ProductImage.jsx`). Les grosses photos de téléphone sont réduites dans le navigateur avant l'envoi. Photos déjà en ligne : `php bin/console app:optimize-images` côté API.
 - **Chargement** : l'agrandissement plein écran n'est téléchargé qu'au premier clic, et React / le routeur sont dans un fichier à part, gardé en cache entre deux mises en ligne (`vite.config.js`). Les images sont chargées à la demande (`loading="lazy"`), sauf la première de la page.

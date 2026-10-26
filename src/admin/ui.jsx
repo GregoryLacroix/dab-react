@@ -56,6 +56,12 @@ export const statusStyle = {
   'expédiée': 'bg-indigo-100 text-indigo-800',
   'livrée': 'bg-emerald-100 text-emerald-800',
   'annulée': 'bg-red-100 text-red-800',
+  // devis
+  'nouvelle': 'bg-amber-100 text-amber-800',
+  'devis envoyé': 'bg-indigo-100 text-indigo-800',
+  'acompte payé': 'bg-emerald-100 text-emerald-800',
+  'refusée': 'bg-red-100 text-red-800',
+  'archivée': 'bg-sand-200 text-black/70',
 };
 export const StatusBadge = ({ status }) => (
   <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${statusStyle[status]}`}>{status}</span>

@@ -98,3 +98,15 @@
 .pcard__media { position: relative; }
 .sold-badge { position: absolute; top: .8rem; left: .8rem; z-index: 2; padding: .3rem .8rem; border-radius: 99px; background: $ink; color: #fff;
   font-size: .8rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+
+// ---- Demande de devis (fresques) et page du devis
+.quote__steps { padding-left: 1.2rem; display: grid; gap: .4rem; margin: 1rem 0 0; }
+.quote__type { border: 0; padding: 0; margin: 0; display: grid; gap: .4rem;
+  legend { font-weight: 500; font-size: .95rem; padding: 0; margin-bottom: .3rem; } }
+.quote__dims { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.quote__files { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .3rem; font-size: .92rem;
+  li { display: flex; justify-content: space-between; gap: 1rem; } }
+.quote__pay { max-width: 640px; display: grid; gap: 1rem; }
+.quote__summary { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; }
+.quote__amount { font-size: 1.3rem; margin: 0; span { font-size: .9rem; color: $ink-soft; } }
+.quote__message { margin: 0; padding: .6rem 1rem; border-left: 4px solid $sand-400; background: $sand-50; white-space: pre-wrap; }

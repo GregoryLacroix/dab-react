@@ -19,5 +19,8 @@ Disallow: /en/reset-password
 Disallow: /en/register
 Disallow: /en/account
 Disallow: /en/server-error
+# Pages de devis reçues par e-mail (clé personnelle dans l'adresse) : jamais indexées. La page /devis (formulaire) l'est.
+Disallow: /devis/
+Disallow: /en/quote/
 
 Sitemap: https://dab.gregory-lacroix-pf.com/sitemap.xml

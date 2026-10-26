@@ -86,6 +86,16 @@ async function request(path, options) {
 export const api = {
   // --- Authentification
   register: (d) => request('/api/auth/register', { method: 'POST', body: d }),     // { name, email, password, confirm }
+  // --- Devis de fresque : formulaire public (FormData avec photos), page du devis (clé reçue par e-mail), gestion admin
+  quotes: {
+    create: (form) => request('/api/quotes', { method: 'POST', form }),                                   // { reference, message }
+    get: (token) => request(`/api/quotes/${token}`),                                                       // devis + { payable }
+    checkout: (token) => request(`/api/quotes/${token}/checkout`, { method: 'POST' }),                     // { checkoutUrl } (acompte)
+    list: (q = {}) => request('/api/quotes', { query: q }),                                               // admin
+    update: (ref, body) => request(`/api/quotes/${ref}`, { method: 'PATCH', body }),                       // admin : statut, note, montant…
+    send: (ref, body) => request(`/api/quotes/${ref}/send`, { method: 'POST', body }),                     // admin : envoie le devis au client
+    remove: (ref) => request(`/api/quotes/${ref}`, { method: 'DELETE' }),                                  // admin
+  },
   forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: { email } }),          // lien de réinitialisation par e-mail
   resetPassword: (data) => request('/api/auth/reset-password', { method: 'POST', body: data }),               // { token, password, confirm }
   resendVerification: (email) => request('/api/auth/resend-verification', { method: 'POST', body: { email } }),

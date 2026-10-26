@@ -12,6 +12,7 @@ const links = [
   ['/admin/produits', 'Produits'],
   ['/admin/categories', 'Catégories'],
   ['/admin/commandes', 'Commandes'],
+  ['/admin/devis', 'Devis'],
   ['/admin/messages', 'Messages'],
   ['/admin/slider', 'Slider d’accueil'],
   ['/admin/contenu', 'Contenu du site'],

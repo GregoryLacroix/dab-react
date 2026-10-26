@@ -25,6 +25,18 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/produits"/>
   </url>
   <url>
+    <loc>https://dab.gregory-lacroix-pf.com/devis</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/devis"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/quote"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/devis"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/quote</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/devis"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/quote"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/devis"/>
+  </url>
+  <url>
     <loc>https://dab.gregory-lacroix-pf.com/contact</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/contact"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/contact"/>
