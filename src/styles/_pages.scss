@@ -16,7 +16,7 @@
 .contact { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; margin-top: 1.5rem;
   @include md { grid-template-columns: 1fr; gap: 2rem; }
   &__info { display: grid; gap: 1.2rem; align-content: start; p { margin: 0; } a { font-weight: 600; } }
-  &__form { display: grid; gap: 1.1rem; padding: 1.8rem; border: 1px solid $sand-200; border-radius: $radius; background: rgba(255, 255, 255, .6);
+  &__form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.1rem; padding: 1.8rem; border: 1px solid $sand-200; border-radius: $radius; background: rgba(255, 255, 255, .6);
     h2 { margin: 0; } p { margin: 0; } }
   &__ok { justify-items: start; } }
 .check { display: flex; align-items: flex-start; gap: .7rem; font-size: .95rem; cursor: pointer;

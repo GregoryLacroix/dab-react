@@ -85,7 +85,7 @@ export default function QuoteRequest() {
   return (
     <section className="section">
       <div className="container contact">
-        <div>
+        <div className="contact__info">
           <h1>{t('quote.title')}</h1>
           <p>{t('quote.intro')}</p>
           <ul className="quote__steps">
@@ -94,7 +94,7 @@ export default function QuoteRequest() {
             <li>{t('quote.step3')}</li>
           </ul>
         </div>
-        <form onSubmit={submit} noValidate className="auth contact__form">
+        <form onSubmit={submit} noValidate className="contact__form">
           <FormField label={t('field.name')} name="name" autoComplete="name" value={form.name} onChange={change} error={errors.name} />
           <FormField label={t('field.email')} name="email" type="email" autoComplete="email" value={form.email} onChange={change} error={errors.email} />
           <FormField label={t('quote.phone')} name="phone" type="tel" autoComplete="tel" value={form.phone} onChange={change} error={errors.phone} />
