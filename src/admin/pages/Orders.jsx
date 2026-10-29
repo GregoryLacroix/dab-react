@@ -56,10 +56,12 @@ export default function Orders() {
     } catch (err) { setActionError(err); }
   };
 
-  const downloadInvoice = async (order) => {
+  // Facture ou avoir (commande remboursée) en PDF
+  const downloadDoc = async (order, kind) => {
+    const doc = kind === 'creditNote' ? order.creditNote : order.invoice;
     try {
-      saveBlob(await api.orders.invoice(order.id), `${order.invoice.number ?? order.id}.pdf`); // GET /api/orders/{CMD-1001}/invoice
-      paged.reload(); // le numéro de facture est attribué à la première demande pour les anciennes commandes
+      saveBlob(await (kind === 'creditNote' ? api.orders.creditNote(order.id) : api.orders.invoice(order.id)), `${doc.number ?? order.id}.pdf`); // GET /api/orders/{CMD-1001}/invoice | /credit-note
+      paged.reload(); // le numéro est attribué à la première demande pour les anciennes commandes
     } catch (err) { setActionError(err); }
   };
 
@@ -111,7 +113,7 @@ export default function Orders() {
       )}
       {refunding && (
         <ConfirmDialog title={`Rembourser ${refunding.id} ?`} confirmLabel={refundBusy ? 'Remboursement…' : 'Rembourser'}
-          message={`Le client sera remboursé de ${euro(refunding.total)} par Stripe (remboursement total) et la commande passera à « annulée ». Cette action est définitive.`}
+          message={`Le client sera remboursé de ${euro(refunding.total)} par Stripe (remboursement total) et la commande passera à « annulée ». Un avoir est établi et envoyé au client avec l'e-mail de remboursement. Cette action est définitive.`}
           onConfirm={refund} onCancel={() => !refundBusy && setRefunding(null)} />
       )}
       <PageHeader title="Commandes" />
@@ -175,9 +177,10 @@ export default function Orders() {
                             {o.payment?.online && !o.payment.paidAt && <p>{o.status === 'annulée' ? 'Paiement non abouti (page de paiement abandonnée ou expirée).' : 'En attente du paiement chez Stripe.'}</p>}
                             {o.payment?.paidAt && <p>Payée en ligne le {formatDate(o.payment.paidAt)}.</p>}
                             {o.payment?.refundedAt && <p>Remboursée le {formatDate(o.payment.refundedAt)}.</p>}
-                            {o.invoice?.number && <p>Facture {o.invoice.number}</p>}
+                            {o.invoice?.number && <p>Facture {o.invoice.number}{o.creditNote?.number ? ` · Avoir ${o.creditNote.number}` : ''}</p>}
                             <div className="mt-2 flex flex-wrap gap-2">
-                              {o.invoice?.available && <Btn variant="ghost" onClick={() => downloadInvoice(o)}>Facture PDF</Btn>}
+                              {o.invoice?.available && <Btn variant="ghost" onClick={() => downloadDoc(o, 'invoice')}>Facture PDF</Btn>}
+                              {o.creditNote?.available && <Btn variant="ghost" onClick={() => downloadDoc(o, 'creditNote')}>Avoir PDF</Btn>}
                               {o.payment?.paidAt && !o.payment.refundedAt && <Btn variant="danger" onClick={() => setRefunding(o)}>Rembourser</Btn>}
                             </div>
                           </div>

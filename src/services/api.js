@@ -148,6 +148,7 @@ export const api = {
     setStatus: (ref, status, extra = {}) => request(`/api/orders/${ref}/status`, { method: 'PATCH', body: { status, ...extra } }),
     // Paiement Stripe : create() renvoie { …commande, checkoutUrl } ; au retour de Stripe, checkoutStatus() dit où en est le paiement
     checkoutStatus: (sessionId) => request(`/api/payments/checkout/${encodeURIComponent(sessionId)}`), // { id, status, paid, refunded, total, customer: { email } }
+    creditNote: (ref) => download(`/api/orders/${ref}/credit-note`),                          // avoir PDF (Blob) d'une commande remboursée
     invoice: (ref) => download(`/api/orders/${ref}/invoice`),                                // facture PDF (Blob) de ma commande (ou de n'importe laquelle pour un admin)
     refund: (ref) => request(`/api/orders/${ref}/refund`, { method: 'POST' }),                      // admin : remboursement total
   },

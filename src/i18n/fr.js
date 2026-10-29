@@ -239,6 +239,8 @@ export default {
   'account.refundedOn': 'Remboursée le {date}',
   'account.invoiceBtn': 'Télécharger la facture (PDF)',
   'account.invoiceBtnNumber': 'Télécharger la facture {number} (PDF)',
+  'account.creditBtn': 'Télécharger l’avoir (PDF)',
+  'account.creditBtnNumber': 'Télécharger l’avoir {number} (PDF)',
   'account.invoiceError': 'La facture n’a pas pu être téléchargée. Réessayez dans un instant.',
   'account.invoiceNote': '',
   'account.orderTracking': 'Suivi du colis',

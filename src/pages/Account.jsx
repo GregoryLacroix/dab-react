@@ -43,13 +43,16 @@ export default function Account() {
   if (loading) return <PageLoader />;
   if (!user) return <Navigate to={l('/connexion')} replace />;
 
-  const downloadInvoice = async (order) => {
-    setInvoiceBusy(order.id);
+  // Facture (kind = 'invoice') ou avoir d'une commande remboursée (kind = 'creditNote')
+  const downloadDoc = async (order, kind) => {
+    const doc = kind === 'creditNote' ? order.creditNote : order.invoice;
+    setInvoiceBusy(`${order.id}:${kind}`);
     setInvoiceError('');
     try {
-      saveBlob(await api.orders.invoice(order.id), `${order.invoice.number ?? order.id}.pdf`); // GET /api/orders/{ref}/invoice
-      // Le numéro de facture est attribué à la première demande pour les anciennes commandes : on rafraîchit la liste
-      if (!order.invoice.number) api.account.orders().then((res) => setOrders(res.items ?? []), () => {});
+      const blob = await (kind === 'creditNote' ? api.orders.creditNote(order.id) : api.orders.invoice(order.id)); // GET /api/orders/{ref}/invoice | /credit-note
+      saveBlob(blob, `${doc.number ?? order.id}.pdf`);
+      // Le numéro est attribué à la première demande pour les anciennes commandes : on rafraîchit la liste
+      if (!doc.number) api.account.orders().then((res) => setOrders(res.items ?? []), () => {});
     } catch (err) {
       setInvoiceError(order.id);
     } finally {
@@ -145,11 +148,18 @@ export default function Account() {
                             </div>
                           )}
                         </div>
-                        {o.invoice?.available && (
+                        {(o.invoice?.available || o.creditNote?.available) && (
                           <div className="order__invoice">
-                            <Button variant="ghost" onClick={() => downloadInvoice(o)} loading={invoiceBusy === o.id}>
-                              {o.invoice.number ? t('account.invoiceBtnNumber', { number: o.invoice.number }) : t('account.invoiceBtn')}
-                            </Button>
+                            {o.invoice?.available && (
+                              <Button variant="ghost" onClick={() => downloadDoc(o, 'invoice')} loading={invoiceBusy === `${o.id}:invoice`}>
+                                {o.invoice.number ? t('account.invoiceBtnNumber', { number: o.invoice.number }) : t('account.invoiceBtn')}
+                              </Button>
+                            )}
+                            {o.creditNote?.available && (
+                              <Button variant="ghost" onClick={() => downloadDoc(o, 'creditNote')} loading={invoiceBusy === `${o.id}:creditNote`}>
+                                {o.creditNote.number ? t('account.creditBtnNumber', { number: o.creditNote.number }) : t('account.creditBtn')}
+                              </Button>
+                            )}
                             {invoiceError === o.id && <p className="notice notice--error" role="alert">{t('account.invoiceError')}</p>}
                             {t('account.invoiceNote') && <p className="note">{t('account.invoiceNote')}</p>}
                           </div>

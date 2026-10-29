@@ -239,6 +239,8 @@ export default {
   'account.refundedOn': 'Refunded on {date}',
   'account.invoiceBtn': 'Download invoice (PDF)',
   'account.invoiceBtnNumber': 'Download invoice {number} (PDF)',
+  'account.creditBtn': 'Download credit note (PDF)',
+  'account.creditBtnNumber': 'Download credit note {number} (PDF)',
   'account.invoiceError': 'The invoice could not be downloaded. Please try again in a moment.',
   'account.invoiceNote': 'Invoices are issued in French.',
   'account.orderTracking': 'Parcel tracking',

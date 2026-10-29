@@ -15,6 +15,9 @@ Sous les formulaires Connexion et Inscription, des boutons « Continuer avec Goo
 - Un compte créé ainsi n'a pas de mot de passe : la suppression du compte (page *Mon compte*) se confirme avec l'adresse e-mail.
 - Politique de confidentialité mise à jour (données reçues du fournisseur, cookie technique `dab_oauth` posé par l'API, destinataires).
 
+## Avoirs
+Une commande remboursée en totalité donne un **avoir** PDF (numéro `AV-2026-0001`…), joint à l'e-mail de remboursement et téléchargeable dans *Mon compte → Mes commandes* (bouton « Télécharger l'avoir ») et dans la page *Commandes* du back-office (« Avoir PDF »). Détails et limites : README de `dab-api`, section « Avoirs ».
+
 ## Devis de fresque
 Page publique **`/devis`** (anglais `/en/quote`, aussi liée dans le pied de page et par les boutons « Demander une fresque / un devis » de l'accueil) : projet, dimensions, lieu, budget, jusqu'à 4 photos du mur (réduites dans le navigateur avant l'envoi). Côté back-office, menu **Devis** : liste filtrable, détail de la demande avec photos, note interne, montant / acompte / message, bouton **Envoyer le devis au client**. Le client reçoit un lien vers `/devis/<clé>` où il règle l'acompte par Stripe. Détails et prérequis : README de `dab-api`, section « Devis de fresque ». Si les liens de l'accueil enregistrés dans le back-office pointent encore vers `/contact`, remplacez-les par `/devis` dans *Contenu du site*.
 
