@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import FormField from '../components/ui/FormField.jsx';
 import Button from '../components/ui/Button.jsx';
+import { PageLoader } from '../components/ui/Loaders.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../services/api.js';
 import useSeo from '../services/seo.js';
@@ -10,7 +11,8 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 
 export default function Login() {
   const { t, l } = useI18n();
-  const { login, user } = useAuth();
+  const { login, user, loading } = useAuth();
+  const justLoggedIn = useRef(false); // la redirection après une connexion réussie est gérée plus bas, pas par le renvoi « déjà connecté »
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [form, setForm] = useState({ email: '', password: '' });
@@ -46,6 +48,7 @@ export default function Login() {
     setBusy(true);
     try {
       const user = await login(form.email.trim(), form.password);
+      justLoggedIn.current = true;
       navigate(user.isAdmin ? '/admin' : l('/'));
     } catch (error) {
       setUnverified(error.code === 'email_not_verified');
@@ -67,6 +70,10 @@ export default function Login() {
       setResending(false);
     }
   };
+
+  // Réservée aux visiteurs non connectés : une personne déjà connectée est renvoyée vers son compte (ou l'administration)
+  if (loading) return <PageLoader />;
+  if (user && !justLoggedIn.current) return <Navigate to={user.isAdmin ? '/admin' : l('/mon-compte')} replace />;
 
   return (
     <section className="section">
