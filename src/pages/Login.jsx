@@ -10,7 +10,7 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 
 export default function Login() {
   const { t, l } = useI18n();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [form, setForm] = useState({ email: '', password: '' });
@@ -83,7 +83,7 @@ export default function Login() {
         {unverified && <Button variant="ghost" onClick={resend} loading={resending}>{t('login.resend')}</Button>}
         <Button type="submit" loading={busy}>{busy ? t('login.busy') : t('login.submit')}</Button>
         <SocialLogin />
-        <p className="auth__alt">{t('login.noAccount', {}, [(c) => <Link to={l('/inscription')}>{c}</Link>])}</p>
+        {!user && <p className="auth__alt">{t('login.noAccount', {}, [(c) => <Link to={l('/inscription')}>{c}</Link>])}</p>}
       </form>
     </section>
   );

@@ -17,7 +17,7 @@ export default function Footer() {
           <Link to={l('/produits')}>{t('nav.shop')}</Link>
           <Link to={l('/devis')}>{t('footer.quote')}</Link>
           <Link to={l('/contact')}>{t('nav.contact')}</Link>
-          <Link to={l('/inscription')}>{t('footer.register')}</Link>
+          {!user && <Link to={l('/inscription')}>{t('footer.register')}</Link>}
           <Link to={l('/panier')}>{t('nav.cart')}</Link>
           {/* Lien réservé aux administrateurs connectés (la sécurité réelle est côté API : ce test ne fait que masquer le lien) */}
           {user?.isAdmin && <Link to="/admin">{t('nav.admin')}</Link>}

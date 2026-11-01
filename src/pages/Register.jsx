@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import FormField from '../components/ui/FormField.jsx';
 import Button from '../components/ui/Button.jsx';
+import { PageLoader } from '../components/ui/Loaders.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import { api, fieldErrors } from '../services/api.js';
 import useSeo from '../services/seo.js';
 import SocialLogin from '../components/ui/SocialLogin.jsx';
@@ -9,6 +11,7 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 
 export default function Register() {
   const { t, l } = useI18n();
+  const { user, loading } = useAuth();
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', accept: false });
   const [errors, setErrors] = useState({});
   const [busy, setBusy] = useState(false);
@@ -53,6 +56,11 @@ export default function Register() {
       setResending(false);
     }
   };
+
+  // Réservée aux visiteurs non connectés : une personne connectée est renvoyée vers son compte
+  // (le chargement n'existe que si un jeton est déjà en mémoire : un visiteur anonyme ne voit jamais le sablier)
+  if (loading) return <PageLoader />;
+  if (user) return <Navigate to={l('/mon-compte')} replace />;
 
   if (done) {
     return (
