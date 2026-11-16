@@ -99,10 +99,27 @@ export const api = {
   forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: { email } }),          // lien de réinitialisation par e-mail
   resetPassword: (data) => request('/api/auth/reset-password', { method: 'POST', body: data }),               // { token, password, confirm }
   resendVerification: (email) => request('/api/auth/resend-verification', { method: 'POST', body: { email } }),
+  // Renvoie l'utilisateur { id, name, email, roles, isAdmin, verified, twoFactor }, OU { challenge } si la double authentification est
+  // activée : aucun jeton n'est remis avant la saisie du code (verifyTwoFactor).
   async login(email, password) {
     const res = await request('/api/auth/login', { method: 'POST', body: { email, password } });
+    if (res.challenge) return { challenge: res.challenge };
     setToken(res.token);
-    return res.user; // { id, name, email, roles, isAdmin, verified }
+    return res.user;
+  },
+  // 2e étape de la connexion : code à 6 chiffres de l'application, ou code de secours
+  async verifyTwoFactor(challenge, code) {
+    const res = await request('/api/auth/2fa/verify', { method: 'POST', body: { challenge, code } });
+    setToken(res.token);
+    return res.user;
+  },
+  // Gestion de la double authentification (page Mon compte)
+  twoFactor: {
+    status: () => request('/api/auth/2fa'),                                                          // { enabled, enabledAt, recoveryCodesLeft }
+    setup: (password) => request('/api/auth/2fa/setup', { method: 'POST', body: { password } }),      // { secret, otpauthUrl }
+    enable: (code) => request('/api/auth/2fa/enable', { method: 'POST', body: { code } }),             // { recoveryCodes }
+    disable: (password, code) => request('/api/auth/2fa/disable', { method: 'POST', body: { password, code } }),
+    recoveryCodes: (password, code) => request('/api/auth/2fa/recovery-codes', { method: 'POST', body: { password, code } }), // { recoveryCodes }
   },
   async logout() {
     try { await request('/api/auth/logout', { method: 'POST' }); } finally { setToken(null); }

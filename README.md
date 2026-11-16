@@ -15,6 +15,9 @@ Sous les formulaires Connexion et Inscription, des boutons « Continuer avec Goo
 - Un compte créé ainsi n'a pas de mot de passe : la suppression du compte (page *Mon compte*) se confirme avec l'adresse e-mail.
 - Politique de confidentialité mise à jour (données reçues du fournisseur, cookie technique `dab_oauth` posé par l'API, destinataires).
 
+## Double authentification
+Page *Mon compte → Double authentification* : activation avec QR code (application d'authentification), codes de secours, désactivation. À la connexion (site, back-office et Google), une 2e étape demande le code (`TwoFactorForm.jsx`, page `/connexion/verification` après Google). Le tableau de bord du back-office rappelle aux administrateurs de l'activer. **Nouvelle dépendance du site : `qrcode`** (génération du QR code, chargée seulement à l'activation) : lancez **`npm install`** avant `npm run build`. Détails, sécurité et dépannage : README de `dab-api`, section « Double authentification ».
+
 ## Avoirs
 Une commande remboursée en totalité donne un **avoir** PDF (numéro `AV-2026-0001`…), joint à l'e-mail de remboursement et téléchargeable dans *Mon compte → Mes commandes* (bouton « Télécharger l'avoir ») et dans la page *Commandes* du back-office (« Avoir PDF »). Détails et limites : README de `dab-api`, section « Avoirs ».
 

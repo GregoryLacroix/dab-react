@@ -15,6 +15,7 @@ export const ROUTES = [
   { key: 'login',   fr: '/connexion',                     en: '/en/login' },
   { key: 'forgot',  fr: '/mot-de-passe-oublie',          en: '/en/forgot-password' },
   { key: 'reset',   fr: '/nouveau-mot-de-passe',          en: '/en/reset-password' }, // lien reçu par e-mail
+  { key: 'twofactor', fr: '/connexion/verification',      en: '/en/login/verification' }, // code de double authentification (après Google)
   { key: 'oauth',   fr: '/connexion/retour',              en: '/en/login/callback' }, // retour de Google / Facebook
   { key: 'register',fr: '/inscription',                   en: '/en/register' },
   { key: 'account', fr: '/mon-compte',                    en: '/en/account' },

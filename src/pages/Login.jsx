@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import FormField from '../components/ui/FormField.jsx';
 import Button from '../components/ui/Button.jsx';
 import { PageLoader } from '../components/ui/Loaders.jsx';
+import TwoFactorForm from '../components/ui/TwoFactorForm.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../services/api.js';
 import useSeo from '../services/seo.js';
@@ -12,6 +13,7 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 export default function Login() {
   const { t, l } = useI18n();
   const { login, user, loading } = useAuth();
+  const [challenge, setChallenge] = useState(null); // double authentification : code à saisir après le mot de passe
   const justLoggedIn = useRef(false); // la redirection après une connexion réussie est gérée plus bas, pas par le renvoi « déjà connecté »
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -47,9 +49,10 @@ export default function Login() {
 
     setBusy(true);
     try {
-      const user = await login(form.email.trim(), form.password);
-      justLoggedIn.current = true;
-      navigate(user.isAdmin ? '/admin' : l('/'));
+      const res = await login(form.email.trim(), form.password);
+      justLoggedIn.current = true; // la suite (code, puis redirection) est gérée ici, pas par le renvoi « déjà connecté »
+      if (res.challenge) { setChallenge(res.challenge); return; }
+      navigate(res.isAdmin ? '/admin' : l('/'));
     } catch (error) {
       setUnverified(error.code === 'email_not_verified');
       setErrors({ form: error.message });
@@ -74,6 +77,17 @@ export default function Login() {
   // Réservée aux visiteurs non connectés : une personne déjà connectée est renvoyée vers son compte (ou l'administration)
   if (loading) return <PageLoader />;
   if (user && !justLoggedIn.current) return <Navigate to={user.isAdmin ? '/admin' : l('/mon-compte')} replace />;
+
+  if (challenge) {
+    return (
+      <section className="section">
+        <div className="auth">
+          <h1>{t('twofa.title')}</h1>
+          <TwoFactorForm challenge={challenge} onDone={(u) => navigate(u.isAdmin ? '/admin' : l('/'))} />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="section">

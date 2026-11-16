@@ -30,8 +30,22 @@ export function AuthProvider({ children }) {
   const value = useMemo(() => ({
     user: state.user,
     loading: state.loading,
+    // Renvoie l'utilisateur connecté, ou { challenge } si un code de double authentification est encore à saisir
     async login(email, password) {
-      const user = await api.login(email, password);
+      const res = await api.login(email, password);
+      if (res.challenge) return res;
+      setState({ user: res, loading: false });
+      return res;
+    },
+    // 2e étape (code de l'application ou code de secours)
+    async verifyTwoFactor(challenge, code) {
+      const user = await api.verifyTwoFactor(challenge, code);
+      setState({ user, loading: false });
+      return user;
+    },
+    // Recharge le profil (après activation ou désactivation de la double authentification)
+    async refresh() {
+      const user = await api.me();
       setState({ user, loading: false });
       return user;
     },

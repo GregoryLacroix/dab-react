@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
+import TwoFactorCard from '../components/ui/TwoFactorCard.jsx';
 import FormField from '../components/ui/FormField.jsx';
 import { PageLoader } from '../components/ui/Loaders.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -177,6 +178,8 @@ export default function Account() {
             <p><strong>{t('account.nameLabel')}</strong> {user.name}</p>
             <p><strong>{t('account.emailLabel')}</strong> {user.email}</p>
           </div>
+
+          <TwoFactorCard />
 
           <div className="account__card">
             <h2>{t('account.dataTitle')}</h2>

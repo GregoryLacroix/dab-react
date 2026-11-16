@@ -112,3 +112,10 @@
 .quote__summary { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; }
 .quote__amount { font-size: 1.3rem; margin: 0; span { font-size: .9rem; color: $ink-soft; } }
 .quote__message { margin: 0; padding: .6rem 1rem; border-left: 4px solid $sand-400; background: $sand-50; white-space: pre-wrap; }
+
+// ---- Double authentification : formulaire de code, QR code, codes de secours
+.twofa { display: grid; gap: 1rem; p { margin: 0; } }
+.twofa__qr { display: block; margin: .5rem 0; padding: .5rem; background: #fff; border: 1px solid $sand-200; border-radius: $radius; max-width: 100%; height: auto; }
+.twofa__secret { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; word-break: break-all; margin: 0; }
+.twofa__codes { list-style: none; margin: 0; padding: 1rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem 1rem;
+  background: #fff; border: 1px solid $sand-200; border-radius: $radius; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; letter-spacing: .06em; }

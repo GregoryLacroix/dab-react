@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { api } from '../../services/api.js';
 import useQuery from '../../services/useQuery.js';
 import { Card, ErrorBox, Loading, PageHeader, StatusBadge, euro, formatDate } from '../ui.jsx';
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const { data: s, error, loading, reload } = useQuery(() => api.stats(), []); // GET /api/admin/stats
 
   if (loading && !s) return <><PageHeader title="Tableau de bord" /><Loading /></>;
@@ -20,6 +22,12 @@ export default function Dashboard() {
   return (
     <>
       <PageHeader title="Tableau de bord" />
+      {!user?.twoFactor && (
+        <p className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm" role="note">
+          <strong>Sécurité :</strong> la double authentification n’est pas activée sur votre compte. Elle protège l’administration même si votre mot de passe est volé.{' '}
+          <Link to="/mon-compte" className="font-semibold underline">Activer maintenant</Link>
+        </p>
+      )}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {stats.map(([label, value, sub]) => (
           <Card key={label} className="p-5">
