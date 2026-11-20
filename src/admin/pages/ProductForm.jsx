@@ -67,6 +67,7 @@ function ProductLoader({ id }) {
 }
 
 const SPEC_NUMBERS = ['widthCm', 'heightCm', 'depthCm', 'weightG'];
+const enToForm = (p) => ({ nameEn: p.translations?.en?.name ?? '', descriptionEn: p.translations?.en?.description ?? '' });
 const specsToForm = (p) => ({
   sizeLabel: p.sizeLabel ?? '',
   ...Object.fromEntries(SPEC_NUMBERS.map((k) => [k, p[k] == null ? '' : String(p[k]).replace('.', ',')])),
@@ -79,8 +80,8 @@ function ProductEditor({ initial }) {
 
   const [form, setForm] = useState(() =>
     initial
-      ? { ...initial, price: String(initial.price), stock: String(initial.stock ?? 1), images: initial.images ?? [], ...specsToForm(initial) }
-      : { name: '', categoryId: '', price: '', stock: '1', description: '', published: true, images: [], ...specsToForm({}) }
+      ? { ...initial, price: String(initial.price), stock: String(initial.stock ?? 1), images: initial.images ?? [], ...specsToForm(initial), ...enToForm(initial) }
+      : { name: '', categoryId: '', price: '', stock: '1', description: '', published: true, images: [], ...specsToForm({}), ...enToForm({}) }
   );
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
@@ -145,12 +146,15 @@ function ProductEditor({ initial }) {
       if (!Number.isFinite(n) || n < min || n > max) err[k] = `${label} : valeur de ${String(min).replace('.', ',')} à ${max}.`;
       else specs[k] = k === 'weightG' ? Math.round(n) : n;
     }
+    if (form.nameEn.trim().length > 160) err.nameEn = '160 caractères maximum.';
+    if (form.descriptionEn.trim().length > 5000) err.descriptionEn = '5000 caractères maximum.';
     if (form.sizeLabel.trim().length > 60) err.sizeLabel = '60 caractères maximum.';
     setErrors(err);
     if (Object.keys(err).length) return;
 
     const payload = {
       name: form.name.trim(), categoryId: form.categoryId, price, stock, ...specs,
+      translations: { en: { name: form.nameEn.trim(), description: form.descriptionEn.trim() } },
       description: form.description.trim(), published: form.published,
       images: form.images.filter(Boolean),
     };
@@ -163,7 +167,7 @@ function ProductEditor({ initial }) {
     } catch (error) {
       const fields = fieldErrors(error);
       setErrors(fields);
-      const others = Object.entries(fields).filter(([k]) => !['name', 'categoryId', 'price', 'stock', 'description', 'sizeLabel', ...SPEC_NUMBERS].includes(k)).map(([, v]) => v);
+      const others = Object.entries(fields).filter(([k]) => !['name', 'categoryId', 'price', 'stock', 'description', 'sizeLabel', 'nameEn', 'descriptionEn', ...SPEC_NUMBERS].includes(k)).map(([, v]) => v);
       setMessage(error.status === 422 ? (others.join(' ') || 'Corrigez les champs indiqués.') : error.message);
     } finally {
       setSaving(false);
@@ -221,6 +225,17 @@ function ProductEditor({ initial }) {
                 <Btn variant="secondary" onClick={addUrl}>Ajouter</Btn>
               </div>
             </div>
+          </Card>
+
+          <Card className="grid gap-6 p-6">
+            <h2 className="text-lg font-semibold text-black">Traduction anglaise</h2>
+            <p className="-mt-3 text-sm text-black/80">Facultatif : affichée sur la version anglaise du site. Ce qui reste vide s'affiche en français.</p>
+            <Field label="Name (anglais)" error={errors.nameEn}>
+              <input className={inputCls} maxLength={160} value={form.nameEn} onChange={set('nameEn')} />
+            </Field>
+            <Field label="Description (anglais)" error={errors.descriptionEn}>
+              <textarea className={inputCls} rows={6} value={form.descriptionEn} onChange={set('descriptionEn')} />
+            </Field>
           </Card>
         </div>
 

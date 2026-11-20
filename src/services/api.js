@@ -153,8 +153,8 @@ export const api = {
   },
   categories: {
     list: () => request('/api/categories', { query: { perPage: 100 } }),
-    create: (name) => request('/api/categories', { method: 'POST', body: { name } }),
-    rename: (id, name) => request(`/api/categories/${id}`, { method: 'PATCH', body: { name } }),
+    create: (name, nameEn = '') => request('/api/categories', { method: 'POST', body: { name, translations: { en: { name: nameEn } } } }),
+    rename: (id, name, nameEn = '') => request(`/api/categories/${id}`, { method: 'PATCH', body: { name, translations: { en: { name: nameEn } } } }),
     remove: (id) => request(`/api/categories/${id}`, { method: 'DELETE' }),
   },
   orders: {

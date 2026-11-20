@@ -6,6 +6,8 @@ import { Btn, Card, ConfirmDialog, ErrorBox, Field, PageHeader, Pagination, inpu
 export default function Categories() {
   const categories = useCategories();
   const [name, setName] = useState('');
+  const [nameEn, setNameEn] = useState('');
+  const [editNameEn, setEditNameEn] = useState('');
   const [error, setError] = useState('');
   const [editId, setEditId] = useState(null);
   const [editName, setEditName] = useState('');
@@ -19,9 +21,10 @@ export default function Categories() {
     const n = name.trim();
     if (!n) return setError('Saisissez un nom de catégorie.');
     try {
-      await api.categories.create(n);   // POST /api/categories
+      await api.categories.create(n, nameEn.trim());   // POST /api/categories
       await refreshCategories();
       setName('');
+      setNameEn('');
       setError('');
     } catch (err) {
       setError(err.violations?.name ?? err.message);
@@ -32,7 +35,7 @@ export default function Categories() {
     const n = editName.trim();
     if (!n) return setEditError('Saisissez un nom de catégorie.');
     try {
-      await api.categories.rename(editId, n); // PATCH /api/categories/{id}
+      await api.categories.rename(editId, n, editNameEn.trim()); // PATCH /api/categories/{id}
       await refreshCategories();
       setEditId(null);
       setEditError('');
@@ -54,9 +57,12 @@ export default function Categories() {
   return (
     <>
       <PageHeader title="Catégories" />
-      <form onSubmit={add} className="mb-6 flex max-w-xl items-start gap-3">
+      <form onSubmit={add} className="mb-6 flex max-w-3xl items-start gap-3">
         <Field label="Nouvelle catégorie" error={error} className="flex-1">
           <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} />
+        </Field>
+        <Field label="Nom anglais (facultatif)" className="flex-1">
+          <input className={inputCls} value={nameEn} onChange={(e) => setNameEn(e.target.value)} />
         </Field>
         <button type="submit" className="mt-6 rounded-lg bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-700">Ajouter</button>
       </form>
@@ -70,10 +76,12 @@ export default function Categories() {
                 <div>
                   <input className={`${inputCls} max-w-xs`} autoFocus aria-label="Nom de la catégorie" value={editName}
                     onChange={(e) => setEditName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && saveEdit()} />
+                  <input className={`${inputCls} mt-2 max-w-xs`} aria-label="Nom anglais (facultatif)" placeholder="Nom anglais (facultatif)" value={editNameEn}
+                    onChange={(e) => setEditNameEn(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && saveEdit()} />
                   {editError && <p role="alert" className="mt-1 text-xs text-red-700">{editError}</p>}
                 </div>
               ) : (
-                <span><strong className="text-black">{c.name}</strong> <span className="text-black/70">· {c.productCount} produit{c.productCount > 1 ? 's' : ''}</span></span>
+                <span><strong className="text-black">{c.name}</strong>{c.translations?.en?.name && <span className="text-black/70"> / {c.translations.en.name}</span>} <span className="text-black/70">· {c.productCount} produit{c.productCount > 1 ? 's' : ''}</span></span>
               )}
               <div className="flex gap-2">
                 {editId === c.id ? (
@@ -83,7 +91,7 @@ export default function Categories() {
                   </>
                 ) : (
                   <>
-                    <Btn variant="secondary" onClick={() => { setEditId(c.id); setEditName(c.name); setEditError(''); }}>Renommer</Btn>
+                    <Btn variant="secondary" onClick={() => { setEditId(c.id); setEditName(c.name); setEditNameEn(c.translations?.en?.name ?? ''); setEditError(''); }}>Modifier</Btn>
                     <Btn variant="ghost" className="text-red-700" disabled={c.productCount > 0}
                       title={c.productCount > 0 ? 'Déplacez ou supprimez d’abord ses produits' : ''}
                       onClick={() => { setActionError(null); setTarget(c); }}>Supprimer</Btn>
