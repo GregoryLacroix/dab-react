@@ -1,5 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api, getToken, setToken } from '../services/api.js';
+import IdleLogout, { ADMIN_IDLE_LIMIT_MS, IDLE_LIMIT_MS } from '../components/IdleLogout.jsx';
+import { useI18n } from '../i18n/I18nProvider.jsx';
 
 const AuthContext = createContext(null);
 
@@ -25,6 +27,15 @@ export function AuthProvider({ children }) {
     const onExpired = () => setState({ user: null, loading: false });
     window.addEventListener('dab:auth-expired', onExpired);
     return () => window.removeEventListener('dab:auth-expired', onExpired);
+  }, []);
+
+  // Inactivité : déconnexion automatique, puis message d'information
+  const { t } = useI18n();
+  const [idleNotice, setIdleNotice] = useState(false);
+  const onIdle = useCallback(async () => {
+    try { await api.logout(); } catch { /* déjà déconnecté côté serveur */ }
+    setState({ user: null, loading: false });
+    setIdleNotice(true);
   }, []);
 
   const value = useMemo(() => ({
@@ -61,7 +72,21 @@ export function AuthProvider({ children }) {
     },
   }), [state]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      <IdleLogout active={Boolean(state.user)} onIdle={onIdle} limitMs={state.user?.isAdmin ? ADMIN_IDLE_LIMIT_MS : IDLE_LIMIT_MS} />
+      {idleNotice && !state.user && (
+        <div className="idle" role="alertdialog" aria-modal="true" aria-labelledby="idle-out-title">
+          <div className="idle__box">
+            <h2 id="idle-out-title">{t('idle.outTitle')}</h2>
+            <p>{t('idle.outText')}</p>
+            <button type="button" className="btn btn--primary" onClick={() => setIdleNotice(false)} autoFocus>{t('idle.ok')}</button>
+          </div>
+        </div>
+      )}
+    </AuthContext.Provider>
+  );
 }
 
 export const useAuth = () => useContext(AuthContext);

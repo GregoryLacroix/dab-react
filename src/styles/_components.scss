@@ -154,3 +154,9 @@
     input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
     &.is-on { color: #c8891a; }
     &:has(input:focus-visible) { outline: 3px solid rgba($ink, .3); border-radius: 4px; } } }
+
+// ---- Déconnexion pour inactivité
+.idle { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1rem; background: rgba($ink, .5);
+  &__box { width: 100%; max-width: 24rem; padding: 1.75rem; background: $sand-50; color: $ink; border-radius: $radius; box-shadow: 0 20px 50px rgba($ink, .3);
+    display: grid; gap: .8rem; justify-items: start;
+    h2 { margin: 0; font-size: 1.5rem; } p { margin: 0; } } }
