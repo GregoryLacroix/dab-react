@@ -136,3 +136,9 @@ Palette pastel (bleu lavande, menthe, vert tendre, pêche, saumon, rose) utilis�
 ## Logo « Les galets d'Ambre »
 - Badge complet : `src/assets/logo.svg` (accueil, connexion du back-office) ; logo horizontal du menu : composant `src/components/ui/Logo.jsx` (le nom reste du vrai texte) ; galet seul : `LogoMark`.
 - Dans `public/` : `logo.svg`, `logo-horizontal.svg`, `favicon.svg`, `logo.png`, `favicon.png`, `icon-192.png`, `apple-touch-icon.png`, `og-default.jpg` (image de partage). Le nom de la marque se règle dans `src/services/seo.js` (`SITE_NAME`).
+
+
+## Caractéristiques des produits et avis clients
+- **Caractéristiques** : le formulaire produit du back-office a une carte « Caractéristiques » (taille en texte libre, largeur, hauteur, épaisseur en cm, poids en g, tout est facultatif). Elles s'affichent sous la description de la fiche produit (`productSpecs` dans `src/pages/ProductView.jsx`) et alimentent les données structurées.
+- **Avis** : `src/components/ProductReviews.jsx` (note moyenne, répartition, liste, formulaire pour les acheteurs connectés) sous chaque fiche produit ; page de modération `src/admin/pages/Reviews.jsx` (menu « Avis clients », pastille des avis à modérer). Textes : clés `reviews.*` (FR/EN) et ligne `pp.r6` de la politique de confidentialité.
+- **Logo** : le texte « décoration murale » est dessiné en tracés vectoriels (`src/assets/logo.svg`, `public/logo.svg`, `public/logo-horizontal.svg`) ; `public/logo.png` et `public/og-default.jpg` en sont des exports.

@@ -14,6 +14,7 @@ const links = [
   ['/admin/commandes', 'Commandes'],
   ['/admin/devis', 'Devis'],
   ['/admin/messages', 'Messages'],
+  ['/admin/avis', 'Avis clients'],
   ['/admin/slider', 'Slider d’accueil'],
   ['/admin/contenu', 'Contenu du site'],
 ];
@@ -22,6 +23,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const { user, loading, logout } = useAuth();
   const [unread, setUnread] = useState(0);
+  const [pendingReviews, setPendingReviews] = useState(0);
 
   // Pastille « messages non lus » : GET /api/messages?read=0 (on ne garde que le total)
   useEffect(() => {
@@ -31,6 +33,16 @@ export default function AdminLayout() {
     load();
     window.addEventListener('dab:messages', load);
     return () => { alive = false; window.removeEventListener('dab:messages', load); };
+  }, [user]);
+
+  // Pastille « avis à modérer »
+  useEffect(() => {
+    if (!user?.isAdmin) return undefined;
+    let alive = true;
+    const load = () => api.reviews.adminList({ status: 'pending', perPage: 1 }).then((r) => { if (alive) setPendingReviews(r.meta.total); }, () => {});
+    load();
+    window.addEventListener('dab:reviews', load);
+    return () => { alive = false; window.removeEventListener('dab:reviews', load); };
   }, [user]);
 
   if (loading) return <div className="min-h-screen bg-sand-50"><Loading label="Vérification de la session…" /></div>;
@@ -53,6 +65,9 @@ export default function AdminLayout() {
                   {label}
                   {to === '/admin/messages' && unread > 0 && (
                     <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-bold ${isActive ? 'bg-white text-black' : 'bg-black text-white'}`}>{unread}</span>
+                  )}
+                  {to === '/admin/avis' && pendingReviews > 0 && (
+                    <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-bold ${isActive ? 'bg-white text-black' : 'bg-black text-white'}`}>{pendingReviews}</span>
                   )}
                 </>
               )}

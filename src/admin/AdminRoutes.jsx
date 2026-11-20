@@ -13,6 +13,7 @@ import Orders from './pages/Orders.jsx';
 import Content from './pages/Content.jsx';
 import Messages from './pages/Messages.jsx';
 import Quotes from './pages/Quotes.jsx';
+import Reviews from './pages/Reviews.jsx';
 import { AdminNotFound } from './AdminErrors.jsx';
 import SliderAdmin from './pages/SliderAdmin.jsx';
 
@@ -30,6 +31,7 @@ export default function AdminRoutes() {
           <Route path="commandes" element={<Orders />} />
           <Route path="devis" element={<Quotes />} />
           <Route path="messages" element={<Messages />} />
+          <Route path="avis" element={<Reviews />} />
           <Route path="slider" element={<SliderAdmin />} />
           <Route path="contenu" element={<Content />} />
           <Route path="*" element={<AdminNotFound />} />

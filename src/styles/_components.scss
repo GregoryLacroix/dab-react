@@ -63,6 +63,10 @@
 
 .pview { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
   .pimg { border-radius: $radius; } @include md { grid-template-columns: 1fr; gap: 1.5rem; } }
+.specs { margin: 1.25rem 0; padding: 0; border-top: 1px solid rgba($ink, .15);
+  > div { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid rgba($ink, .15); }
+  dt { color: rgba($ink, .75); }
+  dd { margin: 0; font-weight: 600; text-align: right; } }
 .back { display: inline-block; margin-bottom: 1rem; font-size: .95rem; }
 
 // ---- Panier
@@ -119,3 +123,34 @@
 .twofa__secret { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; word-break: break-all; margin: 0; }
 .twofa__codes { list-style: none; margin: 0; padding: 1rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem 1rem;
   background: #fff; border: 1px solid $sand-200; border-radius: $radius; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; letter-spacing: .06em; }
+
+// ---- Avis clients
+.stars { display: inline-flex; gap: .1rem; color: $sand-400; font-size: 1.1rem; letter-spacing: 0;
+  .is-on { color: #c8891a; } }
+.reviews { margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgba($ink, .15); display: grid; gap: 1.5rem; max-width: 52rem;
+  h2 { margin: 0; }
+  &__empty { margin: 0; color: rgba($ink, .75); }
+  &__summary { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2rem; }
+  &__avg { margin: 0; display: flex; align-items: baseline; gap: .3rem;
+    strong { font-size: 2.6rem; line-height: 1; } span { color: rgba($ink, .75); } }
+  &__count { margin: .15rem 0 0; font-size: .95rem; }
+  &__bars { list-style: none; margin: 0; padding: 0; display: grid; gap: .2rem; min-width: 12rem; font-size: .85rem;
+    li { display: grid; grid-template-columns: 2.2rem 1fr 1.6rem; align-items: center; gap: .5rem; }
+    i { display: block; height: .5rem; background: $sand-200; border-radius: 99px; overflow: hidden; }
+    b { display: block; height: 100%; background: #c8891a; } }
+  &__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem;
+    > li { padding-bottom: 1.5rem; border-bottom: 1px solid rgba($ink, .12); }
+    h3 { margin: .5rem 0 0; font-size: 1.1rem; } }
+  &__head { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .8rem; }
+  &__meta { font-size: .85rem; color: rgba($ink, .7); }
+  &__body { margin: .5rem 0 0; white-space: pre-line; }
+  &__reply { margin: .8rem 0 0; padding: .7rem 1rem; background: $sand-100; border-left: 3px solid $ink; border-radius: 0 $radius $radius 0; font-size: .95rem; }
+  &__form { display: grid; gap: 1rem; padding: 1.5rem; background: $sand-100; border: 1px solid $sand-400; border-radius: $radius;
+    h3 { margin: 0; } } }
+.rating-input { border: 0; margin: 0; padding: 0; min-width: 0;
+  legend { font-weight: 500; font-size: .95rem; padding: 0; margin-bottom: .3rem; }
+  div { display: flex; gap: .15rem; }
+  label { position: relative; cursor: pointer; font-size: 1.9rem; line-height: 1; color: $sand-400;
+    input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+    &.is-on { color: #c8891a; }
+    &:has(input:focus-visible) { outline: 3px solid rgba($ink, .3); border-radius: 4px; } } }

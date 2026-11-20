@@ -66,6 +66,12 @@ function ProductLoader({ id }) {
   return <ProductEditor key={data.id} initial={data} />;
 }
 
+const SPEC_NUMBERS = ['widthCm', 'heightCm', 'depthCm', 'weightG'];
+const specsToForm = (p) => ({
+  sizeLabel: p.sizeLabel ?? '',
+  ...Object.fromEntries(SPEC_NUMBERS.map((k) => [k, p[k] == null ? '' : String(p[k]).replace('.', ',')])),
+});
+
 function ProductEditor({ initial }) {
   const isNew = !initial;
   const categories = useCategories();
@@ -73,8 +79,8 @@ function ProductEditor({ initial }) {
 
   const [form, setForm] = useState(() =>
     initial
-      ? { ...initial, price: String(initial.price), stock: String(initial.stock ?? 1), images: initial.images ?? [] }
-      : { name: '', categoryId: '', price: '', stock: '1', description: '', published: true, images: [] }
+      ? { ...initial, price: String(initial.price), stock: String(initial.stock ?? 1), images: initial.images ?? [], ...specsToForm(initial) }
+      : { name: '', categoryId: '', price: '', stock: '1', description: '', published: true, images: [], ...specsToForm({}) }
   );
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
@@ -128,11 +134,23 @@ function ProductEditor({ initial }) {
     if (form.price === '' || !(price >= 0)) err.price = 'Saisissez un prix valide.';
     const stock = Number(form.stock);
     if (form.stock === '' || !Number.isInteger(stock) || stock < 0 || stock > 9999) err.stock = 'Quantité entière de 0 à 9999.';
+    // Caractéristiques facultatives : vide = non renseigné
+    const specs = { sizeLabel: form.sizeLabel.trim() || null };
+    const specLabels = { widthCm: ['Largeur', 0.1, 1000], heightCm: ['Hauteur', 0.1, 1000], depthCm: ['Épaisseur', 0.1, 1000], weightG: ['Poids', 1, 500000] };
+    for (const k of SPEC_NUMBERS) {
+      const raw = String(form[k]).trim().replace(',', '.');
+      if (raw === '') { specs[k] = null; continue; }
+      const [label, min, max] = specLabels[k];
+      const n = Number(raw);
+      if (!Number.isFinite(n) || n < min || n > max) err[k] = `${label} : valeur de ${String(min).replace('.', ',')} à ${max}.`;
+      else specs[k] = k === 'weightG' ? Math.round(n) : n;
+    }
+    if (form.sizeLabel.trim().length > 60) err.sizeLabel = '60 caractères maximum.';
     setErrors(err);
     if (Object.keys(err).length) return;
 
     const payload = {
-      name: form.name.trim(), categoryId: form.categoryId, price, stock,
+      name: form.name.trim(), categoryId: form.categoryId, price, stock, ...specs,
       description: form.description.trim(), published: form.published,
       images: form.images.filter(Boolean),
     };
@@ -145,7 +163,7 @@ function ProductEditor({ initial }) {
     } catch (error) {
       const fields = fieldErrors(error);
       setErrors(fields);
-      const others = Object.entries(fields).filter(([k]) => !['name', 'categoryId', 'price', 'stock', 'description'].includes(k)).map(([, v]) => v);
+      const others = Object.entries(fields).filter(([k]) => !['name', 'categoryId', 'price', 'stock', 'description', 'sizeLabel', ...SPEC_NUMBERS].includes(k)).map(([, v]) => v);
       setMessage(error.status === 422 ? (others.join(' ') || 'Corrigez les champs indiqués.') : error.message);
     } finally {
       setSaving(false);
@@ -220,6 +238,22 @@ function ProductEditor({ initial }) {
             </Field>
             <Field label="Quantité en stock" hint="Un galet est une pièce unique : 1. Mettez 0 pour l'afficher « Vendu »." error={errors.stock}>
               <input className={inputCls} type="number" min="0" max="9999" step="1" value={form.stock} onChange={set('stock')} />
+            </Field>
+          </Card>
+
+          <Card className="grid gap-5 p-6">
+            <h2 className="text-lg font-semibold text-black">Caractéristiques</h2>
+            <p className="-mt-3 text-sm text-black/80">Facultatif : affiché sur la fiche produit. Laissez vide ce qui ne s'applique pas.</p>
+            <Field label="Taille" hint="Texte libre : « Ø 8 cm », « Moyen », « Format A4 »…" error={errors.sizeLabel}>
+              <input className={inputCls} type="text" maxLength={60} value={form.sizeLabel} onChange={set('sizeLabel')} />
+            </Field>
+            <div className="grid grid-cols-3 gap-3">
+              <Field label="Largeur (cm)" error={errors.widthCm}><input className={inputCls} inputMode="decimal" value={form.widthCm} onChange={set('widthCm')} /></Field>
+              <Field label="Hauteur (cm)" error={errors.heightCm}><input className={inputCls} inputMode="decimal" value={form.heightCm} onChange={set('heightCm')} /></Field>
+              <Field label="Épaisseur (cm)" error={errors.depthCm}><input className={inputCls} inputMode="decimal" value={form.depthCm} onChange={set('depthCm')} /></Field>
+            </div>
+            <Field label="Poids (g)" error={errors.weightG}>
+              <input className={inputCls} inputMode="numeric" value={form.weightG} onChange={set('weightG')} />
             </Field>
           </Card>
 

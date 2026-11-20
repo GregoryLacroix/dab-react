@@ -16,6 +16,7 @@ export default function Dashboard() {
     ['Catégories', s.categories, 'dans la boutique'],
     ['Commandes', s.orders.total, `${s.orders.toHandle} à traiter`],
     ['Messages', s.messages.total, `${s.messages.unread} non lu${s.messages.unread > 1 ? 's' : ''}`],
+    ...(s.reviews ? [['Avis clients', s.reviews.pending, 'à modérer']] : []),
     ['Chiffre d’affaires', euro(s.revenue), 'commandes payées, hors annulées'],
   ];
 

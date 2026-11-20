@@ -178,6 +178,17 @@ export const api = {
     remove: (id) => request(`/api/messages/${id}`, { method: 'DELETE' }),
   },
 
+  // --- Avis clients : lecture publique, dépôt (acheteur connecté) et modération (admin)
+  reviews: {
+    list: (productId, q = {}) => request(`/api/products/${productId}/reviews`, { query: q }),   // { data, meta, summary }
+    mine: (productId) => request(`/api/products/${productId}/reviews/mine`),                    // { eligible, reason, review }
+    create: (productId, body) => request(`/api/products/${productId}/reviews`, { method: 'POST', body }), // { rating, title, body }
+    removeOwn: (id) => request(`/api/reviews/${id}`, { method: 'DELETE' }),
+    adminList: (q = {}) => request('/api/admin/reviews', { query: q }),                         // { status, q, page, perPage }
+    adminUpdate: (id, body) => request(`/api/admin/reviews/${id}`, { method: 'PATCH', body }),  // { status?, reply? }
+    adminRemove: (id) => request(`/api/admin/reviews/${id}`, { method: 'DELETE' }),
+  },
+
   // --- Contenu du site et slider
   content: {
     get: () => request('/api/content'),

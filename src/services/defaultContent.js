@@ -35,7 +35,7 @@ export const DEFAULT_CONTENT = {
     deliveryDelay: '1 à 2 semaines après la commande pour les galets en stock',
     shippingTerms: 'Les frais de livraison sont indiqués avant la validation de la commande.',
   },
-  footer: { text: 'Les galets d’Ambre – Peinture sur galets & fresque murale' },
+  footer: { text: 'Les galets d’Ambre – Peinture sur galets & décoration murale' },
 };
 
 /** Réglages du zoom, complétés par les valeurs par défaut (une API plus ancienne n'envoie pas encore `zoom`) */
@@ -68,7 +68,7 @@ export const DEFAULT_CONTENT_EN = {
     deliveryDelay: '1 to 2 weeks after ordering for pebbles in stock',
     shippingTerms: 'Delivery costs are shown before the order is confirmed.',
   },
-  footer: { text: 'Les galets d’Ambre – Pebble painting & wall murals' },
+  footer: { text: 'Les galets d’Ambre – Pebble painting & wall decor' },
 };
 
 // Parcourt le contenu reçu de l'API en parallèle des textes par défaut : tout texte encore identique au texte français par défaut
