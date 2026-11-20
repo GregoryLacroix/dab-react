@@ -145,3 +145,6 @@ Palette pastel (bleu lavande, menthe, vert tendre, pêche, saumon, rose) utilis�
 
 ## Déconnexion pour inactivité
 `src/components/IdleLogout.jsx` : un utilisateur connecté (site et back-office) est déconnecté après **5 minutes** (**10 minutes** pour l'administrateur) sans clic, frappe, défilement ni toucher, avec un avertissement 30 s avant (« Rester connecté »). L'activité est partagée entre onglets et un ordinateur mis en veille est déconnecté au réveil. Les durées se règlent avec `IDLE_LIMIT_MS` et `ADMIN_IDLE_LIMIT_MS` en haut du fichier. Le jeton est aussi révoqué côté serveur (`POST /api/auth/logout`).
+
+## Tableau de bord (statistiques)
+`src/admin/pages/Dashboard.jsx` : tâches du jour (commandes à traiter, messages, avis), puis statistiques sur 7 jours, 30 jours, 90 jours, 12 mois ou depuis le début (graphiques sans bibliothèque dans `src/admin/charts.jsx`). Données : `GET /api/admin/analytics`.

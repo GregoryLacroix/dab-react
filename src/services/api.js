@@ -203,4 +203,5 @@ export const api = {
   // --- Photos et tableau de bord (admin)
   upload: (file) => { const form = new FormData(); form.append('file', file); return request('/api/uploads', { method: 'POST', form }); },
   stats: () => request('/api/admin/stats'),
+  analytics: (period = '30') => request('/api/admin/analytics', { query: { period } }), // statistiques détaillées (tableau de bord)
 };
