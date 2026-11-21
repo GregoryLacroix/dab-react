@@ -122,6 +122,8 @@ export default function Account() {
                           {o.items.map((i, k) => (
                             <li key={k}><span>{i.qty} × {i.name}</span><span>{money(i.qty * i.price)}</span></li>
                           ))}
+                          {o.discount?.promo > 0 && <li><span>{t('promo.promoLine', { code: o.discount.promoCode })}</span><span>− {money(o.discount.promo)}</span></li>}
+                          {o.discount?.gift > 0 && <li><span>{t('promo.giftLine', { code: o.discount.giftCode })}</span><span>− {money(o.discount.gift)}</span></li>}
                           <li className="order__sum"><span>{t('account.orderTotal')}</span><span>{money(o.total)}</span></li>
                         </ul>
                         <div className="order__cols">

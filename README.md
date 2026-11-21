@@ -149,5 +149,13 @@ Palette pastel (bleu lavande, menthe, vert tendre, pêche, saumon, rose) utilis�
 ## Tableau de bord (statistiques)
 `src/admin/pages/Dashboard.jsx` : tâches du jour (commandes à traiter, messages, avis), puis statistiques sur 7 jours, 30 jours, 90 jours, 12 mois ou depuis le début (graphiques sans bibliothèque dans `src/admin/charts.jsx`). Données : `GET /api/admin/analytics`. Le bouton « Exporter en PDF » télécharge le rapport de la période choisie (`GET /api/admin/analytics/pdf`).
 
+## Codes promo, carte cadeau, réalisations
+
+- **Panier** : un champ « Code promo ou carte cadeau » (`api.codes.check`) affiche la remise calculée par le serveur ; elle est recalculée quand le panier change.
+- **/carte-cadeau** (`/en/gift-card`) : choix du montant, destinataire et message facultatifs, paiement Stripe ; la même adresse sert de page de retour.
+- **/realisations** (`/en/gallery`) : galerie filtrable avec visionneuse plein écran (flèches, miniatures, « avant / après »), bouton vers la demande de devis. Liens dans le menu et le pied de page.
+- **Back-office** : « Codes promo & cartes cadeau » et « Réalisations » (envoi de photos, ordre, publication).
+- Le plan du site (`npm run seo`) inclut les deux nouvelles pages.
+
 ## Page « Bientôt disponible »
 Back-office, menu « Bientôt disponible » : un bouton active ou désactive la page d'attente (titre, texte, date d'ouverture facultative avec ouverture automatique). Activée, elle remplace tout le site pour les visiteurs (`Gate` dans `src/App.jsx`, page `src/pages/ComingSoon.jsx`, non indexée par Google) ; l'administrateur connecté voit le site avec un bandeau orange (`SoonBar`) et peut l'ouvrir en un clic. Les mentions légales, la confidentialité, les CGV et le retour de paiement restent accessibles. Réglage stocké dans le contenu du site (`comingSoon`, voir `SiteContent.php`), aucune table en plus.

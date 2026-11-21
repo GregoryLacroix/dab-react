@@ -48,6 +48,10 @@ export default function Terms() {
 
       <h2>{t('tc.h12')}</h2>
       <p>{t('tc.p12')}</p>
+
+      <h2>{t('tc.h13')}</h2>
+      <p>{t('tc.p13a')}</p>
+      <p>{t('tc.p13b')}</p>
     </LegalPage>
   );
 }

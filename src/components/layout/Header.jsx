@@ -56,6 +56,7 @@ export default function Header() {
         <nav id="main-nav" className={`header__nav ${open ? 'is-open' : ''}`} aria-label={t('header.nav')}>
           <NavLink to={l('/')} end>{t('nav.home')}</NavLink>
           <NavLink to={l('/produits')}>{t('nav.shop')}</NavLink>
+          <NavLink to={l('/realisations')}>{t('nav.gallery')}</NavLink>
           <NavLink to={l('/contact')}>{t('nav.contact')}</NavLink>
           {user ? (
             <>

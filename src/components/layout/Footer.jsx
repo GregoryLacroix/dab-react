@@ -15,6 +15,8 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} {footer.text}</p>
         <nav aria-label={t('footer.nav')}>
           <Link to={l('/produits')}>{t('nav.shop')}</Link>
+          <Link to={l('/realisations')}>{t('nav.gallery')}</Link>
+          <Link to={l('/carte-cadeau')}>{t('nav.giftCard')}</Link>
           <Link to={l('/devis')}>{t('footer.quote')}</Link>
           <Link to={l('/contact')}>{t('nav.contact')}</Link>
           {!user && <Link to={l('/inscription')}>{t('footer.register')}</Link>}

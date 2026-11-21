@@ -158,7 +158,7 @@ export const api = {
     remove: (id) => request(`/api/categories/${id}`, { method: 'DELETE' }),
   },
   orders: {
-    create: ({ customer, items, acceptTerms }) => request('/api/orders', { method: 'POST', body: { customer, acceptTerms, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }),
+    create: ({ customer, items, acceptTerms, codes = [] }) => request('/api/orders', { method: 'POST', body: { customer, acceptTerms, codes, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }),
     list: (q = {}) => request('/api/orders', { query: q }),         // admin : { status, q, page, perPage }
     get: (ref) => request(`/api/orders/${ref}`),
     // extra (« expédiée ») : { tracking: { carrier, number, url }, notify } -> suivi enregistré et e-mail au client
@@ -179,6 +179,30 @@ export const api = {
   },
 
   // --- Avis clients : lecture publique, dépôt (acheteur connecté) et modération (admin)
+  // --- Codes promo, cartes cadeau
+  codes: {
+    check: ({ codes, items, email }) => request('/api/codes/check', { method: 'POST', body: { codes, email, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }), // { promo, gift, discount }
+  },
+  giftCards: {
+    buy: (body) => request('/api/gift-cards', { method: 'POST', body }),                         // { checkoutUrl }
+    checkoutStatus: (sessionId) => request(`/api/gift-cards/checkout/${sessionId}`),            // { paid, amount, buyerEmail, recipientEmail }
+    adminList: (q = {}) => request('/api/admin/gift-cards', { query: q }),                      // admin
+    adminUpdate: (id, status) => request(`/api/admin/gift-cards/${id}`, { method: 'PATCH', body: { status } }),
+  },
+  promos: {
+    list: (q = {}) => request('/api/admin/promo-codes', { query: q }),                          // admin
+    create: (body) => request('/api/admin/promo-codes', { method: 'POST', body }),
+    update: (id, body) => request(`/api/admin/promo-codes/${id}`, { method: 'PUT', body }),
+    remove: (id) => request(`/api/admin/promo-codes/${id}`, { method: 'DELETE' }),
+  },
+  // --- Galerie de réalisations
+  realisations: {
+    list: () => request('/api/realisations', { query: { perPage: 100 } }),                     // { data }
+    adminList: (q = {}) => request('/api/admin/realisations', { query: q }),
+    create: (body) => request('/api/admin/realisations', { method: 'POST', body }),
+    update: (id, body) => request(`/api/admin/realisations/${id}`, { method: 'PUT', body }),
+    remove: (id) => request(`/api/admin/realisations/${id}`, { method: 'DELETE' }),
+  },
   reviews: {
     list: (productId, q = {}) => request(`/api/products/${productId}/reviews`, { query: q }),   // { data, meta, summary }
     mine: (productId) => request(`/api/products/${productId}/reviews/mine`),                    // { eligible, reason, review }

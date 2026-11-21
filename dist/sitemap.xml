@@ -25,6 +25,30 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/produits"/>
   </url>
   <url>
+    <loc>https://dab.gregory-lacroix-pf.com/realisations</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/realisations"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/realisations"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/gallery</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/realisations"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/realisations"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/carte-cadeau</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/carte-cadeau"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/gift-card"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/carte-cadeau"/>
+  </url>
+  <url>
+    <loc>https://dab.gregory-lacroix-pf.com/en/gift-card</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/carte-cadeau"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/gift-card"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dab.gregory-lacroix-pf.com/carte-cadeau"/>
+  </url>
+  <url>
     <loc>https://dab.gregory-lacroix-pf.com/devis</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://dab.gregory-lacroix-pf.com/devis"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://dab.gregory-lacroix-pf.com/en/quote"/>

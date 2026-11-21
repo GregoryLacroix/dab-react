@@ -14,6 +14,8 @@ const links = [
   ['/admin/categories', 'Catégories'],
   ['/admin/commandes', 'Commandes'],
   ['/admin/devis', 'Devis'],
+  ['/admin/promos', 'Codes promo & cartes cadeau'],
+  ['/admin/realisations', 'Réalisations'],
   ['/admin/messages', 'Messages'],
   ['/admin/avis', 'Avis clients'],
   ['/admin/slider', 'Slider d’accueil'],

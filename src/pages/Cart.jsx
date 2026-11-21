@@ -23,6 +23,12 @@ export default function Cart() {
   const [placed, setPlaced] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
   const [params] = useSearchParams();
+  // Codes promo / carte cadeau : le serveur calcule la remise (POST /api/codes/check), le navigateur ne fait que l'afficher
+  const [codes, setCodes] = useState([]);
+  const [promo, setPromo] = useState(null);       // { promo, gift, discount }
+  const [codeInput, setCodeInput] = useState('');
+  const [codeError, setCodeError] = useState('');
+  const [codeBusy, setCodeBusy] = useState(false);
   const cancelled = params.get('cancelled') === '1'; // retour du bouton « Retour » de la page Stripe
 
   // Retour arrière depuis Stripe : le navigateur peut restaurer cette page telle quelle, bouton encore en chargement
@@ -31,6 +37,43 @@ export default function Cart() {
     window.addEventListener('pageshow', reset);
     return () => window.removeEventListener('pageshow', reset);
   }, []);
+  // Le panier change (quantité, retrait) : on recalcule la remise ; si le code ne s'applique plus, on le retire
+  useEffect(() => {
+    if (codes.length === 0 || items.length === 0) return undefined;
+    let stop = false;
+    api.codes.check({ codes, items, email: form.email }).then(
+      (res) => { if (!stop) setPromo(res); },
+      (err) => { if (!stop) { setCodes([]); setPromo(null); setCodeError(fieldErrors(err).code ?? err.message); } },
+    );
+    return () => { stop = true; };
+  }, [total]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const applyCode = async () => {
+    const code = codeInput.trim();
+    if (!code) return;
+    setCodeBusy(true);
+    setCodeError('');
+    try {
+      const next = [...codes, code];
+      const res = await api.codes.check({ codes: next, items, email: form.email });
+      setCodes(next);
+      setPromo(res);
+      setCodeInput('');
+    } catch (err) {
+      setCodeError(fieldErrors(err).code ?? err.message);
+    } finally {
+      setCodeBusy(false);
+    }
+  };
+  const removeCode = (code) => {
+    const next = codes.filter((c) => c.replace(/\s+/g, '').toUpperCase() !== code);
+    setCodes(next);
+    if (next.length === 0) setPromo(null);
+    else api.codes.check({ codes: next, items, email: form.email }).then(setPromo, () => { setCodes([]); setPromo(null); });
+  };
+  const discount = promo?.discount ?? 0;
+  const net = Math.max(0, Math.round((total - discount) * 100) / 100);
+
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const order = async () => {
@@ -44,7 +87,7 @@ export default function Cart() {
     setBusy(true);
     try {
       // POST /api/orders : le serveur recalcule les prix et le total, et renvoie l'adresse de la page de paiement Stripe
-      const res = await api.orders.create({ customer: { name: form.name.trim(), email: form.email.trim() }, items, acceptTerms: true });
+      const res = await api.orders.create({ customer: { name: form.name.trim(), email: form.email.trim() }, items, acceptTerms: true, codes });
       if (res.checkoutUrl) {
         // Le panier reste intact : il ne sera vidé qu'une fois le paiement confirmé (page /commande)
         setRedirecting(true);
@@ -56,8 +99,9 @@ export default function Cart() {
       clear();
     } catch (error) {
       const v = fieldErrors(error, { 'customer.name': 'name', 'customer.email': 'email', acceptTerms: 'terms' });
+      if (v.code) setCodeError(v.code);
       const itemMessage = Object.entries(v).find(([key]) => key.startsWith('items'))?.[1];
-      setErrors({ name: v.name, email: v.email, terms: v.terms, form: itemMessage ?? (v.name || v.email ? undefined : error.message) });
+      setErrors({ name: v.name, email: v.email, terms: v.terms, form: itemMessage ?? (v.name || v.email || v.code ? undefined : error.message) });
     } finally {
       setBusy(false);
     }
@@ -100,6 +144,24 @@ export default function Cart() {
             );
           })}
         </ul>
+        <div className="cart__promo">
+          <label htmlFor="promo-code">{t('promo.label')}</label>
+          <div className="cart__promo-row">
+            <input id="promo-code" value={codeInput} maxLength={40} placeholder={t('promo.placeholder')} autoComplete="off" aria-invalid={!!codeError}
+              onChange={(e) => setCodeInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); applyCode(); } }} />
+            <Button variant="ghost" onClick={applyCode} loading={codeBusy}>{t('promo.apply')}</Button>
+          </div>
+          {codeError && <p className="field__error" role="alert">{codeError}</p>}
+          {promo?.promo && (
+            <p className="cart__applied">{t('promo.promoLine', { code: promo.promo.code })} : <strong>− {money(promo.promo.amount)}</strong>{' '}
+              <button type="button" className="link-btn" onClick={() => removeCode(promo.promo.code)}>{t('promo.remove')}</button></p>
+          )}
+          {promo?.gift && (
+            <p className="cart__applied">{t('promo.giftLine', { code: promo.gift.code })} : <strong>− {money(promo.gift.amount)}</strong>{' '}
+              <small>({t('promo.giftBalance', { balance: money(promo.gift.balance) })})</small>{' '}
+              <button type="button" className="link-btn" onClick={() => removeCode(promo.gift.code)}>{t('promo.remove')}</button></p>
+          )}
+        </div>
         <div className="cart__checkout">
           <FormField label={t('field.name')} name="name" autoComplete="name" value={form.name} onChange={change} error={errors.name} />
           <FormField label={t('field.email')} name="email" type="email" autoComplete="email" value={form.email} onChange={change} error={errors.email} />
@@ -114,7 +176,8 @@ export default function Cart() {
         </div>
         {errors.form && <p className="notice notice--error" role="alert">{errors.form}</p>}
         <div className="cart__summary">
-          <p>{t('cart.total')} <strong>{money(total)}</strong></p>
+          {discount > 0 && <p className="note">{t('promo.subtotal')} {money(total)} · {t('promo.shippingNote')}</p>}
+          <p>{t('cart.total')} <strong>{money(net)}</strong></p>
           <div className="hero__actions">
             <Button variant="ghost" onClick={clear}>{t('cart.clear')}</Button>
             <Button onClick={order} loading={busy || redirecting}>{redirecting ? t('cart.redirecting') : busy ? t('sending') : t('cart.order')}</Button>

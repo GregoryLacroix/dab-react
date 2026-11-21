@@ -13,6 +13,8 @@ import Orders from './pages/Orders.jsx';
 import Content from './pages/Content.jsx';
 import Messages from './pages/Messages.jsx';
 import Quotes from './pages/Quotes.jsx';
+import Promos from './pages/Promos.jsx';
+import Realisations from './pages/Realisations.jsx';
 import Reviews from './pages/Reviews.jsx';
 import ComingSoonAdmin from './pages/ComingSoon.jsx';
 import { AdminNotFound } from './AdminErrors.jsx';
@@ -32,6 +34,8 @@ export default function AdminRoutes() {
           <Route path="commandes" element={<Orders />} />
           <Route path="devis" element={<Quotes />} />
           <Route path="messages" element={<Messages />} />
+          <Route path="promos" element={<Promos />} />
+          <Route path="realisations" element={<Realisations />} />
           <Route path="avis" element={<Reviews />} />
  <Route path="bientot" element={<ComingSoonAdmin />} />
           <Route path="slider" element={<SliderAdmin />} />

@@ -20,6 +20,8 @@ import { LANGS, ROUTES } from './i18n/routes.js';
 const Products = lazy(() => import('./pages/Products.jsx'));
 const ProductView = lazy(() => import('./pages/ProductView.jsx'));
 const Cart = lazy(() => import('./pages/Cart.jsx'));
+const Gallery = lazy(() => import('./pages/Gallery.jsx'));
+const GiftCard = lazy(() => import('./pages/GiftCard.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const Login = lazy(() => import('./pages/Login.jsx'));
 const Register = lazy(() => import('./pages/Register.jsx'));
@@ -34,13 +36,13 @@ const AdminRoutes = lazy(() => import('./admin/AdminRoutes.jsx'));
 
 // Chaque page existe en français (/produits) et en anglais (/en/shop) : les adresses viennent de i18n/routes.js
 const PAGES = {
-  home: <Home />, shop: <Products />, product: <ProductView />, cart: <Cart />, order: <OrderResult />, contact: <Contact />,
+  home: <Home />, shop: <Products />, product: <ProductView />, cart: <Cart />, gallery: <Gallery />, giftCard: <GiftCard />, order: <OrderResult />, contact: <Contact />,
   login: <Login />, oauth: <OAuthReturn />, twofactor: <TwoFactorVerify />, quote: <QuoteRequest />, quotePay: <QuotePay />, forgot: <ForgotPassword />, reset: <ResetPassword />, register: <Register />, account: <Account />,
   legal: <LegalNotice />, privacy: <Privacy />, terms: <Terms />, error: <ServerError />,
 };
 
 // Pages qui restent accessibles même quand le site est en « Bientôt disponible » (obligations légales, retour de paiement)
-const OPEN_KEYS = ['legal', 'privacy', 'terms', 'order'];
+const OPEN_KEYS = ['legal', 'privacy', 'terms', 'order', 'giftCard'];
 const isOpenPath = (pathname) => ROUTES.some((r) => OPEN_KEYS.includes(r.key) && LANGS.some((lang) => matchPath({ path: r[lang], end: true }, pathname)));
 
 // Mode « Bientôt disponible » : les visiteurs voient la page d'attente ; l'administrateur connecté voit le site avec un bandeau d'information
