@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../services/api.js';
 import { RouteErrorBoundary } from '../components/ErrorBoundary.jsx';
 import { AdminCrash } from './AdminErrors.jsx';
+import { useSiteMode } from '../store/store.js';
 import { Btn, Loading } from './ui.jsx';
 
 const links = [
@@ -17,6 +18,7 @@ const links = [
   ['/admin/avis', 'Avis clients'],
   ['/admin/slider', 'Slider d’accueil'],
   ['/admin/contenu', 'Contenu du site'],
+  ['/admin/bientot', 'Bientôt disponible'],
 ];
 
 export default function AdminLayout() {
@@ -24,6 +26,7 @@ export default function AdminLayout() {
   const { user, loading, logout } = useAuth();
   const [unread, setUnread] = useState(0);
   const [pendingReviews, setPendingReviews] = useState(0);
+  const { active: soonActive } = useSiteMode();
 
   // Pastille « messages non lus » : GET /api/messages?read=0 (on ne garde que le total)
   useEffect(() => {
@@ -65,6 +68,9 @@ export default function AdminLayout() {
                   {label}
                   {to === '/admin/messages' && unread > 0 && (
                     <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-bold ${isActive ? 'bg-white text-black' : 'bg-black text-white'}`}>{unread}</span>
+                  )}
+                  {to === '/admin/bientot' && soonActive && (
+                    <span className="ml-2 rounded-full bg-amber-500 px-2 py-0.5 text-xs font-bold text-black">actif</span>
                   )}
                   {to === '/admin/avis' && pendingReviews > 0 && (
                     <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-bold ${isActive ? 'bg-white text-black' : 'bg-black text-white'}`}>{pendingReviews}</span>

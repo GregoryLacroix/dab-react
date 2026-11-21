@@ -148,3 +148,6 @@ Palette pastel (bleu lavande, menthe, vert tendre, pêche, saumon, rose) utilis�
 
 ## Tableau de bord (statistiques)
 `src/admin/pages/Dashboard.jsx` : tâches du jour (commandes à traiter, messages, avis), puis statistiques sur 7 jours, 30 jours, 90 jours, 12 mois ou depuis le début (graphiques sans bibliothèque dans `src/admin/charts.jsx`). Données : `GET /api/admin/analytics`.
+
+## Page « Bientôt disponible »
+Back-office, menu « Bientôt disponible » : un bouton active ou désactive la page d'attente (titre, texte, date d'ouverture facultative avec ouverture automatique). Activée, elle remplace tout le site pour les visiteurs (`Gate` dans `src/App.jsx`, page `src/pages/ComingSoon.jsx`, non indexée par Google) ; l'administrateur connecté voit le site avec un bandeau orange (`SoonBar`) et peut l'ouvrir en un clic. Les mentions légales, la confidentialité, les CGV et le retour de paiement restent accessibles. Réglage stocké dans le contenu du site (`comingSoon`, voir `SiteContent.php`), aucune table en plus.

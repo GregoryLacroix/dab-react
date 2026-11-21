@@ -1,5 +1,9 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, matchPath, useLocation } from 'react-router-dom';
+import { useAuth } from './context/AuthContext.jsx';
+import { useSiteMode } from './store/store.js';
+import ComingSoon from './pages/ComingSoon.jsx';
+import SoonBar from './components/ui/SoonBar.jsx';
 import Layout from './components/layout/Layout.jsx';
 import { NetworkBar, PageLoader } from './components/ui/Loaders.jsx';
 import Home from './pages/Home.jsx';
@@ -35,13 +39,32 @@ const PAGES = {
   legal: <LegalNotice />, privacy: <Privacy />, terms: <Terms />, error: <ServerError />,
 };
 
+// Pages qui restent accessibles même quand le site est en « Bientôt disponible » (obligations légales, retour de paiement)
+const OPEN_KEYS = ['legal', 'privacy', 'terms', 'order'];
+const isOpenPath = (pathname) => ROUTES.some((r) => OPEN_KEYS.includes(r.key) && LANGS.some((lang) => matchPath({ path: r[lang], end: true }, pathname)));
+
+// Mode « Bientôt disponible » : les visiteurs voient la page d'attente ; l'administrateur connecté voit le site avec un bandeau d'information
+function Gate() {
+  const { pathname } = useLocation();
+  const { user, loading } = useAuth();
+  const { loaded, active } = useSiteMode();
+  if (!loaded || loading) return <PageLoader />;
+  if (active && !user?.isAdmin && !isOpenPath(pathname)) return <ComingSoon />;
+  return (
+    <>
+      {active && user?.isAdmin && <SoonBar />}
+      <Layout />
+    </>
+  );
+}
+
 export default function App() {
   return (
     <>
       <NetworkBar />
       <Routes>
         <Route path="/admin/*" element={<Suspense fallback={<PageLoader />}><AdminRoutes /></Suspense>} />
-        <Route element={<Layout />}>
+        <Route element={<Gate />}>
           {ROUTES.flatMap((r) => LANGS.map((lang) => <Route key={`${r.key}-${lang}`} path={r[lang]} element={PAGES[r.key]} />))}
           <Route path="*" element={<NotFound />} />
         </Route>

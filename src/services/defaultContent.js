@@ -35,6 +35,12 @@ export const DEFAULT_CONTENT = {
     deliveryDelay: '1 à 2 semaines après la commande pour les galets en stock',
     shippingTerms: 'Les frais de livraison sont indiqués avant la validation de la commande.',
   },
+  comingSoon: {
+    enabled: false,
+    title: 'Bientôt disponible',
+    text: 'La boutique de galets peints à la main et de décoration murale ouvre très prochainement. Revenez nous voir !',
+    date: '', autoOpen: false,
+  },
   footer: { text: 'Les galets d’Ambre – Peinture sur galets & décoration murale' },
 };
 
@@ -67,6 +73,10 @@ export const DEFAULT_CONTENT_EN = {
     vatNote: 'Prices are shown in euros, including all taxes (VAT).',
     deliveryDelay: '1 to 2 weeks after ordering for pebbles in stock',
     shippingTerms: 'Delivery costs are shown before the order is confirmed.',
+  },
+  comingSoon: {
+    title: 'Coming soon',
+    text: 'Our shop of hand-painted pebbles and wall decor opens very soon. Come back and visit us!',
   },
   footer: { text: 'Les galets d’Ambre – Pebble painting & wall decor' },
 };

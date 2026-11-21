@@ -160,3 +160,18 @@
   &__box { width: 100%; max-width: 24rem; padding: 1.75rem; background: $sand-50; color: $ink; border-radius: $radius; box-shadow: 0 20px 50px rgba($ink, .3);
     display: grid; gap: .8rem; justify-items: start;
     h2 { margin: 0; font-size: 1.5rem; } p { margin: 0; } } }
+
+// ---- Page « Bientôt disponible »
+.soon { min-height: 100vh; display: grid; align-content: center; justify-items: center; gap: 1rem; padding: 3rem 1.25rem; text-align: center; background: $sand-50; position: relative;
+  &__lang { position: absolute; top: 1rem; right: 1rem; a { font-weight: 600; text-decoration: none; border: 2px solid $ink; border-radius: $radius; padding: .3rem .7rem; color: $ink; } }
+  &__logo { width: min(70vw, 360px); height: auto; }
+  h1 { margin: 0; font-size: clamp(2.2rem, 6vw, 3.6rem); }
+  &__text { margin: 0; max-width: 34rem; font-size: 1.15rem; }
+  &__date { margin: .5rem 0 0; display: grid; gap: .15rem; padding: .9rem 1.6rem; background: $sand-100; border: 1px solid $sand-400; border-radius: $radius;
+    strong { font-size: 1.2rem; } span { color: rgba($ink, .75); } }
+  &__links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.5rem; a { color: $ink; font-weight: 600; } }
+  &__legal { margin-top: 1.5rem; display: flex; gap: 1.25rem; font-size: .9rem; a { color: rgba($ink, .75); } } }
+.soonbar { position: sticky; top: 0; z-index: 900; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem;
+  padding: .6rem 1rem; background: #c8891a; color: #000; font-size: .9rem;
+  &__actions { display: flex; gap: .6rem; align-items: center; }
+  a, button { color: #000; font: inherit; font-weight: 700; text-decoration: underline; background: none; border: 0; cursor: pointer; padding: 0; } }

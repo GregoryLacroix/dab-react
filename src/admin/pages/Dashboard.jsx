@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { api } from '../../services/api.js';
 import useQuery from '../../services/useQuery.js';
+import { useSiteMode } from '../../store/store.js';
 import { Card, ErrorBox, Loading, PageHeader, StatusBadge, euro, formatDate, statusStyle } from '../ui.jsx';
 import { BarChart, Delta, HBars, ShareBar, Stars } from '../charts.jsx';
 
@@ -38,6 +39,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [period, setPeriod] = useState('30');
   const { data: s, error, loading, reload } = useQuery(() => api.stats(), []);                 // GET /api/admin/stats
+  const { active: soonActive } = useSiteMode();
   const a = useQuery(() => api.analytics(period), [period]);                                   // GET /api/admin/analytics?period=…
 
   if (loading && !s) return <><PageHeader title="Tableau de bord" /><Loading /></>;
@@ -57,6 +59,13 @@ export default function Dashboard() {
         <p className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm" role="note">
           <strong>Sécurité :</strong> la double authentification n’est pas activée sur votre compte. Elle protège l’administration même si votre mot de passe est volé.{' '}
           <Link to="/mon-compte" className="font-semibold underline">Activer maintenant</Link>
+        </p>
+      )}
+
+      {soonActive && (
+        <p className="mb-4 rounded-lg border border-amber-400 bg-amber-50 px-4 py-3 text-sm" role="note">
+          <strong>Le site est en mode « Bientôt disponible » :</strong> les visiteurs ne voient que la page d’attente.{' '}
+          <Link to="/admin/bientot" className="font-semibold underline">Gérer ou ouvrir le site</Link>
         </p>
       )}
 

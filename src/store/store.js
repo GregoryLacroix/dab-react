@@ -59,5 +59,18 @@ export function useContent() {
   return useMemo(() => localizeContent(content ?? DEFAULT_CONTENT, lang), [content, lang]);
 }
 
+/**
+ * Mode « Bientôt disponible » : { loaded, active, content }.
+ * active = réglage activé ET (pas d'ouverture automatique, ou date d'ouverture pas encore atteinte).
+ */
+export function useSiteMode() {
+  const raw = useSyncExternalStore(subscribe, () => state.content);
+  const content = useContent();
+  useEffect(() => { contentLoading ??= refreshContent(); }, []);
+  const cs = content.comingSoon ?? DEFAULT_CONTENT.comingSoon;
+  const opened = Boolean(cs.autoOpen && cs.date && Date.now() >= new Date(`${cs.date}T00:00:00`).getTime());
+  return { loaded: raw !== null, active: Boolean(cs.enabled) && !opened, config: cs };
+}
+
 /** Prévient le menu du back-office que les messages ont changé (pastille « non lus ») */
 export const notifyMessagesChanged = () => window.dispatchEvent(new Event('dab:messages'));
