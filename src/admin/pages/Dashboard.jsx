@@ -4,7 +4,8 @@ import { useAuth } from '../../context/AuthContext.jsx';
 import { api } from '../../services/api.js';
 import useQuery from '../../services/useQuery.js';
 import { useSiteMode } from '../../store/store.js';
-import { Card, ErrorBox, Loading, PageHeader, StatusBadge, euro, formatDate, statusStyle } from '../ui.jsx';
+import { saveBlob } from '../../services/download.js';
+import { Btn, Card, ErrorBox, Loading, PageHeader, StatusBadge, euro, formatDate, statusStyle } from '../ui.jsx';
 import { BarChart, Delta, HBars, ShareBar, Stars } from '../charts.jsx';
 
 const PERIODS = [['7', '7 jours'], ['30', '30 jours'], ['90', '90 jours'], ['365', '12 mois'], ['all', 'Depuis le début']];
@@ -40,6 +41,15 @@ export default function Dashboard() {
   const [period, setPeriod] = useState('30');
   const { data: s, error, loading, reload } = useQuery(() => api.stats(), []);                 // GET /api/admin/stats
   const { active: soonActive } = useSiteMode();
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState(null);
+  const exportPdf = async () => {
+    setExporting(true);
+    setExportError(null);
+    try {
+      saveBlob(await api.analyticsPdf(period), `statistiques-${new Date().toISOString().slice(0, 10)}.pdf`); // GET /api/admin/analytics/pdf?period=…
+    } catch (err) { setExportError(err); } finally { setExporting(false); }
+  };
   const a = useQuery(() => api.analytics(period), [period]);                                   // GET /api/admin/analytics?period=…
 
   if (loading && !s) return <><PageHeader title="Tableau de bord" /><Loading /></>;
@@ -87,7 +97,9 @@ export default function Dashboard() {
             className={`rounded-full border px-3 py-1 text-sm font-medium ${period === key ? 'border-black bg-black text-white' : 'border-sand-400 hover:bg-sand-200'}`}>{label}</button>
         ))}
         {d && <span className="ml-auto text-xs text-black/70">du {formatDate(d.period.from)} au {formatDate(d.period.to)}</span>}
+        <Btn variant="secondary" loading={exporting} onClick={exportPdf} disabled={!d}>Exporter en PDF</Btn>
       </div>
+      {exportError && <div className="mb-4"><ErrorBox error={exportError} /></div>}
 
       {a.error && !d && <ErrorBox error={a.error} onRetry={a.reload} />}
       {a.loading && !d && <Loading />}
