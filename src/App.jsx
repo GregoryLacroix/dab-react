@@ -35,6 +35,7 @@ const Terms = lazy(() => import('./pages/legal/Terms.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 const ServerError = lazy(() => import('./pages/ServerError.jsx'));
 // Le back-office (et Tailwind) ne se charge que si on visite /admin
+const ImageDiag = lazy(() => import('./pages/ImageDiag.jsx'));
 const AdminRoutes = lazy(() => import('./admin/AdminRoutes.jsx'));
 
 // Chaque page existe en français (/produits) et en anglais (/en/shop) : les adresses viennent de i18n/routes.js
@@ -69,6 +70,7 @@ export default function App() {
       <NetworkBar />
       <Routes>
         <Route path="/admin/*" element={<Suspense fallback={<PageLoader />}><AdminRoutes /></Suspense>} />
+        <Route path="/diag-images" element={<Suspense fallback={<PageLoader />}><ImageDiag /></Suspense>} />
         <Route element={<Gate />}>
           {ROUTES.flatMap((r) => LANGS.map((lang) => <Route key={`${r.key}-${lang}`} path={r[lang]} element={PAGES[r.key]} />))}
           <Route path="*" element={<NotFound />} />
