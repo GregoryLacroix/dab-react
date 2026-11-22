@@ -18,7 +18,7 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 
 export default function Home() {
   const { t, l, lang } = useI18n();
-  const { hero, marquee, story, latest, blocks, contact } = useContent();
+  const { hero, marquee, story, storyView, latest, blocks, contact } = useContent();
   useSeo({
     description: hero.text,
     path: '/',
@@ -61,7 +61,7 @@ export default function Home() {
       </section>
 
       <Marquee words={marquee} />
-      <PaintStory steps={story} />
+      <PaintStory steps={story} view={storyView} />
 
       <section className="section">
         <div className="container">

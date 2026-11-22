@@ -165,5 +165,9 @@ Palette pastel (bleu lavande, menthe, vert tendre, pêche, saumon, rose) utilis�
 - **/faq** (`/en/faq`) : questions en accordéon, éditées dans l'admin ; balisage FAQPage pour Google.
 - **Back-office** : « Frais de port » (zones, tranches de poids), « Alertes retour en stock », « FAQ ».
 
+## Galet de l'accueil : animation ou photos
+
+Dans l'admin, « Contenu du site » > « Accueil : le galet (3 étapes) » : **Animation** (le galet se peint au scroll, comme avant) ou **Photos** (une photo par étape, dans la même forme de galet, qui se fondent l'une dans l'autre ; le vernis garde son reflet). Une étape sans photo reprend la précédente ; sans aucune photo, l'animation reste affichée. Réglage `storyView` du contenu du site (`mode`, `images`), aucune modification de base de données.
+
 ## Page « Bientôt disponible »
 Back-office, menu « Bientôt disponible » : un bouton active ou désactive la page d'attente (titre, texte, date d'ouverture facultative avec ouverture automatique). Activée, elle remplace tout le site pour les visiteurs (`Gate` dans `src/App.jsx`, page `src/pages/ComingSoon.jsx`, non indexée par Google) ; l'administrateur connecté voit le site avec un bandeau orange (`SoonBar`) et peut l'ouvrir en un clic. Les mentions légales, la confidentialité, les CGV et le retour de paiement restent accessibles. Réglage stocké dans le contenu du site (`comingSoon`, voir `SiteContent.php`), aucune table en plus.

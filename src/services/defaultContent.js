@@ -8,6 +8,8 @@ export const DEFAULT_CONTENT = {
     secondaryLabel: 'Demander une fresque', secondaryTo: '/devis',
   },
   marquee: ['Peinture sur galet', 'Fresque murale', 'Boutique en ligne'],
+  // Galet de l'accueil : 'animation' (peinture au scroll) ou 'photos' (une photo par étape)
+  storyView: { mode: 'animation', images: ['', '', ''] },
   story: [
     { title: 'Le galet nu', text: 'Je choisis une pierre sur la plage. Sa forme décide du motif.' },
     { title: 'Les couleurs prennent forme', text: 'À l’acrylique, couche après couche, les fleurs, les mandalas et les points apparaissent.' },
@@ -45,6 +47,8 @@ export const DEFAULT_CONTENT = {
 };
 
 /** Réglages du zoom, complétés par les valeurs par défaut (une API plus ancienne n'envoie pas encore `zoom`) */
+/** Réglage du galet de l'accueil, complété par les valeurs par défaut (une API plus ancienne n'envoie pas encore `storyView`) */
+export const storyViewSettings = (v) => ({ ...DEFAULT_CONTENT.storyView, ...v, images: [0, 1, 2].map((i) => v?.images?.[i] ?? '') });
 export const zoomSettings = (zoom) => ({ ...DEFAULT_CONTENT.zoom, ...zoom });
 
 // Version anglaise des textes par défaut. Les liens (`to`), l'e-mail, Instagram, le slider et les champs légaux ne sont pas des textes à traduire.
