@@ -15,6 +15,9 @@ import '@fontsource/figtree/600.css';
 import '@fontsource/instrument-serif/400.css';
 import '@fontsource/instrument-serif/400-italic.css';
 import './styles/main.scss';
+import { initTheme } from './services/theme.js';
+
+initTheme(); // thème clair/sombre appliqué avant l'affichage
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

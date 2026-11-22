@@ -14,7 +14,7 @@
     @include md { gap: 1rem; font-size: .95rem; } }
 }
 .badge { display: inline-block; margin-left: .4rem; min-width: 1.4rem; padding: 0 .4rem; text-align: center;
-  background: $ink; color: #fff; border-radius: 99px; font-size: .8rem; }
+  background: $ink; color: $on-ink; border-radius: 99px; font-size: .8rem; }
 
 .footer { background: $sand-100; border-top: 1px solid $sand-200; padding: 3rem 0 0; font-size: .95rem; color: $stone-700;
   p { margin: 0; }
@@ -38,12 +38,12 @@
 // ---- Boutons
 .btn { display: inline-block; cursor: pointer; font: 600 1rem $font-body; text-decoration: none;
   padding: .75rem 1.5rem; border-radius: $radius; border: 2px solid $ink; transition: background .2s, color .2s;
-  &--primary { background: $ink; color: #fff; &:hover { background: $ink-soft; border-color: $ink-soft; color: #fff; } }
+  &--primary { background: $ink; color: $on-ink; &:hover { background: $ink-soft; border-color: $ink-soft; color: $on-ink; } }
   &--ghost { background: transparent; color: $ink; &:hover { background: $sand-200; color: $ink; } } }
 .link-btn { background: none; border: 0; color: $ink; cursor: pointer; font: inherit; text-decoration: underline; }
 
 // ---- Formulaires
-.auth { width: min(100% - 2.5rem, 440px); margin: 0 auto; background: rgba(255,255,255,.6); border: 1px solid $sand-200;
+.auth { width: min(100% - 2.5rem, 440px); margin: 0 auto; background: $surface-soft; border: 1px solid $sand-200;
   border-radius: $radius; padding: 2rem; display: grid; gap: 1.1rem;
   h1 { font-size: 2.4rem; margin: 0; } &__alt { margin: 0; font-size: .95rem; } }
 .field { display: grid; gap: .35rem;
@@ -56,7 +56,7 @@
 
 // ---- Produits
 .product-grid { display: grid; gap: 1.8rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin-top: 1.5rem; }
-.pcard { background: rgba(255,255,255,.6); border: 1px solid $sand-200; border-radius: $radius; overflow: hidden;
+.pcard { background: $surface-soft; border: 1px solid $sand-200; border-radius: $radius; overflow: hidden;
   &__media { display: block; }
   &__body { padding: 1.1rem 1.2rem 1.4rem; h3 { margin-bottom: .2em; a { color: inherit; text-decoration: none; &:hover { text-decoration: underline; } } } } }
 .price { font-weight: 600; color: $ink; margin-bottom: .8rem; &--lg { font-size: 1.6rem; } }
@@ -71,7 +71,7 @@
 .filters { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0 .5rem; }
 .chip { font: 500 .95rem $font-body; padding: .45rem 1.1rem; border-radius: 99px; cursor: pointer;
   background: transparent; color: $ink; border: 1px solid $ink;
-  &.is-active { background: $ink; color: #fff; border-color: $ink; } }
+  &.is-active { background: $ink; color: $on-ink; border-color: $ink; } }
 
 .pview { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
   .pimg { border-radius: $radius; } @include md { grid-template-columns: 1fr; gap: 1.5rem; } }
@@ -103,7 +103,7 @@
   &__or { display: flex; align-items: center; gap: .8rem; margin: .2rem 0 0; color: $sand-400; font-size: .9rem;
     &::before, &::after { content: ''; flex: 1; border-top: 1px solid $sand-200; } }
   &__btn { display: flex; align-items: center; justify-content: center; gap: .75rem; padding: .7rem 1rem;
-    background: #fff; color: $ink; border: 1px solid $sand-400; border-radius: $radius;
+    background: $surface; color: $ink; border: 1px solid $sand-400; border-radius: $radius;
     font: 600 1rem $font-body; text-decoration: none; transition: background .15s, border-color .15s;
     svg { width: 1.25rem; height: 1.25rem; flex: none; }
     &:hover { background: $sand-50; border-color: $ink; }
@@ -112,7 +112,7 @@
 
 // ---- Pièce vendue (stock à 0)
 .pcard__media { position: relative; }
-.sold-badge { position: absolute; top: .8rem; left: .8rem; z-index: 2; padding: .3rem .8rem; border-radius: 99px; background: $ink; color: #fff;
+.sold-badge { position: absolute; top: .8rem; left: .8rem; z-index: 2; padding: .3rem .8rem; border-radius: 99px; background: $ink; color: $on-ink;
   font-size: .8rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 
 // ---- Demande de devis (fresques) et page du devis
@@ -131,10 +131,10 @@
 
 // ---- Double authentification : formulaire de code, QR code, codes de secours
 .twofa { display: grid; gap: 1rem; p { margin: 0; } }
-.twofa__qr { display: block; margin: .5rem 0; padding: .5rem; background: #fff; border: 1px solid $sand-200; border-radius: $radius; max-width: 100%; height: auto; }
+.twofa__qr { display: block; margin: .5rem 0; padding: .5rem; background: $surface; border: 1px solid $sand-200; border-radius: $radius; max-width: 100%; height: auto; }
 .twofa__secret { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; word-break: break-all; margin: 0; }
 .twofa__codes { list-style: none; margin: 0; padding: 1rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem 1rem;
-  background: #fff; border: 1px solid $sand-200; border-radius: $radius; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; letter-spacing: .06em; }
+  background: $surface; border: 1px solid $sand-200; border-radius: $radius; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.05rem; letter-spacing: .06em; }
 
 // ---- Avis clients
 .stars { display: inline-flex; gap: .1rem; color: $sand-400; font-size: 1.1rem; letter-spacing: 0;
@@ -190,7 +190,7 @@
 
 // ---- Mini-panier latéral
 .drawer { position: fixed; inset: 0; z-index: 90; background: rgba(20, 20, 20, .45); display: flex; justify-content: flex-end; animation: drawer-fade .2s ease-out;
-  &__panel { width: min(100%, 420px); height: 100%; background: #fff; display: flex; flex-direction: column; box-shadow: -20px 0 40px -20px rgba(0, 0, 0, .35); animation: drawer-in .28s cubic-bezier(.2, .7, .2, 1); }
+  &__panel { width: min(100%, 420px); height: 100%; background: $surface; display: flex; flex-direction: column; box-shadow: -20px 0 40px -20px rgba(0, 0, 0, .35); animation: drawer-in .28s cubic-bezier(.2, .7, .2, 1); }
   &__head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid $sand-200;
     h2 { margin: 0; font-size: 1.25rem; } }
   &__close { width: 2.5rem; height: 2.5rem; border: 0; border-radius: 50%; background: $sand-100; font-size: 1.6rem; line-height: 1; cursor: pointer; color: $ink;
@@ -201,7 +201,7 @@
   &__thumb { flex: none; width: 76px; height: 76px; border-radius: $radius; overflow: hidden; .pimg { height: 100%; aspect-ratio: auto; } }
   &__info { display: grid; gap: .25rem; min-width: 0; align-content: start; strong { overflow-wrap: anywhere; } }
   &__qty { display: flex; align-items: center; gap: .5rem; margin-top: .25rem;
-    button { min-width: 2rem; height: 2rem; border: 1px solid $sand-400; border-radius: 6px; background: #fff; cursor: pointer; color: $ink; font: inherit;
+    button { min-width: 2rem; height: 2rem; border: 1px solid $sand-400; border-radius: 6px; background: $surface; cursor: pointer; color: $ink; font: inherit;
       &:disabled { opacity: .4; cursor: default; } &:focus-visible { outline: 3px solid $ink; outline-offset: 2px; } } }
   &__remove { border: 0 !important; background: none !important; text-decoration: underline; padding: 0 .25rem; margin-left: .25rem; }
   &__foot { padding: 1rem 1.25rem 1.25rem; border-top: 1px solid $sand-200; display: grid; gap: .75rem;

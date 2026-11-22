@@ -8,7 +8,7 @@ $pad: clamp(1.25rem, 4vw, 3rem);
   &__controls { position: absolute; left: $pad; bottom: 1.4rem; display: flex; align-items: center; gap: .7rem; }
   &__btn { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; padding: 0;
     border: 2px solid $ink; background: transparent; color: $ink; transition: background .2s, color .2s;
-    &:hover { background: $ink; color: #fff; }
+    &:hover { background: $ink; color: $on-ink; }
     svg { width: 18px; height: 18px; } }
   &__dots { display: flex; align-items: center; }
   &__dot { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center;

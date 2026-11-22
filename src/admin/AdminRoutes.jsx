@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -24,6 +25,13 @@ import { AdminNotFound } from './AdminErrors.jsx';
 import SliderAdmin from './pages/SliderAdmin.jsx';
 
 export default function AdminRoutes() {
+  // Le back-office reste toujours en thème clair
+  useEffect(() => {
+    const root = document.documentElement;
+    const previous = root.dataset.theme;
+    root.dataset.theme = 'light';
+    return () => { if (previous === undefined) delete root.dataset.theme; else root.dataset.theme = previous; };
+  }, []);
   return (
     <div className="admin-root font-sans">
       <Routes>

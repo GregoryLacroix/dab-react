@@ -1,5 +1,11 @@
 @use 'variables' as *;
 
+// Thème : clair par défaut ; sombre si l'appareil le demande, sauf choix contraire du visiteur (data-theme sur <html>, voir services/theme.js).
+// Le back-office force le thème clair (data-theme="light").
+:root { @include theme-light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) { @include theme-dark; } }
+:root[data-theme='dark'] { @include theme-dark; }
+
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {

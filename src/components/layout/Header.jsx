@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import Logo from '../ui/Logo.jsx';
+import ThemeToggle from '../ui/ThemeToggle.jsx';
 import { useCart } from '../../context/CartContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
@@ -70,6 +71,7 @@ export default function Header() {
           <NavLink to={l('/panier')} className="header__cart">
             {t('nav.cart')}{count > 0 && <span className="badge">{count}</span>}
           </NavLink>
+          <ThemeToggle />
           {/* Sélecteur de langue : mène à la même page dans l'autre langue (lien normal, donc indexable) */}
           <Link to={switchPath()} className="header__lang" lang={otherLang} hrefLang={otherLang}
             aria-label={t('lang.switchLabel')} title={t('lang.switchName')}>{t('lang.switchShort')}</Link>

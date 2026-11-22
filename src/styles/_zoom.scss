@@ -24,7 +24,7 @@
   &__count { margin-right: auto; color: #fff; font-weight: 600; font-size: .95rem; }
   &__btn, &__nav { width: 46px; height: 46px; border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer;
     background: rgba(250, 246, 239, .94); color: $ink; transition: background .2s, color .2s;
-    &:hover { background: $ink; color: #fff; outline: 1px solid #fff; }
+    &:hover { background: $ink; color: $on-ink; outline: 1px solid #fff; }
     &:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
     svg { width: 22px; height: 22px; } }
   &__nav { position: absolute; top: 50%; translate: 0 -50%; &--prev { left: 1rem; } &--next { right: 1rem; } }

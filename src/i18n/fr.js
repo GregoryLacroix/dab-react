@@ -683,4 +683,9 @@ export default {
   'shop.available': 'Pièces disponibles seulement',
   'shop.noResults': 'Aucune pièce ne correspond à votre recherche.',
   'shop.resetFilters': 'Effacer la recherche et les filtres',
+  'theme.toDark': 'Passer en mode sombre',
+  'theme.toLight': 'Passer en mode clair',
+  'pp.theme.role': 'Mémoriser votre choix d’affichage clair ou sombre (stockage local du navigateur, uniquement si vous utilisez le bouton)',
+  'pp.theme.duration': 'Jusqu’à ce que vous l’effaciez',
+  'pp.theme.consent': 'Non requis (préférence demandée par vous, aucune donnée personnelle)',
 };

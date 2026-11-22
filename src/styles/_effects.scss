@@ -27,7 +27,7 @@
     &[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
     &[aria-expanded='true'] span:nth-child(3) { top: 19px; transform: rotate(-45deg); } }
   &__dot { position: absolute; top: -9px; right: -9px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 99px;
-    background: $ink; color: #fff; font: 600 .7rem/20px $font-body; text-align: center; }
+    background: $ink; color: $on-ink; font: 600 .7rem/20px $font-body; text-align: center; }
 
   @include md {
     .header__brand img { width: 44px; height: 44px; }
@@ -164,3 +164,9 @@ main { flex: 1; }
   border: 2px solid $ink; border-radius: 99px; padding: .35rem .7rem;
   &:hover { background: $sand-200; } }
 @include md { .header .header__nav a.header__lang { align-self: flex-start; margin-top: .8rem; padding: .45rem .9rem; } }
+
+// ---- Bouton clair / sombre
+.header .header__nav button.header__theme { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; padding: 0; border: 2px solid $ink; border-radius: 50%;
+  background: none; color: $ink; cursor: pointer;
+  &:hover { background: $sand-200; } }
+@include md { .header .header__nav button.header__theme { margin-top: .8rem; } }

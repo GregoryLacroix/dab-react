@@ -57,6 +57,7 @@ export default function Privacy() {
           <tbody>
             <tr><td><code>dab-token</code></td><td>{t('pp.token.role')}</td><td>{t('pp.token.duration')}</td><td>{t('pp.token.consent')}</td></tr>
             <tr><td><code>dab-cart</code></td><td>{t('pp.cart.role')}</td><td>{t('pp.cart.duration')}</td><td>{t('pp.cart.consent')}</td></tr>
+            <tr><td><code>dab-theme</code></td><td>{t('pp.theme.role')}</td><td>{t('pp.theme.duration')}</td><td>{t('pp.theme.consent')}</td></tr>
             <tr><td><code>dab_oauth</code></td><td>{t('pp.oauth.role')}</td><td>{t('pp.oauth.duration')}</td><td>{t('pp.token.consent')}</td></tr>
             {OPTIONAL_SERVICES.map((s) => (
               <tr key={s.id}><td>{pick(s.label)}</td><td>{pick(s.description)}</td><td>—</td><td>{t('pp.optional.consent')}</td></tr>

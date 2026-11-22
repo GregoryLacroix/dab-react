@@ -184,3 +184,9 @@ Back-office, menu « Bientôt disponible » : un bouton active ou désactive la 
 
 ## Recherche, tri et disponibilité (boutique)
 Page `/produits` : champ de recherche (nom FR/EN et description, envoi 350 ms après la frappe), tri (sélection, nouveautés, prix croissant/décroissant) et case « Pièces disponibles seulement ». Utilise `GET /api/products?q=&sort=&available=`.
+
+## Mode sombre
+- Couleurs du site = variables CSS (`styles/_variables.scss` : mixins `theme-light` / `theme-dark`, appliqués dans `_base.scss`). Pour ajuster une teinte sombre, modifier `theme-dark`.
+- Par défaut le site suit l'appareil (`prefers-color-scheme`). Le bouton lune/soleil du menu force clair ou sombre ; le choix est mémorisé dans `localStorage` (`dab-theme`), déclaré dans la politique de confidentialité.
+- `services/theme.js` (`initTheme`, `useTheme`, `toggleTheme`) ; le back-office force le thème clair (`AdminRoutes.jsx`).
+- Dans les SCSS, utiliser `$surface` (fond de carte), `$on-ink` (texte sur fond `$ink`) et `$accent` (bleu plein) plutôt que `#fff` ou `$blue-900` pour un fond.

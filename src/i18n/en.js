@@ -683,4 +683,9 @@ export default {
   'shop.available': 'Available pieces only',
   'shop.noResults': 'No piece matches your search.',
   'shop.resetFilters': 'Clear search and filters',
+  'theme.toDark': 'Switch to dark mode',
+  'theme.toLight': 'Switch to light mode',
+  'pp.theme.role': 'Remembers your light or dark display choice (browser local storage, only if you use the button)',
+  'pp.theme.duration': 'Until you clear it',
+  'pp.theme.consent': 'Not required (a preference you asked for, no personal data)',
 };

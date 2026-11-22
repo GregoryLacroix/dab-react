@@ -1,17 +1,44 @@
+// Couleurs du site : ce sont des variables CSS (voir :root dans _base.scss) pour permettre le mode sombre.
 // Beiges (sable, lin, pierre) pour laisser le bleu du logo respirer
-$sand-50:  #faf6ef;   // fond de page
-$sand-100: #f2eadc;   // bandeaux, champs
-$sand-200: #e6d9c3;   // bordures
-$sand-400: #b9a68a;   // bordures de champs
-$stone-700:#4a4034;   // texte principal
+$sand-50:  var(--sand-50);    // fond de page
+$sand-100: var(--sand-100);   // bandeaux, champs
+$sand-200: var(--sand-200);   // bordures
+$sand-400: var(--sand-400);   // bordures de champs
+$stone-700: var(--stone-700); // texte principal secondaire
 
 // Bleus issus du logo
-$blue-900: #0f2a6b;   // encre du « D.A.B »
+$blue-900: var(--blue-900);   // encre du « D.A.B » (texte)
+$accent: var(--accent);       // bleu plein des pastilles actives (texte blanc dessus)
 $blue-600: #1f4fb5;
 $blue-300: #7fa3e0;
 $blue-100: #dbe6f7;
 
-$danger: #a63a2b;
+$danger: var(--danger);
+$danger-bg: var(--danger-bg);
+$ok-bg: var(--ok-bg);
+$ok-bd: var(--ok-bd);
+$bad-bg: var(--bad-bg);
+$bad-bd: var(--bad-bd);
+$surface: var(--surface);     // cartes, champs, panneaux (blanc en mode clair)
+$on-ink: var(--on-ink);       // texte posé sur un fond $ink
+$surface-soft: var(--surface-soft); // cartes translucides
+$overlay: var(--overlay);     // boutons posés sur les photos
+
+// Valeurs des variables CSS, clair puis sombre (le sombre est appliqué par :root dans _base.scss)
+@mixin theme-light {
+  color-scheme: light;
+  --sand-50: #faf6ef; --sand-100: #f2eadc; --sand-200: #e6d9c3; --sand-400: #b9a68a; --stone-700: #4a4034;
+  --blue-900: #0f2a6b; --accent: #0f2a6b;
+  --danger: #a63a2b; --danger-bg: #fbeeea; --ok-bg: #e4f3e6; --ok-bd: #b8dcbc; --bad-bg: #f5e1df; --bad-bd: #e3b9b4;
+  --surface: #fff; --surface-soft: rgba(255, 255, 255, .6); --overlay: rgba(250, 246, 239, .92); --ink: #000; --ink-soft: #333; --on-ink: #fff;
+}
+@mixin theme-dark {
+  color-scheme: dark;
+  --sand-50: #14120f; --sand-100: #1c1915; --sand-200: #2f2a22; --sand-400: #5d5445; --stone-700: #d9d1c3;
+  --blue-900: #a9c1f0; --accent: #2f5bc7;
+  --danger: #ef8f7f; --danger-bg: #3a1e1a; --ok-bg: #1b2e1f; --ok-bd: #2f5a36; --bad-bg: #351f1c; --bad-bd: #6a342d;
+  --surface: #1e1b16; --surface-soft: rgba(255, 255, 255, .04); --overlay: rgba(20, 18, 15, .88); --ink: #f3eee5; --ink-soft: #cfc7b8; --on-ink: #14120f;
+}
 
 // Palette des animations (même valeurs que src/config/palette.js)
 $pal-1: #c1c8e4;
@@ -21,9 +48,9 @@ $pal-4: #f8d4bc;
 $pal-5: #f6b2af;
 $pal-6: #f4979f;
 
-// Texte, boutons et liens : noir
-$ink: #000;
-$ink-soft: #333;
+// Texte, boutons et liens : noir en clair, blanc cassé en sombre
+$ink: var(--ink);
+$ink-soft: var(--ink-soft);
 
 $font-display: 'Instrument Serif', Georgia, serif;
 $font-body: 'Figtree', system-ui, sans-serif;
