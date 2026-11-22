@@ -644,4 +644,11 @@ export default {
   'pp.r8.data': 'Buyer’s and recipient’s names and e-mails, message, code, balance',
   'pp.r8.basis': 'Performance of the contract',
   'pp.r8.retention': 'Card validity period, then the statutory accounting retention period',
+  'footer.about': 'Hand-painted pebbles, wall decor and custom murals. Every piece is unique.',
+  'footer.follow': 'Follow and contact me',
+  'footer.instagram': 'Instagram (new tab)',
+  'footer.mail': 'Send an e-mail',
+  'footer.shop': 'The shop',
+  'footer.help': 'Help',
+  'footer.info': 'Information',
 };

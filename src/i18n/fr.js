@@ -644,4 +644,11 @@ export default {
   'pp.r8.data': 'Noms et e-mails de l’acheteur et du destinataire, message, code, solde',
   'pp.r8.basis': 'Exécution du contrat',
   'pp.r8.retention': 'Durée de validité de la carte, puis durée légale de conservation comptable',
+  'footer.about': 'Galets peints à la main, décoration murale et fresques sur mesure. Chaque pièce est unique.',
+  'footer.follow': 'Me suivre et me contacter',
+  'footer.instagram': 'Instagram (nouvel onglet)',
+  'footer.mail': 'Envoyer un e-mail',
+  'footer.shop': 'La boutique',
+  'footer.help': 'Aide',
+  'footer.info': 'Informations',
 };
