@@ -19,7 +19,7 @@ const MailIcon = () => (
 // Pied de page : marque et contact à gauche, trois colonnes de liens, mentions légales en bas
 export default function Footer() {
   const { t, l } = useI18n();
-  const { footer, contact } = useContent();
+  const { footer, contact, about } = useContent();
   const { services, openSettings } = useConsent();
   const { user } = useAuth();
 
@@ -42,6 +42,7 @@ export default function Footer() {
         <nav className="footer__col" aria-labelledby="footer-shop">
           <h2 id="footer-shop" className="footer__title">{t('footer.shop')}</h2>
           <Link to={l('/produits')}>{t('nav.shop')}</Link>
+          {about?.enabled && <Link to={l('/a-propos')}>{t('nav.about')}</Link>}
           <Link to={l('/realisations')}>{t('nav.gallery')}</Link>
           <Link to={l('/carte-cadeau')}>{t('nav.giftCard')}</Link>
           <Link to={l('/devis')}>{t('footer.quote')}</Link>

@@ -54,6 +54,19 @@ function ContentEditor({ initial }) {
   // Photo d'une étape du galet : envoi vers /api/uploads (photo réduite avant l'envoi)
   const [uploading, setUploading] = useState(-1);
   const [photoError, setPhotoError] = useState('');
+  const pickAbout = async (file) => {
+    if (!file) return;
+    setUploading(10);
+    setPhotoError('');
+    try {
+      const { src } = await api.upload(await shrinkImage(file));
+      update(['about', 'image'], src);
+    } catch (err) {
+      setPhotoError(err.violations?.file ?? err.message);
+    } finally {
+      setUploading(-1);
+    }
+  };
   const pickPhoto = async (i, file) => {
     if (!file) return;
     setUploading(i);
@@ -149,6 +162,29 @@ function ContentEditor({ initial }) {
               {t(`Étape ${i + 1} : texte`, ['story', i, 'text'], { rows: 2 })}
             </div>
           ))}
+        </>)}
+
+        {section('Page « À propos »', <>
+          <label className="flex items-center gap-2 text-sm font-medium md:col-span-2">
+            <input type="checkbox" checked={draft.about.enabled} onChange={(e) => update(['about', 'enabled'], e.target.checked)} />
+            Afficher la page « À propos » (lien dans le pied de page)
+          </label>
+          <p className="text-sm text-black/80 md:col-span-2">Racontez votre histoire : qui vous êtes, comment vous peignez, pourquoi les galets. Séparez les paragraphes par une ligne vide. Le texte de départ est volontairement neutre : personnalisez-le avant d’activer la page.</p>
+          {t('Titre', ['about', 'title'])}
+          {t('Titre (anglais)', ['about', 'titleEn'])}
+          {t('Phrase d’accroche', ['about', 'lead'], { rows: 2 })}
+          {t('Phrase d’accroche (anglais)', ['about', 'leadEn'], { rows: 2 })}
+          {t('Texte', ['about', 'text'], { rows: 8 })}
+          {t('Texte (anglais)', ['about', 'textEn'], { rows: 8 })}
+          {t('Signature (facultatif)', ['about', 'signature'])}
+          <div className="grid gap-2">
+            <span className="text-sm font-medium">Photo (vous, l’atelier…)</span>
+            {draft.about.image ? <img src={draft.about.image} alt="" className="h-32 w-48 rounded-lg object-cover" /> : <div className="grid h-32 w-48 place-items-center rounded-lg bg-sand-200 text-xs">Logo affiché à défaut</div>}
+            <input type="file" accept="image/jpeg,image/png,image/webp" className="text-xs" disabled={uploading !== -1} onChange={(e) => { pickAbout(e.target.files?.[0]); e.target.value = ''; }} />
+            {uploading === 10 && <span className="text-xs">Envoi…</span>}
+            {draft.about.image && <button type="button" className="justify-self-start text-xs text-red-700 underline" onClick={() => update(['about', 'image'], '')}>Retirer</button>}
+            {errors['about.image'] && <span role="alert" className="text-xs text-red-700">{errors['about.image']}</span>}
+          </div>
         </>)}
 
         {section('Accueil : dernières créations', <>

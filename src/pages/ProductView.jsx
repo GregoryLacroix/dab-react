@@ -4,6 +4,7 @@ import Button from '../components/ui/Button.jsx';
 import { soldOut } from '../services/stock.js';
 import { ProductViewSkeleton } from '../components/ui/Loaders.jsx';
 import { NotFoundView, ServerErrorView } from '../components/ui/ErrorPages.jsx';
+import Trust from '../components/ui/Trust.jsx';
 import StockAlertForm from '../components/StockAlertForm.jsx';
 import ProductReviews from '../components/ProductReviews.jsx';
 import { api } from '../services/api.js';
@@ -93,7 +94,7 @@ export default function ProductView() {
                 <StockAlertForm productId={product.id} />
                 <Button to={l('/produits')} variant="ghost">{t('cart.seeShop')}</Button>
               </>
-            : <Button onClick={() => add(raw)}>{t('product.add')}</Button>}
+            : <><Button onClick={() => add(raw)}>{t('product.add')}</Button><Trust variant="list" /></>}
         </div>
       </div>
       {reviews && (

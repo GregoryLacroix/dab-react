@@ -20,6 +20,7 @@ import { LANGS, ROUTES } from './i18n/routes.js';
 const Products = lazy(() => import('./pages/Products.jsx'));
 const ProductView = lazy(() => import('./pages/ProductView.jsx'));
 const Cart = lazy(() => import('./pages/Cart.jsx'));
+const About = lazy(() => import('./pages/About.jsx'));
 const Faq = lazy(() => import('./pages/Faq.jsx'));
 const Tracking = lazy(() => import('./pages/Tracking.jsx'));
 const Gallery = lazy(() => import('./pages/Gallery.jsx'));
@@ -38,7 +39,7 @@ const AdminRoutes = lazy(() => import('./admin/AdminRoutes.jsx'));
 
 // Chaque page existe en français (/produits) et en anglais (/en/shop) : les adresses viennent de i18n/routes.js
 const PAGES = {
-  home: <Home />, shop: <Products />, product: <ProductView />, cart: <Cart />, gallery: <Gallery />, tracking: <Tracking />, faq: <Faq />, giftCard: <GiftCard />, order: <OrderResult />, contact: <Contact />,
+  home: <Home />, shop: <Products />, product: <ProductView />, cart: <Cart />, gallery: <Gallery />, tracking: <Tracking />, faq: <Faq />, about: <About />, giftCard: <GiftCard />, order: <OrderResult />, contact: <Contact />,
   login: <Login />, oauth: <OAuthReturn />, twofactor: <TwoFactorVerify />, quote: <QuoteRequest />, quotePay: <QuotePay />, forgot: <ForgotPassword />, reset: <ResetPassword />, register: <Register />, account: <Account />,
   legal: <LegalNotice />, privacy: <Privacy />, terms: <Terms />, error: <ServerError />,
 };

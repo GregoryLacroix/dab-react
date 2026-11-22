@@ -10,6 +10,7 @@ export const ROUTES = [
   { key: 'quote',   fr: '/devis',                         en: '/en/quote' },          // demande de devis (fresques)
   { key: 'quotePay',fr: '/devis/:token',                  en: '/en/quote/:token' },   // page du devis reçue par e-mail
   { key: 'gallery', fr: '/realisations',                  en: '/en/gallery' },        // galerie des fresques réalisées
+  { key: 'about',   fr: '/a-propos',                      en: '/en/about' },          // page « À propos » (activable dans l'admin)
   { key: 'faq',     fr: '/faq',                           en: '/en/faq' },            // questions fréquentes
   { key: 'tracking',fr: '/suivi-commande',                en: '/en/order-tracking' }, // suivre une commande (numéro + e-mail)
   { key: 'giftCard',fr: '/carte-cadeau',                  en: '/en/gift-card' },      // achat d'une carte cadeau (+ retour de Stripe)

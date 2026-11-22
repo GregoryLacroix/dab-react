@@ -8,6 +8,15 @@ export const DEFAULT_CONTENT = {
     secondaryLabel: 'Demander une fresque', secondaryTo: '/devis',
   },
   marquee: ['Peinture sur galet', 'Fresque murale', 'Boutique en ligne'],
+  // Page « À propos » (masquée tant qu'elle n'est pas activée dans le back-office)
+  about: {
+    enabled: false,
+    title: 'À propos', lead: 'Des galets et des murs peints à la main, un par un.',
+    text: 'Chaque galet est peint à la main à l’acrylique, puis verni pour durer. Chaque pièce est unique.\n\nLes fresques murales sont pensées pour votre mur : on échange sur votre projet, puis je peins sur place.',
+    titleEn: 'About', leadEn: 'Pebbles and walls painted by hand, one at a time.',
+    textEn: 'Every pebble is hand-painted in acrylic, then varnished to last. Every piece is unique.\n\nMurals are designed for your wall: we talk about your project, then I paint on site.',
+    image: '', signature: '',
+  },
   // Galet de l'accueil : 'animation' (peinture au scroll) ou 'photos' (une photo par étape)
   storyView: { mode: 'animation', images: ['', '', ''] },
   story: [

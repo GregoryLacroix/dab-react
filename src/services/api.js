@@ -221,6 +221,7 @@ export const api = {
     remove: (id) => request(`/api/admin/realisations/${id}`, { method: 'DELETE' }),
   },
   reviews: {
+    featured: () => request('/api/reviews/featured'),                                          // accueil : { data: [avis + productId, productName], summary }
     list: (productId, q = {}) => request(`/api/products/${productId}/reviews`, { query: q }),   // { data, meta, summary }
     mine: (productId) => request(`/api/products/${productId}/reviews/mine`),                    // { eligible, reason, review }
     create: (productId, body) => request(`/api/products/${productId}/reviews`, { method: 'POST', body }), // { rating, title, body }

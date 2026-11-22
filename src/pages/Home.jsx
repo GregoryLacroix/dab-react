@@ -5,6 +5,8 @@ import { ProductSkeleton, SliderSkeleton } from '../components/ui/Loaders.jsx';
 import ProductSlider from '../components/ui/ProductSlider.jsx';
 import Reveal from '../components/effects/Reveal.jsx';
 import SplitWords from '../components/effects/SplitWords.jsx';
+import FeaturedReviews from '../components/FeaturedReviews.jsx';
+import Trust from '../components/ui/Trust.jsx';
 import Marquee from '../components/effects/Marquee.jsx';
 import PaintStory from '../components/effects/PaintStory.jsx';
 import WaveDivider from '../components/effects/WaveDivider.jsx';
@@ -61,6 +63,7 @@ export default function Home() {
       </section>
 
       <Marquee words={marquee} />
+      <Trust />
       <PaintStory steps={story} view={storyView} />
 
       <section className="section">
@@ -74,6 +77,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <FeaturedReviews />
 
       <WaveDivider />
       <section className="section section--band">

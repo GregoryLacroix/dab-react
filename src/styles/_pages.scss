@@ -125,3 +125,38 @@
   &[open] summary { color: $blue-900; }
 }
 .faq__cta { text-align: center; }
+
+// --- Réassurance (accueil : bandeau ; fiche produit : liste)
+.trust { color: $stone-700; }
+.trust__icon { display: inline-grid; place-items: center; color: $blue-900; }
+.trust--band { background: $sand-100; border-block: 1px solid $sand-200; padding: 1.75rem 0;
+  .trust__grid { list-style: none; margin: 0 auto; padding: 0; display: grid; gap: 1.5rem 1rem; grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (min-width: 900px) { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  li { display: grid; justify-items: center; text-align: center; gap: .25rem;
+    strong { color: $ink; font-size: 1rem; }
+    span:last-child { font-size: .9rem; } } }
+.trust--list { list-style: none; margin: 1.25rem 0 0; padding: 1rem 0 0; border-top: 1px solid $sand-200; display: grid; gap: .6rem; font-size: .95rem;
+  li { display: flex; align-items: center; gap: .65rem; }
+  .trust__icon svg { width: 22px; height: 22px; } }
+
+// --- Avis en vedette (accueil)
+.featured { text-align: center;
+  &__summary { display: inline-flex; align-items: center; gap: .6rem; margin: 0 0 2rem; font-weight: 600; }
+  &__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); text-align: left; }
+  &__card { display: grid; gap: .6rem; align-content: start; padding: 1.4rem 1.5rem; background: #fff; border: 1px solid $sand-200; border-radius: $radius;
+    h3 { margin: 0; font-size: 1.1rem; }
+    p { margin: 0; }
+    blockquote { margin: 0; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.55; }
+    footer { font-size: .88rem; color: $stone-700; } } }
+
+// --- À propos
+.about { display: grid; gap: 2.5rem; align-items: center; grid-template-columns: minmax(0, 1fr);
+  @media (min-width: 900px) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 4rem; }
+  &__photo { justify-self: center; width: min(100%, 460px); aspect-ratio: 1.15; overflow: hidden; background: $sand-200;
+    border-radius: 58% 42% 55% 45% / 52% 58% 42% 48%; box-shadow: 0 40px 60px -28px rgba(74, 64, 52, .55);
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    &--logo { display: grid; place-items: center; img { width: 62%; height: auto; } } }
+  &__lead { font: 400 clamp(1.3rem, 2.4vw, 1.7rem)/1.35 $font-display; margin: 0 0 1.25rem; }
+  &__text p { margin: 0 0 1rem; line-height: 1.7; }
+  &__sign { font: 400 1.9rem $font-display; margin: 1.25rem 0 1.5rem; }
+  &__actions { display: flex; flex-wrap: wrap; gap: .75rem; } }

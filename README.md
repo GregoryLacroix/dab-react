@@ -171,3 +171,8 @@ Dans l'admin, « Contenu du site » > « Accueil : le galet (3 étapes) » : **A
 
 ## Page « Bientôt disponible »
 Back-office, menu « Bientôt disponible » : un bouton active ou désactive la page d'attente (titre, texte, date d'ouverture facultative avec ouverture automatique). Activée, elle remplace tout le site pour les visiteurs (`Gate` dans `src/App.jsx`, page `src/pages/ComingSoon.jsx`, non indexée par Google) ; l'administrateur connecté voit le site avec un bandeau orange (`SoonBar`) et peut l'ouvrir en un clic. Les mentions légales, la confidentialité, les CGV et le retour de paiement restent accessibles. Réglage stocké dans le contenu du site (`comingSoon`, voir `SiteContent.php`), aucune table en plus.
+
+## Bandeau de réassurance, avis à la une, page « À propos »
+- `components/ui/Trust.jsx` : bandeau (accueil) et liste courte (fiche produit).
+- `components/FeaturedReviews.jsx` : avis 4-5 étoiles approuvés (`GET /api/reviews/featured`) sur l'accueil.
+- Page « À propos » (`/a-propos`, `/en/about`) : masquée (404) tant qu'elle n'est pas activée dans **Admin → Contenu du site → Page « À propos »**. Texte FR/EN, signature et photo modifiables ; le lien apparaît alors dans le pied de page. Non incluse dans le sitemap statique.
