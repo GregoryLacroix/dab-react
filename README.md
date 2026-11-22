@@ -176,3 +176,4 @@ Back-office, menu « Bientôt disponible » : un bouton active ou désactive la 
 - `components/ui/Trust.jsx` : bandeau (accueil) et liste courte (fiche produit).
 - `components/FeaturedReviews.jsx` : avis 4-5 étoiles approuvés (`GET /api/reviews/featured`) sur l'accueil.
 - Page « À propos » (`/a-propos`, `/en/about`) : masquée (404) tant qu'elle n'est pas activée dans **Admin → Contenu du site → Page « À propos »**. Texte FR/EN, signature et photo modifiables ; le lien apparaît alors dans le pied de page. Non incluse dans le sitemap statique.
+- Bandeau de réassurance modifiable : Admin → Contenu du site → « Bandeau de réassurance » (4 éléments : icône, titre, texte FR/EN ; titre vide = masqué ; case pour tout désactiver). Clé `trust` du contenu.

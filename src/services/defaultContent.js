@@ -8,6 +8,16 @@ export const DEFAULT_CONTENT = {
     secondaryLabel: 'Demander une fresque', secondaryTo: '/devis',
   },
   marquee: ['Peinture sur galet', 'Fresque murale', 'Boutique en ligne'],
+  // Bandeau de réassurance (un titre vide masque l'élément)
+  trust: {
+    enabled: true,
+    items: [
+      { icon: 'hand', title: 'Peint à la main', text: 'Chaque pièce est unique', titleEn: 'Hand-painted', textEn: 'Every piece is unique' },
+      { icon: 'varnish', title: 'Vernis protecteur', text: 'Une peinture faite pour durer', titleEn: 'Protective varnish', textEn: 'Paint made to last' },
+      { icon: 'ship', title: 'Expédition soignée', text: 'Colis protégé, suivi par e-mail', titleEn: 'Careful shipping', textEn: 'Protected parcel, tracked by e-mail' },
+      { icon: 'pay', title: 'Paiement sécurisé', text: 'Par carte, via Stripe', titleEn: 'Secure payment', textEn: 'By card, through Stripe' },
+    ],
+  },
   // Page « À propos » (masquée tant qu'elle n'est pas activée dans le back-office)
   about: {
     enabled: false,
@@ -126,3 +136,10 @@ export function localizeContent(content, lang) {
   const { en, ...rest } = content;
   return en ? merge(swap(rest, DEFAULT_CONTENT, DEFAULT_CONTENT_EN), en) : swap(rest, DEFAULT_CONTENT, DEFAULT_CONTENT_EN);
 }
+
+/** Compléments par défaut pour une API plus ancienne qui n'enverrait pas encore `trust` / `about` */
+export const withContentDefaults = (c) => ({
+  ...c,
+  trust: { ...DEFAULT_CONTENT.trust, ...c?.trust, items: DEFAULT_CONTENT.trust.items.map((d, i) => ({ ...d, ...c?.trust?.items?.[i] })) },
+  about: { ...DEFAULT_CONTENT.about, ...c?.about },
+});

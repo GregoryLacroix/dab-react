@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { api, fieldErrors } from '../../services/api.js';
 import useQuery from '../../services/useQuery.js';
 import { setContentCache } from '../../store/store.js';
-import { zoomSettings, storyViewSettings } from '../../services/defaultContent.js';
+import { zoomSettings, storyViewSettings, withContentDefaults } from '../../services/defaultContent.js';
 import { shrinkImage } from '../../services/imageResize.js';
 import { Btn, Card, ConfirmDialog, ErrorBox, Field, LinkBtn, Loading, PageHeader, inputCls } from '../ui.jsx';
 
@@ -22,7 +22,7 @@ export default function Content() {
 }
 
 function ContentEditor({ initial }) {
-  const [draft, setDraft] = useState(() => ({ ...structuredClone(initial), zoom: zoomSettings(initial.zoom), storyView: storyViewSettings(initial.storyView) }));
+  const [draft, setDraft] = useState(() => withContentDefaults({ ...structuredClone(initial), zoom: zoomSettings(initial.zoom), storyView: storyViewSettings(initial.storyView) }));
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ ok: true, text: '' });
   const [saving, setSaving] = useState(false);
@@ -90,7 +90,7 @@ function ContentEditor({ initial }) {
       const { slider, ...rest } = draft; // eslint-disable-line no-unused-vars
       const saved = await api.content.save(rest); // PUT /api/content
       setContentCache(saved);                     // le site public affiche tout de suite les nouveaux textes
-      setDraft({ ...structuredClone(saved), zoom: zoomSettings(saved.zoom), storyView: storyViewSettings(saved.storyView) });
+      setDraft(withContentDefaults({ ...structuredClone(saved), zoom: zoomSettings(saved.zoom), storyView: storyViewSettings(saved.storyView) }));
       setStatus({ ok: true, text: 'Modifications enregistrées. Elles sont visibles sur le site.' });
     } catch (err) {
       setErrors(fieldErrors(err));
@@ -105,7 +105,7 @@ function ContentEditor({ initial }) {
     try {
       const content = await api.content.reset(); // POST /api/content/reset
       setContentCache(content);
-      setDraft({ ...structuredClone(content), zoom: zoomSettings(content.zoom), storyView: storyViewSettings(content.storyView) });
+      setDraft(withContentDefaults({ ...structuredClone(content), zoom: zoomSettings(content.zoom), storyView: storyViewSettings(content.storyView) }));
       setErrors({});
       setStatus({ ok: true, text: 'Textes d’origine rétablis.' });
     } catch (err) {
@@ -160,6 +160,31 @@ function ContentEditor({ initial }) {
             <div key={i} className="grid gap-3 md:col-span-2">
               {t(`Étape ${i + 1} : titre`, ['story', i, 'title'])}
               {t(`Étape ${i + 1} : texte`, ['story', i, 'text'], { rows: 2 })}
+            </div>
+          ))}
+        </>)}
+
+        {section('Bandeau de réassurance', <>
+          <label className="flex items-center gap-2 text-sm font-medium md:col-span-2">
+            <input type="checkbox" checked={draft.trust.enabled} onChange={(e) => update(['trust', 'enabled'], e.target.checked)} />
+            Afficher le bandeau (accueil) et la liste courte (fiche produit)
+          </label>
+          <p className="text-sm text-black/80 md:col-span-2">Quatre arguments. Laissez le titre vide pour masquer un élément. La fiche produit affiche les titres des 3 premiers.</p>
+          {draft.trust.items.map((it, i) => (
+            <div key={i} className="grid gap-3 rounded-lg border border-black/10 p-3 md:col-span-2 md:grid-cols-2">
+              <Field label={`Élément ${i + 1} : icône`}>
+                <select className={inputCls} value={it.icon} onChange={(e) => update(['trust', 'items', i, 'icon'], e.target.value)}>
+                  <option value="hand">Palette (fait main)</option>
+                  <option value="varnish">Bouclier (vernis, qualité)</option>
+                  <option value="ship">Colis (expédition)</option>
+                  <option value="pay">Carte (paiement)</option>
+                </select>
+              </Field>
+              <span />
+              {t('Titre', ['trust', 'items', i, 'title'])}
+              {t('Titre (anglais)', ['trust', 'items', i, 'titleEn'])}
+              {t('Texte', ['trust', 'items', i, 'text'])}
+              {t('Texte (anglais)', ['trust', 'items', i, 'textEn'])}
             </div>
           ))}
         </>)}
