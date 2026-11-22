@@ -4,6 +4,7 @@ import Button from '../components/ui/Button.jsx';
 import { soldOut } from '../services/stock.js';
 import { ProductViewSkeleton } from '../components/ui/Loaders.jsx';
 import { NotFoundView, ServerErrorView } from '../components/ui/ErrorPages.jsx';
+import StockAlertForm from '../components/StockAlertForm.jsx';
 import ProductReviews from '../components/ProductReviews.jsx';
 import { api } from '../services/api.js';
 import useSeo, { SITE_URL, absoluteUrl } from '../services/seo.js';
@@ -89,6 +90,7 @@ export default function ProductView() {
           {soldOut(product)
             ? <>
                 <p className="notice" role="status"><strong>{t('product.soldOut')}</strong> — {t('product.soldOutText')}</p>
+                <StockAlertForm productId={product.id} />
                 <Button to={l('/produits')} variant="ghost">{t('cart.seeShop')}</Button>
               </>
             : <Button onClick={() => add(raw)}>{t('product.add')}</Button>}

@@ -17,7 +17,7 @@ const SITE = get('VITE_SITE_URL', 'http://localhost:5173').replace(/\/$/, '');
 const API = get('VITE_API_URL', 'http://localhost:8000').replace(/\/$/, '');
 
 // Adresses françaises de référence ; la version anglaise (/en/…) est déduite de src/i18n/routes.js
-const paths = ['/', '/produits', '/realisations', '/carte-cadeau', '/devis', '/contact', '/mentions-legales', '/politique-de-confidentialite', '/conditions-generales-de-vente'];
+const paths = ['/', '/produits', '/realisations', '/carte-cadeau', '/faq', '/devis', '/contact', '/mentions-legales', '/politique-de-confidentialite', '/conditions-generales-de-vente'];
 try {
   for (let page = 1; ; page++) {
     const res = await fetch(`${API}/api/products?page=${page}&perPage=100`);
@@ -50,7 +50,7 @@ ${paths.flatMap((p) => [entry(p, 'fr'), entry(p, 'en')]).join('\n')}
 writeFileSync('public/sitemap.xml', xml);
 
 // Pages sans intérêt pour Google, dans les deux langues
-const hidden = ['/panier', '/commande', '/connexion', '/connexion/retour', '/connexion/verification', '/mot-de-passe-oublie', '/nouveau-mot-de-passe', '/inscription', '/mon-compte', '/erreur-serveur'];
+const hidden = ['/panier', '/commande', '/connexion', '/connexion/retour', '/connexion/verification', '/mot-de-passe-oublie', '/nouveau-mot-de-passe', '/inscription', '/mon-compte', '/suivi-commande', '/erreur-serveur'];
 writeFileSync('public/robots.txt', `User-agent: *
 Allow: /
 Disallow: /admin

@@ -158,7 +158,7 @@ export const api = {
     remove: (id) => request(`/api/categories/${id}`, { method: 'DELETE' }),
   },
   orders: {
-    create: ({ customer, items, acceptTerms, codes = [] }) => request('/api/orders', { method: 'POST', body: { customer, acceptTerms, codes, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }),
+    create: ({ customer, items, acceptTerms, codes = [], country }) => request('/api/orders', { method: 'POST', body: { customer, acceptTerms, codes, country, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }),
     list: (q = {}) => request('/api/orders', { query: q }),         // admin : { status, q, page, perPage }
     get: (ref) => request(`/api/orders/${ref}`),
     // extra (« expédiée ») : { tracking: { carrier, number, url }, notify } -> suivi enregistré et e-mail au client
@@ -179,6 +179,23 @@ export const api = {
   },
 
   // --- Avis clients : lecture publique, dépôt (acheteur connecté) et modération (admin)
+  stockAlert: (productId, email) => request(`/api/products/${productId}/stock-alert`, { method: 'POST', body: { email } }), // « prévenez-moi »
+  stockAlertCounts: () => request('/api/products/stock-alerts'),                                                     // admin
+  faq: {
+    list: () => request('/api/faq', { query: { perPage: 100 } }),                              // { data }
+    adminList: (q = {}) => request('/api/admin/faq', { query: q }),
+    create: (body) => request('/api/admin/faq', { method: 'POST', body }),
+    update: (id, body) => request(`/api/admin/faq/${id}`, { method: 'PUT', body }),
+    remove: (id) => request(`/api/admin/faq/${id}`, { method: 'DELETE' }),
+  },
+  orderTrack: ({ reference, email }) => request('/api/orders/track', { method: 'POST', body: { reference, email } }), // page publique de suivi
+  // --- Frais de port (par poids et par zone)
+  shipping: {
+    info: () => request('/api/shipping'),                                                        // { enabled, zones: [{ name, countries, freeFrom }] }
+    quote: ({ country, items, codes }) => request('/api/shipping/quote', { method: 'POST', body: { country, codes, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }), // { enabled, shipping, zone, freeFrom }
+    adminGet: () => request('/api/admin/shipping'),
+    adminSave: (body) => request('/api/admin/shipping', { method: 'PUT', body }),
+  },
   // --- Codes promo, cartes cadeau
   codes: {
     check: ({ codes, items, email }) => request('/api/codes/check', { method: 'POST', body: { codes, email, items: items.map((i) => ({ productId: i.id, qty: i.qty })) } }), // { promo, gift, discount }

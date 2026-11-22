@@ -11,7 +11,7 @@ import useSeo from '../services/seo.js';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 
 export default function Cart() {
-  const { t, l, loc, money } = useI18n();
+  const { t, l, loc, money, lang } = useI18n();
   const { items, total, setQty, remove, clear } = useCart();
   const { user } = useAuth();
   const { legal } = useContent();
@@ -29,6 +29,11 @@ export default function Cart() {
   const [codeInput, setCodeInput] = useState('');
   const [codeError, setCodeError] = useState('');
   const [codeBusy, setCodeBusy] = useState(false);
+  // Frais de port : pays choisi, tarif calculé par le serveur (poids du colis + zone)
+  const [zones, setZones] = useState(null);       // null = pas encore chargé ; { enabled, zones }
+  const [country, setCountry] = useState('FR');
+  const [ship, setShip] = useState(null);         // { enabled, shipping, zone, freeFrom }
+  const [shipError, setShipError] = useState('');
   const cancelled = params.get('cancelled') === '1'; // retour du bouton « Retour » de la page Stripe
 
   // Retour arrière depuis Stripe : le navigateur peut restaurer cette page telle quelle, bouton encore en chargement
@@ -71,8 +76,25 @@ export default function Cart() {
     if (next.length === 0) setPromo(null);
     else api.codes.check({ codes: next, items, email: form.email }).then(setPromo, () => { setCodes([]); setPromo(null); });
   };
+  useEffect(() => { api.shipping.info().then(setZones, () => setZones({ enabled: false, zones: [] })); }, []);
+  const countryCodes = zones?.enabled ? zones.zones.flatMap((z) => z.countries) : [];
+  useEffect(() => { if (countryCodes.length && !countryCodes.includes(country)) setCountry(countryCodes[0]); }, [zones]); // eslint-disable-line react-hooks/exhaustive-deps
+  const codesKey = codes.join('|');
+  useEffect(() => {
+    if (!zones?.enabled || items.length === 0 || !countryCodes.includes(country)) { setShip(null); return undefined; }
+    let stop = false;
+    const timer = setTimeout(() => {
+      api.shipping.quote({ country, items, codes }).then(
+        (r) => { if (!stop) { setShip(r); setShipError(''); } },
+        (err) => { if (!stop) { setShip(null); setShipError(fieldErrors(err).country ?? err.message); } },
+      );
+    }, 250);
+    return () => { stop = true; clearTimeout(timer); };
+  }, [zones, country, total, codesKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const names = (() => { try { return new Intl.DisplayNames([lang], { type: 'region' }); } catch { return null; } })();
   const discount = promo?.discount ?? 0;
-  const net = Math.max(0, Math.round((total - discount) * 100) / 100);
+  const shipping = ship?.enabled ? ship.shipping : 0;
+  const net = Math.max(0, Math.round((total - discount + shipping) * 100) / 100);
 
   const change = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -87,7 +109,7 @@ export default function Cart() {
     setBusy(true);
     try {
       // POST /api/orders : le serveur recalcule les prix et le total, et renvoie l'adresse de la page de paiement Stripe
-      const res = await api.orders.create({ customer: { name: form.name.trim(), email: form.email.trim() }, items, acceptTerms: true, codes });
+      const res = await api.orders.create({ customer: { name: form.name.trim(), email: form.email.trim() }, items, acceptTerms: true, codes, country: zones?.enabled ? country : undefined });
       if (res.checkoutUrl) {
         // Le panier reste intact : il ne sera vidé qu'une fois le paiement confirmé (page /commande)
         setRedirecting(true);
@@ -162,6 +184,21 @@ export default function Cart() {
               <button type="button" className="link-btn" onClick={() => removeCode(promo.gift.code)}>{t('promo.remove')}</button></p>
           )}
         </div>
+        {zones?.enabled && (
+          <div className="cart__ship">
+            <label htmlFor="ship-country">{t('ship.country')}</label>
+            <select id="ship-country" value={country} onChange={(e) => setCountry(e.target.value)}>
+              {countryCodes.map((c) => <option key={c} value={c}>{names?.of(c) ?? c}</option>)}
+            </select>
+            {shipError && <p className="field__error" role="alert">{shipError}</p>}
+            {ship?.enabled && (
+              <p className="cart__applied">
+                {t('ship.line')} : <strong>{ship.shipping > 0 ? money(ship.shipping) : t('ship.free')}</strong>
+                {ship.shipping > 0 && ship.freeFrom != null && total - discount < ship.freeFrom && <small> ({t('ship.freeFrom', { amount: money(ship.freeFrom) })})</small>}
+              </p>
+            )}
+          </div>
+        )}
         <div className="cart__checkout">
           <FormField label={t('field.name')} name="name" autoComplete="name" value={form.name} onChange={change} error={errors.name} />
           <FormField label={t('field.email')} name="email" type="email" autoComplete="email" value={form.email} onChange={change} error={errors.email} />
@@ -176,7 +213,7 @@ export default function Cart() {
         </div>
         {errors.form && <p className="notice notice--error" role="alert">{errors.form}</p>}
         <div className="cart__summary">
-          {discount > 0 && <p className="note">{t('promo.subtotal')} {money(total)} · {t('promo.shippingNote')}</p>}
+          {(discount > 0 || shipping > 0) && <p className="note">{t('promo.subtotal')} {money(total)}{discount > 0 && !zones?.enabled ? ` · ${t('promo.shippingNote')}` : ''}</p>}
           <p>{t('cart.total')} <strong>{money(net)}</strong></p>
           <div className="hero__actions">
             <Button variant="ghost" onClick={clear}>{t('cart.clear')}</Button>

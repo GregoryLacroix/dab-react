@@ -16,6 +16,8 @@ export default function Footer() {
         <nav aria-label={t('footer.nav')}>
           <Link to={l('/produits')}>{t('nav.shop')}</Link>
           <Link to={l('/realisations')}>{t('nav.gallery')}</Link>
+          <Link to={l('/faq')}>{t('nav.faq')}</Link>
+          <Link to={l('/suivi-commande')}>{t('nav.tracking')}</Link>
           <Link to={l('/carte-cadeau')}>{t('nav.giftCard')}</Link>
           <Link to={l('/devis')}>{t('footer.quote')}</Link>
           <Link to={l('/contact')}>{t('nav.contact')}</Link>

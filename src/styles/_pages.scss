@@ -91,3 +91,37 @@
   }
 }
 .gallery__close { background: #fff; color: #000; border: 0; border-radius: 999px; padding: .4rem 1rem; font: inherit; cursor: pointer; }
+
+// --- Frais de port (panier)
+.cart__ship { max-width: 560px; margin-bottom: 1.5rem; display: grid; gap: .5rem;
+  label { font-weight: 600; font-size: .95rem; }
+  select { padding: .65rem .8rem; border: 1px solid $sand-400; border-radius: $radius; font: inherit; background: #fff; }
+}
+
+// --- Suivi de commande
+.track { max-width: 640px; }
+.track__form { display: grid; gap: 1rem; }
+.track__steps { list-style: none; margin: 1.5rem 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; counter-reset: s;
+  li { counter-increment: s; text-align: center; padding: .75rem .25rem; border-radius: $radius; background: $sand-100; color: $stone-700; font-size: .95rem;
+    &::before { content: counter(s); display: block; margin: 0 auto .35rem; width: 1.8rem; height: 1.8rem; line-height: 1.8rem; border-radius: 50%; background: #fff; border: 1px solid $sand-400; font-weight: 600; }
+    &.is-done { background: $blue-900; color: #fff; &::before { background: #fff; color: $blue-900; border-color: #fff; } }
+  }
+}
+.track__box { background: $sand-100; border: 1px solid $sand-200; border-radius: $radius; padding: 1rem 1.25rem; margin-bottom: 1.5rem; p { margin: .35rem 0; } }
+
+// --- « Prévenez-moi » (produit épuisé)
+.stock-alert { margin: 1rem 0 1.25rem; display: grid; gap: .5rem; max-width: 460px;
+  h3 { margin: 0; font-size: 1.05rem; }
+  input { flex: 1; min-width: 0; padding: .65rem .8rem; border: 1px solid $sand-400; border-radius: $radius; font: inherit; }
+}
+.stock-alert__row { display: flex; gap: .5rem; }
+
+// --- FAQ
+.faq { max-width: 760px; }
+.faq__list { display: grid; gap: .6rem; margin: 1.5rem 0 2.5rem; }
+.faq__item { border: 1px solid $sand-200; border-radius: $radius; background: #fff;
+  summary { cursor: pointer; padding: 1rem 1.25rem; font-weight: 600; list-style-position: inside; }
+  p { margin: 0; padding: 0 1.25rem 1.1rem; white-space: pre-line; }
+  &[open] summary { color: $blue-900; }
+}
+.faq__cta { text-align: center; }

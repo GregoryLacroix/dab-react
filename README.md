@@ -157,5 +157,13 @@ Palette pastel (bleu lavande, menthe, vert tendre, pêche, saumon, rose) utilis�
 - **Back-office** : « Codes promo & cartes cadeau » et « Réalisations » (envoi de photos, ordre, publication).
 - Le plan du site (`npm run seo`) inclut les deux nouvelles pages.
 
+## Frais de port, suivi, alertes, FAQ
+
+- **Panier** : choix du pays de livraison (si les frais de port sont activés dans l'admin), ligne « Livraison » et total mis à jour par le serveur.
+- **/suivi-commande** (`/en/order-tracking`) : numéro de commande + e-mail, étapes (payée, expédiée, livrée), lien du transporteur.
+- **Produit épuisé** : formulaire « Prévenez-moi quand il revient » (`StockAlertForm`).
+- **/faq** (`/en/faq`) : questions en accordéon, éditées dans l'admin ; balisage FAQPage pour Google.
+- **Back-office** : « Frais de port » (zones, tranches de poids), « Alertes retour en stock », « FAQ ».
+
 ## Page « Bientôt disponible »
 Back-office, menu « Bientôt disponible » : un bouton active ou désactive la page d'attente (titre, texte, date d'ouverture facultative avec ouverture automatique). Activée, elle remplace tout le site pour les visiteurs (`Gate` dans `src/App.jsx`, page `src/pages/ComingSoon.jsx`, non indexée par Google) ; l'administrateur connecté voit le site avec un bandeau orange (`SoonBar`) et peut l'ouvrir en un clic. Les mentions légales, la confidentialité, les CGV et le retour de paiement restent accessibles. Réglage stocké dans le contenu du site (`comingSoon`, voir `SiteContent.php`), aucune table en plus.
