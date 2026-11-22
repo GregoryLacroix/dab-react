@@ -160,3 +160,11 @@
   &__text p { margin: 0 0 1rem; line-height: 1.7; }
   &__sign { font: 400 1.9rem $font-display; margin: 1.25rem 0 1.5rem; }
   &__actions { display: flex; flex-wrap: wrap; gap: .75rem; } }
+
+// --- Boutique : recherche, tri, disponibilité
+.shop-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin: 1rem 0 1.5rem;
+  &__search { flex: 1 1 240px; input { width: 100%; padding: .65rem 1rem; border: 1px solid $sand-400; border-radius: 99px; font: inherit; background: #fff; color: $ink;
+    &:focus-visible { outline: 3px solid $ink; outline-offset: 2px; } } }
+  &__sort { display: flex; align-items: center; gap: .5rem; font-size: .95rem;
+    select { padding: .55rem .8rem; border: 1px solid $sand-400; border-radius: $radius; font: inherit; background: #fff; color: $ink; } }
+  &__avail { display: flex; align-items: center; gap: .5rem; font-size: .95rem; cursor: pointer; } }

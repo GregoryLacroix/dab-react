@@ -132,7 +132,11 @@ main { flex: 1; }
   &:hover { box-shadow: 0 24px 40px -22px rgba(0, 0, 0, .3); }
   .pimg { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
   &:hover .pimg { transform: scale(1.07); }
-  &__media { overflow: hidden; } }
+  &__media { overflow: hidden; }
+  // 2e photo qui apparaît en fondu au survol (appareils avec souris)
+  &__alt { position: absolute; inset: 0; opacity: 0; transition: opacity .45s ease; pointer-events: none;
+    .pimg { height: 100%; aspect-ratio: auto; } }
+  @media (hover: hover) { &:hover &__alt { opacity: 1; } } }
 
 // ===== Accessibilité : mouvement réduit
 @media (prefers-reduced-motion: reduce) {

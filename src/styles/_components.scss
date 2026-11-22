@@ -187,3 +187,27 @@
   padding: .6rem 1rem; background: #c8891a; color: #000; font-size: .9rem;
   &__actions { display: flex; gap: .6rem; align-items: center; }
   a, button { color: #000; font: inherit; font-weight: 700; text-decoration: underline; background: none; border: 0; cursor: pointer; padding: 0; } }
+
+// ---- Mini-panier latéral
+.drawer { position: fixed; inset: 0; z-index: 90; background: rgba(20, 20, 20, .45); display: flex; justify-content: flex-end; animation: drawer-fade .2s ease-out;
+  &__panel { width: min(100%, 420px); height: 100%; background: #fff; display: flex; flex-direction: column; box-shadow: -20px 0 40px -20px rgba(0, 0, 0, .35); animation: drawer-in .28s cubic-bezier(.2, .7, .2, 1); }
+  &__head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid $sand-200;
+    h2 { margin: 0; font-size: 1.25rem; } }
+  &__close { width: 2.5rem; height: 2.5rem; border: 0; border-radius: 50%; background: $sand-100; font-size: 1.6rem; line-height: 1; cursor: pointer; color: $ink;
+    &:hover { background: $sand-200; } &:focus-visible { outline: 3px solid $ink; outline-offset: 2px; } }
+  &__list { list-style: none; margin: 0; padding: 0; flex: 1; overflow-y: auto; }
+  &__empty { flex: 1; padding: 1.5rem 1.25rem; margin: 0; }
+  &__item { display: flex; gap: .9rem; padding: 1rem 1.25rem; border-bottom: 1px solid $sand-100; }
+  &__thumb { flex: none; width: 76px; height: 76px; border-radius: $radius; overflow: hidden; .pimg { height: 100%; aspect-ratio: auto; } }
+  &__info { display: grid; gap: .25rem; min-width: 0; align-content: start; strong { overflow-wrap: anywhere; } }
+  &__qty { display: flex; align-items: center; gap: .5rem; margin-top: .25rem;
+    button { min-width: 2rem; height: 2rem; border: 1px solid $sand-400; border-radius: 6px; background: #fff; cursor: pointer; color: $ink; font: inherit;
+      &:disabled { opacity: .4; cursor: default; } &:focus-visible { outline: 3px solid $ink; outline-offset: 2px; } } }
+  &__remove { border: 0 !important; background: none !important; text-decoration: underline; padding: 0 .25rem; margin-left: .25rem; }
+  &__foot { padding: 1rem 1.25rem 1.25rem; border-top: 1px solid $sand-200; display: grid; gap: .75rem;
+    .btn { text-align: center; } }
+  &__total { display: flex; justify-content: space-between; align-items: baseline; margin: 0; font-size: 1.15rem; }
+  &__continue { border: 0; background: none; text-decoration: underline; cursor: pointer; font: inherit; color: $ink; padding: .25rem; } }
+@keyframes drawer-in { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes drawer-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .drawer, .drawer__panel { animation: none; } }

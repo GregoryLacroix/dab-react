@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import ScrollProgress from '../effects/ScrollProgress.jsx';
+import CartDrawer from '../ui/CartDrawer.jsx';
 import CookieBanner from '../ui/CookieBanner.jsx';
 import { PageLoader } from '../ui/Loaders.jsx';
 import { ServerErrorView } from '../ui/ErrorPages.jsx';
@@ -26,6 +27,7 @@ export default function Layout() {
         </RouteErrorBoundary>
       </main>
       <Footer />
+      <CartDrawer />
       <CookieBanner />
     </>
   );

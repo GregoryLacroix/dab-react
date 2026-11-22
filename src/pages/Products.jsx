@@ -18,6 +18,10 @@ export default function Products() {
   const [params] = useSearchParams();
   const wanted = params.get('categorie') ?? params.get('category') ?? 'tous'; // /produits?categorie=fresques (en anglais : /en/shop?category=fresques)
   const [cat, setCat] = useState(wanted);
+  const [qInput, setQInput] = useState(params.get('q') ?? '');   // champ de recherche (saisie)
+  const [q, setQ] = useState(params.get('q') ?? '');             // valeur envoyée à l'API (après une courte pause de frappe)
+  const [sort, setSort] = useState('');
+  const [available, setAvailable] = useState(false);
   const [page, setPage] = useState(1);
   const [items, setItems] = useState([]);
   const [meta, setMeta] = useState(null);
@@ -31,14 +35,24 @@ export default function Products() {
     path: cat === 'tous' ? '/produits' : `/produits?categorie=${cat}`,
   });
 
-  const reset = (id) => { setCat(id); setPage(1); setItems([]); setMeta(null); };
+  const restart = () => { setPage(1); setItems([]); setMeta(null); };
+  const reset = (id) => { setCat(id); restart(); };
+  const filtered = q !== '' || sort !== '' || available;
+  // La recherche part 350 ms après la dernière frappe
+  useEffect(() => {
+    const v = qInput.trim();
+    if (v === q) return undefined;
+    const id = setTimeout(() => { setQ(v); restart(); }, 350);
+    return () => clearTimeout(id);
+  }, [qInput]); // eslint-disable-line react-hooks/exhaustive-deps
+  const clearFilters = () => { setQInput(''); setQ(''); setSort(''); setAvailable(false); restart(); };
   useEffect(() => { reset(wanted); }, [wanted]);
 
   // Charge une page de produits ; les suivantes s'ajoutent à la liste
   useEffect(() => {
     let alive = true;
     setStatus({ loading: true, error: null });
-    api.products.list({ category: cat === 'tous' ? undefined : cat, page, perPage: PAGE }).then(
+    api.products.list({ category: cat === 'tous' ? undefined : cat, q: q || undefined, sort: sort || undefined, available: available ? 1 : undefined, page, perPage: PAGE }).then(
       (res) => {
         if (!alive) return;
         setItems((prev) => (page === 1 ? res.data : [...prev, ...res.data]));
@@ -48,7 +62,7 @@ export default function Products() {
       (error) => { if (alive) setStatus({ loading: false, error }); }
     );
     return () => { alive = false; };
-  }, [cat, page, tick]);
+  }, [cat, q, sort, available, page, tick]);
 
   const hasMore = meta !== null && page < meta.pageCount;
 
@@ -75,13 +89,38 @@ export default function Products() {
           ))}
         </div>
 
+        <div className="shop-tools">
+          <label className="shop-tools__search">
+            <span className="sr-only">{t('shop.search')}</span>
+            <input type="search" value={qInput} onChange={(e) => setQInput(e.target.value)} placeholder={t('shop.search')} maxLength={80} autoComplete="off" />
+          </label>
+          <label className="shop-tools__sort">
+            <span>{t('shop.sort')}</span>
+            <select value={sort} onChange={(e) => { setSort(e.target.value); restart(); }}>
+              <option value="">{t('shop.sort.default')}</option>
+              <option value="new">{t('shop.sort.new')}</option>
+              <option value="price_asc">{t('shop.sort.priceAsc')}</option>
+              <option value="price_desc">{t('shop.sort.priceDesc')}</option>
+            </select>
+          </label>
+          <label className="shop-tools__avail">
+            <input type="checkbox" checked={available} onChange={(e) => { setAvailable(e.target.checked); restart(); }} />
+            {t('shop.available')}
+          </label>
+        </div>
+
         {status.error && items.length === 0 && <ServerErrorView error={status.error} onRetry={() => setTick((n) => n + 1)} compact />}
         {status.error && items.length > 0 && (
           <p className="notice notice--error" role="alert">
             {status.error.message} <button type="button" className="link-btn" onClick={() => setTick((n) => n + 1)}>{t('retry')}</button>
           </p>
         )}
-        {!status.loading && !status.error && items.length === 0 && <p className="note">{t('shop.empty')}</p>}
+        {!status.loading && !status.error && items.length === 0 && (
+          <p className="note" role="status">
+            {filtered ? t('shop.noResults') : t('shop.empty')}{' '}
+            {filtered && <button type="button" className="link-btn" onClick={clearFilters}>{t('shop.resetFilters')}</button>}
+          </p>
+        )}
 
         <div className="product-grid" aria-busy={status.loading}>
           {items.map((p, i) => (

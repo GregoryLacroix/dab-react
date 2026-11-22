@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductImage from './ProductImage.jsx';
 import Button from './Button.jsx';
@@ -13,6 +13,8 @@ export default function ProductCard({ product: raw }) {
   const { add } = useCart();
   const ref = useRef(null);
   const img = cover(product);
+  const second = product.images?.[1]?.src; // 2e photo : apparaît au survol (souris uniquement), chargée seulement au premier survol
+  const [peek, setPeek] = useState(false);
 
   // Inclinaison 3D qui suit la souris (souris uniquement, pas au toucher)
   const move = (e) => {
@@ -29,9 +31,10 @@ export default function ProductCard({ product: raw }) {
   };
 
   return (
-    <article className="pcard" ref={ref} onPointerMove={move} onPointerLeave={leave}>
+    <article className="pcard" ref={ref} onPointerMove={move} onPointerEnter={(e) => { if (second && e.pointerType === 'mouse') setPeek(true); }} onPointerLeave={leave}>
       <Link to={l(`/produits/${product.id}`)} className="pcard__media">
         <ProductImage tone={img.tone} src={img.src} label={product.name} />
+        {peek && second && <span className="pcard__alt" aria-hidden="true"><ProductImage src={second} label="" /></span>}
         {soldOut(product) && <span className="sold-badge">{t('product.soldOut')}</span>}
       </Link>
       <div className="pcard__body">

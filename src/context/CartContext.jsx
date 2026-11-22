@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, useMemo } from 'react';
+import { createContext, useContext, useEffect, useReducer, useMemo, useState } from 'react';
 
 import { maxQty, soldOut } from '../services/stock.js';
 
@@ -39,6 +39,7 @@ function reducer(items, action) {
 
 export function CartProvider({ children }) {
   const [items, dispatch] = useReducer(reducer, undefined, load);
+  const [drawer, setDrawer] = useState(false); // mini-panier latéral, ouvert après un ajout
   useEffect(() => {
     try {
       if (items.length) sessionStorage.setItem(KEY, JSON.stringify(items)); else sessionStorage.removeItem(KEY);
@@ -49,12 +50,15 @@ export function CartProvider({ children }) {
       items,
       count: items.reduce((n, i) => n + i.qty, 0),
       total: items.reduce((n, i) => n + i.qty * i.price, 0),
-      add: (product) => dispatch({ type: 'add', product }),
+      drawer,
+      openDrawer: () => setDrawer(true),
+      closeDrawer: () => setDrawer(false),
+      add: (product) => { dispatch({ type: 'add', product }); if (!soldOut(product)) setDrawer(true); },
       setQty: (id, qty) => dispatch({ type: 'setQty', id, qty }),
       remove: (id) => dispatch({ type: 'remove', id }),
       clear: () => dispatch({ type: 'clear' }),
     }),
-    [items]
+    [items, drawer]
   );
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
