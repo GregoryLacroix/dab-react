@@ -60,7 +60,7 @@ export default function ProductsAdmin() {
                   <tr key={p.id} className="border-t border-sand-200">
                     <td className="px-4 py-3">
                       <Link to={`/admin/produits/${p.id}`} className="flex items-center gap-3 font-medium text-black hover:underline">
-                        <span className="block h-12 w-12 shrink-0 overflow-hidden rounded-md"><ProductImage tone={img.tone} src={img.src} label="" /></span>
+                        <span className="block h-12 w-12 shrink-0 overflow-hidden rounded-md"><ProductImage tone={img.tone} src={img.src} label="" eager sizes="96px" /></span>
                         {p.name}
                       </Link>
                     </td>

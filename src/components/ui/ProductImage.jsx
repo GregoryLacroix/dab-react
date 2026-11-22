@@ -10,11 +10,12 @@ export const srcSetFor = (src) => {
 
 // Affiche une vraie photo (src) ou, à défaut, un dégradé provisoire (tone).
 // priority : première image visible de la page (chargée tout de suite, pour un affichage rapide).
+// eager : chargée tout de suite sans priorité haute (miniatures du back-office).
 // sizes : largeur occupée à l'écran (aide le navigateur à choisir la bonne version).
-export default function ProductImage({ tone, src, label, priority = false, sizes = '(min-width: 900px) 33vw, 92vw' }) {
+export default function ProductImage({ tone, src, label, priority = false, eager = false, sizes = '(min-width: 900px) 33vw, 92vw' }) {
   const set = srcSetFor(src);
   return src
-    ? <img className="pimg" src={src} {...(set ? { srcSet: set, sizes } : {})} alt={label} loading={priority ? 'eager' : 'lazy'} decoding="async" {...(priority ? { fetchpriority: 'high' } : {})}
+    ? <img className="pimg" src={src} {...(set ? { srcSet: set, sizes } : {})} alt={label} loading={priority || eager ? 'eager' : 'lazy'} decoding="async" {...(priority ? { fetchpriority: 'high' } : {})}
         onError={set ? (e) => { // une version allégée manque : on retombe sur l'image principale plutôt que d'afficher un vide
           const img = e.currentTarget;
           img.removeAttribute('srcset');

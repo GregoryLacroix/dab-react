@@ -33,7 +33,7 @@ function PhotoSlot({ index, img, onPick, onRemove, onMakeMain, disabled }) {
       <p className="mb-2 text-sm font-semibold text-black">{index === 0 ? 'Photo principale' : `Photo ${index + 1}`}</p>
       {img ? (
         <>
-          <div className="overflow-hidden rounded-lg"><ProductImage tone={img.tone} src={img.src} label={img.alt || ''} /></div>
+          <div className="overflow-hidden rounded-lg"><ProductImage tone={img.tone} src={img.src} label={img.alt || ''} eager sizes="(min-width: 1280px) 20vw, (min-width: 640px) 40vw, 90vw" /></div>
           <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium">
             <label className="cursor-pointer text-black underline hover:no-underline">Remplacer{fileInput}</label>
             {index > 0 && <button type="button" className="text-black underline hover:no-underline" onClick={onMakeMain}>Mettre en principale</button>}

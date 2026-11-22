@@ -30,14 +30,14 @@ $overlay: var(--overlay);     // boutons posés sur les photos
   --sand-50: #faf6ef; --sand-100: #f2eadc; --sand-200: #e6d9c3; --sand-400: #b9a68a; --stone-700: #4a4034;
   --blue-900: #0f2a6b; --accent: #0f2a6b;
   --danger: #a63a2b; --danger-bg: #fbeeea; --ok-bg: #e4f3e6; --ok-bd: #b8dcbc; --bad-bg: #f5e1df; --bad-bd: #e3b9b4;
-  --surface: #fff; --surface-soft: rgba(255, 255, 255, .6); --overlay: rgba(250, 246, 239, .92); --ink: #000; --ink-soft: #333; --on-ink: #fff;
+  --ink-rgb: 0, 0, 0; --surface: #fff; --surface-soft: rgba(255, 255, 255, .6); --overlay: rgba(250, 246, 239, .92); --ink: #000; --ink-soft: #333; --on-ink: #fff;
 }
 @mixin theme-dark {
   color-scheme: dark;
   --sand-50: #14120f; --sand-100: #1c1915; --sand-200: #2f2a22; --sand-400: #5d5445; --stone-700: #d9d1c3;
   --blue-900: #a9c1f0; --accent: #2f5bc7;
   --danger: #ef8f7f; --danger-bg: #3a1e1a; --ok-bg: #1b2e1f; --ok-bd: #2f5a36; --bad-bg: #351f1c; --bad-bd: #6a342d;
-  --surface: #1e1b16; --surface-soft: rgba(255, 255, 255, .04); --overlay: rgba(20, 18, 15, .88); --ink: #f3eee5; --ink-soft: #cfc7b8; --on-ink: #14120f;
+  --ink-rgb: 243, 238, 229; --surface: #1e1b16; --surface-soft: rgba(255, 255, 255, .04); --overlay: rgba(20, 18, 15, .88); --ink: #f3eee5; --ink-soft: #cfc7b8; --on-ink: #14120f;
 }
 
 // Palette des animations (même valeurs que src/config/palette.js)
@@ -51,6 +51,8 @@ $pal-6: #f4979f;
 // Texte, boutons et liens : noir en clair, blanc cassé en sombre
 $ink: var(--ink);
 $ink-soft: var(--ink-soft);
+// Couleur du texte avec transparence (rgba($ink, …) n'est pas possible avec une variable CSS)
+@function ink($alpha) { @return rgba(var(--ink-rgb), $alpha); }
 
 $font-display: 'Instrument Serif', Georgia, serif;
 $font-body: 'Figtree', system-ui, sans-serif;

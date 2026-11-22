@@ -7,7 +7,7 @@ import { Btn, Card, ErrorBox, Field, LinkBtn, Loading, PageHeader, euro, inputCl
 
 const Thumb = ({ p }) => {
   const img = cover(p);
-  return <span className="block h-12 w-12 shrink-0 overflow-hidden rounded-md"><ProductImage tone={img.tone} src={img.src} label="" /></span>;
+  return <span className="block h-12 w-12 shrink-0 overflow-hidden rounded-md"><ProductImage tone={img.tone} src={img.src} label="" eager sizes="96px" /></span>;
 };
 
 // Mêmes règles que l'API (GET /api/slider) : quels produits sont affichés, dans quel ordre
