@@ -5,15 +5,26 @@ Disallow: /panier
 Disallow: /commande
 Disallow: /connexion
 Disallow: /connexion/retour
+Disallow: /connexion/verification
+Disallow: /mot-de-passe-oublie
+Disallow: /nouveau-mot-de-passe
 Disallow: /inscription
 Disallow: /mon-compte
+Disallow: /suivi-commande
 Disallow: /erreur-serveur
 Disallow: /en/cart
 Disallow: /en/order
 Disallow: /en/login
 Disallow: /en/login/callback
+Disallow: /en/login/verification
+Disallow: /en/forgot-password
+Disallow: /en/reset-password
 Disallow: /en/register
 Disallow: /en/account
+Disallow: /en/order-tracking
 Disallow: /en/server-error
+# Pages de devis reçues par e-mail (clé personnelle dans l'adresse) : jamais indexées. La page /devis (formulaire) l'est.
+Disallow: /devis/
+Disallow: /en/quote/
 
 Sitemap: https://dab.gregory-lacroix-pf.com/sitemap.xml
