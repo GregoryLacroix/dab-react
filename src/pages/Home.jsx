@@ -20,7 +20,11 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 
 export default function Home() {
   const { t, l, lang } = useI18n();
-  const { hero, marquee, story, storyView, latest, blocks, contact } = useContent();
+  const { hero, marquee, story, storyView, latest, blocks: allBlocks, contact, features } = useContent();
+  // Demandes de devis désactivées dans le back-office : on retire les boutons qui mènent à /devis
+  const quotesOff = features?.quotes === false;
+  const toQuote = (to) => /^\/devis\/?$/.test(to ?? '');
+  const blocks = quotesOff ? allBlocks.filter((b) => !toQuote(b.to)) : allBlocks;
   useSeo({
     description: hero.text,
     path: '/',
@@ -53,7 +57,7 @@ export default function Home() {
             <p>{hero.text}</p>
             <div className="hero__actions">
               <Button to={l(hero.primaryTo)}>{hero.primaryLabel}</Button>
-              <Button to={l(hero.secondaryTo)} variant="ghost">{hero.secondaryLabel}</Button>
+              {!(quotesOff && toQuote(hero.secondaryTo)) && <Button to={l(hero.secondaryTo)} variant="ghost">{hero.secondaryLabel}</Button>}
             </div>
           </div>
           <div className="hero__art">

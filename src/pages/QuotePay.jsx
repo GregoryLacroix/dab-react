@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
 import { PageLoader } from '../components/ui/Loaders.jsx';
 import { api } from '../services/api.js';
+import { useContent } from '../store/store.js';
 import useSeo from '../services/seo.js';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 
@@ -11,6 +12,7 @@ const POLL_MAX = 8; // après le paiement : le webhook de Stripe arrive en gén�
 
 // Page du devis, reçue par e-mail : /devis/<clé>  (anglais : /en/quote/<clé>). La clé de l'adresse tient lieu de mot de passe.
 export default function QuotePay() {
+  const quotesOn = useContent().features?.quotes !== false; // un devis déjà envoyé reste payable même si les nouvelles demandes sont fermées
   const { token } = useParams();
   const [params] = useSearchParams();
   const { t, l, money, date } = useI18n();
@@ -56,7 +58,7 @@ export default function QuotePay() {
       <section className="section container empty">
         <h1>{t('quote.pay.notFoundTitle')}</h1>
         <p>{t('quote.pay.notFoundText')}</p>
-        <Button to={l('/devis')}>{t('quote.pay.newRequest')}</Button>
+        {quotesOn && <Button to={l('/devis')}>{t('quote.pay.newRequest')}</Button>}
       </section>
     );
   }
@@ -104,7 +106,7 @@ export default function QuotePay() {
       <section className="section container empty">
         <h1>{t('quote.pay.closedTitle')}</h1>
         <p>{t('quote.pay.closedText')}</p>
-        <Button to={l('/devis')}>{t('quote.pay.newRequest')}</Button>
+        {quotesOn && <Button to={l('/devis')}>{t('quote.pay.newRequest')}</Button>}
       </section>
     );
   }

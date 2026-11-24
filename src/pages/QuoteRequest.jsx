@@ -5,6 +5,8 @@ import FormField from '../components/ui/FormField.jsx';
 import { api, fieldErrors } from '../services/api.js';
 import { shrinkImage } from '../services/imageResize.js';
 import useSeo from '../services/seo.js';
+import { NotFoundView } from '../components/ui/ErrorPages.jsx';
+import { useContent } from '../store/store.js';
 import { useI18n } from '../i18n/I18nProvider.jsx';
 
 const BUDGETS = ['moins-500', '500-1000', '1000-2500', 'plus-2500', 'ne-sais-pas'];
@@ -15,7 +17,13 @@ const MAX_SENT_BYTES = 8 * 1024 * 1024;   // limite du serveur
 const empty = { name: '', email: '', phone: '', projectType: 'interieur', widthCm: '', heightCm: '', location: '', description: '', budget: '', desiredBy: '', consent: false, website: '' };
 
 // Demande de devis pour une fresque murale : projet, dimensions, photos du mur, budget -> e-mail de confirmation + devis sous 3 jours
+// Les demandes de devis s'activent / se désactivent dans le back-office (Contenu du site > Fonctionnalités)
 export default function QuoteRequest() {
+  const { features } = useContent();
+  return features?.quotes === false ? <NotFoundView /> : <QuoteForm />;
+}
+
+function QuoteForm() {
   const { t, l, lang } = useI18n();
   const [form, setForm] = useState(empty);
   const [photos, setPhotos] = useState([]);

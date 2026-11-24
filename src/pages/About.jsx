@@ -10,7 +10,8 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 // Page « À propos » : texte et photo modifiables dans le back-office (Contenu du site). Absente du site tant qu'elle n'est pas activée.
 export default function About() {
   const { t, l, lang } = useI18n();
-  const { about } = useContent();
+  const { about, features } = useContent();
+  const quotes = features?.quotes !== false;
   const en = lang === 'en';
   const pick = (fr, enText) => (en && enText ? enText : fr);
   const title = pick(about?.title, about?.titleEn);
@@ -32,7 +33,7 @@ export default function About() {
             {about.signature && <p className="about__sign">{about.signature}</p>}
             <div className="about__actions">
               <Button to={l('/produits')}>{t('about.shop')}</Button>
-              <Button to={l('/devis')} variant="ghost">{t('about.quote')}</Button>
+              {quotes && <Button to={l('/devis')} variant="ghost">{t('about.quote')}</Button>}
             </div>
           </div>
           {about.image

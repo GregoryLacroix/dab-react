@@ -19,7 +19,8 @@ const MailIcon = () => (
 // Pied de page : marque et contact à gauche, trois colonnes de liens, mentions légales en bas
 export default function Footer() {
   const { t, l } = useI18n();
-  const { footer, contact, about } = useContent();
+  const { footer, contact, about, features } = useContent();
+  const quotes = features?.quotes !== false; // demandes de devis activées dans le back-office
   const { services, openSettings } = useConsent();
   const { user } = useAuth();
 
@@ -45,7 +46,7 @@ export default function Footer() {
           {about?.enabled && <Link to={l('/a-propos')}>{t('nav.about')}</Link>}
           <Link to={l('/realisations')}>{t('nav.gallery')}</Link>
           <Link to={l('/carte-cadeau')}>{t('nav.giftCard')}</Link>
-          <Link to={l('/devis')}>{t('footer.quote')}</Link>
+          {quotes && <Link to={l('/devis')}>{t('footer.quote')}</Link>}
         </nav>
 
         <nav className="footer__col" aria-labelledby="footer-help">

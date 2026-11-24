@@ -190,3 +190,6 @@ Page `/produits` : champ de recherche (nom FR/EN et description, envoi 350 ms ap
 - Par défaut le site suit l'appareil (`prefers-color-scheme`). Le bouton lune/soleil du menu force clair ou sombre ; le choix est mémorisé dans `localStorage` (`dab-theme`), déclaré dans la politique de confidentialité.
 - `services/theme.js` (`initTheme`, `useTheme`, `toggleTheme`) ; le back-office force le thème clair (`AdminRoutes.jsx`).
 - Dans les SCSS, utiliser `$surface` (fond de carte), `$on-ink` (texte sur fond `$ink`) et `$accent` (bleu plein) plutôt que `#fff` ou `$blue-900` pour un fond.
+
+## Option « Demander un devis »
+Admin → Contenu du site → « Fonctionnalités du site » : case « Proposer Demander un devis ». Décochée : `/devis` affiche une page introuvable, le lien du pied de page et les boutons « devis » (accueil, réalisations, à propos) disparaissent. Les devis déjà envoyés restent consultables et payables. Clé de contenu `features.quotes` (par défaut `true`). Si vous désactivez cette option durablement, retirez aussi `/devis` du plan du site (`scripts/generate-seo-files.mjs`).

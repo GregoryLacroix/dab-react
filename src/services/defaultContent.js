@@ -29,6 +29,8 @@ export const DEFAULT_CONTENT = {
   },
   // Galet de l'accueil : 'animation' (peinture au scroll) ou 'photos' (une photo par étape)
   storyView: { mode: 'animation', images: ['', '', ''] },
+  // Fonctionnalités activables depuis le back-office
+  features: { quotes: true },
   story: [
     { title: 'Le galet nu', text: 'Je choisis une pierre sur la plage. Sa forme décide du motif.' },
     { title: 'Les couleurs prennent forme', text: 'À l’acrylique, couche après couche, les fleurs, les mandalas et les points apparaissent.' },
@@ -142,4 +144,5 @@ export const withContentDefaults = (c) => ({
   ...c,
   trust: { ...DEFAULT_CONTENT.trust, ...c?.trust, items: DEFAULT_CONTENT.trust.items.map((d, i) => ({ ...d, ...c?.trust?.items?.[i] })) },
   about: { ...DEFAULT_CONTENT.about, ...c?.about },
+  features: { ...DEFAULT_CONTENT.features, ...c?.features },
 });

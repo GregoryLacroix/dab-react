@@ -189,6 +189,16 @@ function ContentEditor({ initial }) {
           ))}
         </>)}
 
+        {section('Fonctionnalités du site', <>
+          <label className="flex items-start gap-2 text-sm font-medium md:col-span-2">
+            <input type="checkbox" className="mt-1" checked={draft.features.quotes} onChange={(e) => update(['features', 'quotes'], e.target.checked)} />
+            <span>
+              Proposer « Demander un devis » (fresques sur mesure)
+              <span className="block font-normal text-black/80">Décoché : la page /devis, le lien du pied de page et les boutons « devis » (accueil, réalisations, à propos) disparaissent, et l’API refuse les nouvelles demandes. Les devis déjà envoyés restent consultables et payables.</span>
+            </span>
+          </label>
+        </>)}
+
         {section('Page « À propos »', <>
           <label className="flex items-center gap-2 text-sm font-medium md:col-span-2">
             <input type="checkbox" checked={draft.about.enabled} onChange={(e) => update(['about', 'enabled'], e.target.checked)} />

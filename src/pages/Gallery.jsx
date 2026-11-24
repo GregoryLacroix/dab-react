@@ -4,6 +4,7 @@ import Button from '../components/ui/Button.jsx';
 import ProductImage, { srcSetFor } from '../components/ui/ProductImage.jsx';
 import { PageLoader } from '../components/ui/Loaders.jsx';
 import { api } from '../services/api.js';
+import { useContent } from '../store/store.js';
 import useQuery from '../services/useQuery.js';
 import useSeo from '../services/seo.js';
 import { useI18n } from '../i18n/I18nProvider.jsx';
@@ -11,6 +12,7 @@ import { useI18n } from '../i18n/I18nProvider.jsx';
 // Galerie de réalisations : /realisations (anglais : /en/gallery). Filtre par catégorie, visionneuse plein écran avec « avant / après ».
 export default function Gallery() {
   const { t, l, lang, date } = useI18n();
+  const quotes = useContent().features?.quotes !== false; // demandes de devis activées dans le back-office
   const { data, error, loading, reload } = useQuery(() => api.realisations.list(), []);
   const [tag, setTag] = useState('');
   const [open, setOpen] = useState(null); // réalisation ouverte
@@ -53,11 +55,13 @@ export default function Gallery() {
             );
           })}
         </ul>
-        <div className="gallery__cta">
-          <h2>{t('gallery.ctaTitle')}</h2>
-          <p>{t('gallery.ctaText')}</p>
-          <Button to={l('/devis')}>{t('gallery.ctaButton')}</Button>
-        </div>
+        {quotes && (
+          <div className="gallery__cta">
+            <h2>{t('gallery.ctaTitle')}</h2>
+            <p>{t('gallery.ctaText')}</p>
+            <Button to={l('/devis')}>{t('gallery.ctaButton')}</Button>
+          </div>
+        )}
       </div>
       {open && <Viewer work={open} title={pick(open, 'title', 'titleEn')} text={pick(open, 'description', 'descriptionEn')} onClose={() => setOpen(null)} />}
     </section>
