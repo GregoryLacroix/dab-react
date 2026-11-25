@@ -19,6 +19,11 @@
   RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|facebot|meta-externalagent|whatsapp|twitterbot|linkedinbot|slackbot|slack-imgproxy|telegrambot|discordbot|pinterest|skypeuripreview|vkshare|redditbot) [NC]
   RewriteRule ^en/shop/([0-9]+)/?$ https://dab.api.gregory-lacroix-pf.com/api/share/products/$1?lang=en [R=302,L]
 
+  # Pages pré-rendues pour Google (scripts/prerender.mjs) : /produits/3 sert directement /produits/3/index.html, sans redirection
+  RewriteCond %{REQUEST_URI} !^/assets/
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.+?)/?$ /$1/index.html [L]
+
   # Les vrais fichiers et dossiers (images, sitemap.xml, 404.html…) sont servis normalement
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

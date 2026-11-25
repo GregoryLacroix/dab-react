@@ -193,3 +193,9 @@ Page `/produits` : champ de recherche (nom FR/EN et description, envoi 350 ms ap
 
 ## Option « Demander un devis »
 Admin → Contenu du site → « Fonctionnalités du site » : case « Proposer Demander un devis ». Décochée : `/devis` affiche une page introuvable, le lien du pied de page et les boutons « devis » (accueil, réalisations, à propos) disparaissent. Les devis déjà envoyés restent consultables et payables. Clé de contenu `features.quotes` (par défaut `true`). Si vous désactivez cette option durablement, retirez aussi `/devis` du plan du site (`scripts/generate-seo-files.mjs`).
+
+## Pré-rendu pour Google (`scripts/prerender.mjs`)
+Après `npm run build`, le script (lancé automatiquement, hook `postbuild`) écrit dans `dist/` une page HTML par adresse importante, en français et en anglais : accueil, boutique, **chaque fiche produit**, FAQ, réalisations, carte cadeau, contact, pages légales, devis (si activé), À propos (si activée). Chaque page contient déjà `<title>`, description, canonique, hreflang, aperçus de partage, données structurées (Product, FAQPage, Organization…) et un texte de contenu avec les liens vers les fiches ; React le remplace dès que le site est chargé.
+- Le catalogue est lu dans l'API **à la construction** : après avoir ajouté un produit, changé un prix ou un stock, refaire `npm run build` et remettre `dist/` en ligne. Si l'API est injoignable, le script avertit et ne génère que les pages sans catalogue (le build n'échoue pas).
+- `public/.htaccess` (bloc 1) sert `/produits/3` avec `produits/3/index.html` sans redirection. Pensez à **mettre en ligne tout le dossier `dist/`**, sous-dossiers compris, et à remplacer l'ancien contenu (sauf `.htaccess` et vos fichiers propres).
+- Relancer seul : `npm run prerender`. Vérifier : afficher le code source d'une fiche produit (Ctrl+U) : le nom, le prix et le JSON-LD doivent y figurer. Puis Google Search Console, « Inspection de l'URL ».
