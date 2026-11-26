@@ -688,4 +688,5 @@ export default {
   'pp.theme.role': 'Remembers your light or dark display choice (browser local storage, only if you use the button)',
   'pp.theme.duration': 'Until you clear it',
   'pp.theme.consent': 'Not required (a preference you asked for, no personal data)',
+  'pwa.install': 'Install the app',
 };

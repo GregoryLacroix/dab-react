@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../ui/Logo.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useConsent } from '../../context/ConsentContext.jsx';
+import { useInstall } from '../../services/pwa.js';
 import { useContent } from '../../store/store.js';
 import { useI18n } from '../../i18n/I18nProvider.jsx';
 
@@ -20,7 +21,8 @@ const MailIcon = () => (
 export default function Footer() {
   const { t, l } = useI18n();
   const { footer, contact, about, features } = useContent();
-  const quotes = features?.quotes !== false; // demandes de devis activées dans le back-office
+  const quotes = features?.quotes !== false;
+  const { canInstall, install } = useInstall(); // demandes de devis activées dans le back-office
   const { services, openSettings } = useConsent();
   const { user } = useAuth();
 
@@ -47,6 +49,7 @@ export default function Footer() {
           <Link to={l('/realisations')}>{t('nav.gallery')}</Link>
           <Link to={l('/carte-cadeau')}>{t('nav.giftCard')}</Link>
           {quotes && <Link to={l('/devis')}>{t('footer.quote')}</Link>}
+          {canInstall && <button type="button" className="link-btn" onClick={install}>{t('pwa.install')}</button>}
         </nav>
 
         <nav className="footer__col" aria-labelledby="footer-help">

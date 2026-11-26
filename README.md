@@ -199,3 +199,10 @@ Après `npm run build`, le script (lancé automatiquement, hook `postbuild`) éc
 - Le catalogue est lu dans l'API **à la construction** : après avoir ajouté un produit, changé un prix ou un stock, refaire `npm run build` et remettre `dist/` en ligne. Si l'API est injoignable, le script avertit et ne génère que les pages sans catalogue (le build n'échoue pas).
 - `public/.htaccess` (bloc 1) sert `/produits/3` avec `produits/3/index.html` sans redirection. Pensez à **mettre en ligne tout le dossier `dist/`**, sous-dossiers compris, et à remplacer l'ancien contenu (sauf `.htaccess` et vos fichiers propres).
 - Relancer seul : `npm run prerender`. Vérifier : afficher le code source d'une fiche produit (Ctrl+U) : le nom, le prix et le JSON-LD doivent y figurer. Puis Google Search Console, « Inspection de l'URL ».
+
+## PWA (site installable + page hors connexion)
+- `public/site.webmanifest` : nom, couleurs, icônes (`icon-192/512.png`, `icon-maskable-192/512.png` : logo sur fond crème, zone de sécurité Android), raccourcis « Boutique » et « Panier ».
+- `public/sw.js` : service worker prudent. Pages (HTML) toujours demandées au réseau (prix et stock jamais périmés) ; sans réseau, `public/offline.html`. Seuls les fichiers de `/assets/` sont gardés sur l'appareil. L'API, Stripe et les photos (autres domaines) ne passent jamais par le service worker. `__BUILD_ID__` est remplacé à chaque build (`scripts/stamp-sw.mjs`) : nouvelle version installée automatiquement, anciens caches supprimés.
+- `src/services/pwa.js` : enregistrement du service worker (production uniquement) et bouton « Installer l'application » du pied de page (visible seulement quand Chrome/Edge/Android le permettent ; sur iPhone : Partager > Sur l'écran d'accueil).
+- `public/.htaccess` : `sw.js` et le manifeste ne sont jamais mis en cache.
+- Vérifier : Chrome, outils développeur > Application > Manifeste / Service Workers ; Lighthouse > « Installable ». Pour désactiver : supprimer l'appel `initPwa()` de `main.jsx` et mettre en ligne un `sw.js` vide qui se désinscrit (`self.registration.unregister()`).

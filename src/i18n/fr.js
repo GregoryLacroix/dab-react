@@ -688,4 +688,5 @@ export default {
   'pp.theme.role': 'Mémoriser votre choix d’affichage clair ou sombre (stockage local du navigateur, uniquement si vous utilisez le bouton)',
   'pp.theme.duration': 'Jusqu’à ce que vous l’effaciez',
   'pp.theme.consent': 'Non requis (préférence demandée par vous, aucune donnée personnelle)',
+  'pwa.install': 'Installer l’application',
 };

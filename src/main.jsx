@@ -16,8 +16,10 @@ import '@fontsource/instrument-serif/400.css';
 import '@fontsource/instrument-serif/400-italic.css';
 import './styles/main.scss';
 import { initTheme } from './services/theme.js';
+import { initPwa } from './services/pwa.js';
 
 initTheme(); // thème clair/sombre appliqué avant l'affichage
+initPwa();   // service worker (hors connexion) et bouton « Installer l'application »
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

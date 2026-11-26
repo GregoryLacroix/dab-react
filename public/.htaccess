@@ -61,6 +61,11 @@ ErrorDocument 500 /500.html
   <FilesMatch "\.(js|css|woff2?)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
+  # Service worker (PWA) et manifeste : jamais gardés en mémoire, pour que les mises à jour du site arrivent tout de suite.
+  # (Cette règle est placée après celle des .js ci-dessus : c'est elle qui l'emporte pour sw.js.)
+  <FilesMatch "^(sw\.js|site\.webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
   # Images et icônes : une semaine
   <FilesMatch "\.(png|jpe?g|webp|gif|svg|ico)$">
     Header set Cache-Control "public, max-age=604800"
